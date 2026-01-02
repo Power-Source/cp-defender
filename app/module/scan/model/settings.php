@@ -107,24 +107,24 @@ class Settings extends \Hammer\WP\Settings {
 		$this->email_subject   = __( 'Scan of {SITE_URL} complete. {ISSUES_COUNT} issues found.', cp_defender()->domain );
 		$this->email_has_issue = __( 'Hi {USER_NAME},
 
-CP Security here, reporting back from the front.
+PS Security here, reporting back from the front.
 
 I\'ve finished scanning {SITE_URL} for vulnerabilities and I found {ISSUES_COUNT} issues that you should take a closer look at!
 {ISSUES_LIST}
 
 Stay Safe,
-CP Security
+PS Security
 Official PSOURCE Superhero', cp_defender()->domain );
 		$this->email_all_ok    = __( 'Hi {USER_NAME},
 
-CP Security here, reporting back from the front.
+PS Security here, reporting back from the front.
 
 I\'ve finished scanning {SITE_URL} for vulnerabilities and I found nothing. Well done for running such a tight ship!
 
 Keep up the good work! With regular security scans and a well-hardened installation you\'ll be just fine.
 
 Stay safe,
-CP Security
+PS Security
 Official PSOURCE Superhero', cp_defender()->domain );
 		//call parent to load stored
 		if ( is_admin() || is_network_admin() && current_user_can( 'manage_options' ) ) {

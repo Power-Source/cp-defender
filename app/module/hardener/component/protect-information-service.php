@@ -71,7 +71,7 @@ class Protect_Information_Service extends Rule_Service implements IRule_Service 
 			$htConfig = file_get_contents( $htPath );
 			$rules    = $this->apache_rule();
 
-			preg_match_all('/## CP Security(.*?)## CP Security - End ##/s', $htConfig, $matches);
+			preg_match_all('/## PS Security(.*?)## PS Security - End ##/s', $htConfig, $matches);
 			if ( is_array( $matches ) && count( $matches ) > 0 ) {
 				$htConfig = str_replace( implode( '', $matches[0] ), '', $htConfig );
 			} else {
@@ -96,7 +96,7 @@ class Protect_Information_Service extends Rule_Service implements IRule_Service 
 		$version = \CP_Defender\Behavior\Utils::instance()->determineApacheVersion();
 		if ( floatval( $version ) >= 2.4 ) {
 			$rules    = array(
-				PHP_EOL . '## CP Security - Prevent information disclosure ##' . PHP_EOL,
+				PHP_EOL . '## PS Security - Prevent information disclosure ##' . PHP_EOL,
 				'<FilesMatch "\.(txt|md|exe|sh|bak|inc|pot|po|mo|log|sql)$">' . PHP_EOL .
 				'Require all denied' . PHP_EOL .
 				'</FilesMatch>' . PHP_EOL,
@@ -106,11 +106,11 @@ class Protect_Information_Service extends Rule_Service implements IRule_Service 
 				'<Files ads.txt>' . PHP_EOL .
 				'Require all granted' . PHP_EOL .
 				'</Files>' . PHP_EOL,
-				'## CP Security - End ##'
+				'## PS Security - End ##'
 			);
 		} else {
 			$rules    = array(
-				PHP_EOL . '## CP Security - Prevent information disclosure ##' . PHP_EOL,
+				PHP_EOL . '## PS Security - Prevent information disclosure ##' . PHP_EOL,
 				'<FilesMatch "\.(txt|md|exe|sh|bak|inc|pot|po|mo|log|sql)$">' . PHP_EOL .
 				'Order allow,deny' . PHP_EOL .
 				'Deny from all' . PHP_EOL .
@@ -121,7 +121,7 @@ class Protect_Information_Service extends Rule_Service implements IRule_Service 
 				'<Files ads.txt>' . PHP_EOL .
 				'Allow from all' . PHP_EOL .
 				'</Files>' . PHP_EOL,
-				'## CP Security - End ##'
+				'## PS Security - End ##'
 			);
 		}
 		return $rules;

@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: CP Security
- * Plugin URI: https://premium.wpmudev.org/project/cp-defender/
+ * Plugin Name: PS Security
+ * Plugin URI: https://power-source.github.io/cp-defender/
  * Version:     1.0.0
- * Description: Get regular security scans, vulnerability reports, safety recommendations and customized hardening for your site in just a few clicks. CP Security is the analyst and enforcer who never sleeps.
+ * Description: Erhalte regelmäßige Sicherheitsüberprüfungen, Schwachstellenberichte, Sicherheitsempfehlungen und individuelle Sicherheitsmaßnahmen für Deine Webseite – mit nur wenigen Klicks. PS Security ist Dein Analyst und Sicherheitsexperte, der rund um die Uhr für Dich da ist.
  * Author:      PSOURCE
  * Author URI:  https://github.com/Power-Source
  * License:     GNU General Public License (Version 2 - GPLv2)

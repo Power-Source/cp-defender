@@ -512,7 +512,7 @@
 														<?php esc_html_e( "Stay vigilant.", cp_defender()->domain ) ?></p>
                                                     <p class="last-item"
                                                        style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; margin-bottom: 0; padding: 0; text-align: left;">
-                                                        <strong><?php esc_html_e( "CP Security", cp_defender()->domain ) ?></strong>
+                                                        <strong><?php esc_html_e( "PS Security", cp_defender()->domain ) ?></strong>
                                                         <br>
 														<?php esc_html_e( "Security Hero", cp_defender()->domain ) ?>
                                                         <br/>

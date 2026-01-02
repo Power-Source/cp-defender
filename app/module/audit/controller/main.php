@@ -345,7 +345,7 @@ class Main extends \CP_Defender\Controller {
                                     style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;">
                                     <h3 style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 32px; font-weight: normal; line-height: 32px; margin: 0; margin-bottom: 0; padding: 0 0 28px; text-align: left; word-wrap: normal;"><?php _e( "Hi {USER_NAME},", cp_defender()->domain ) ?></h3>
                                     <p style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; margin-bottom: 0; padding: 0 0 24px; text-align: left;">
-										<?php printf( __( "It’s CP Security here, reporting from the frontline with a quick update on what’s been happening at <a href=\"%s\">%s</a>.", cp_defender()->domain ), site_url(), site_url() ) ?></p>
+										<?php printf( __( "It’s PS Security here, reporting from the frontline with a quick update on what’s been happening at <a href=\"%s\">%s</a>.", cp_defender()->domain ), site_url(), site_url() ) ?></p>
                                 </td>
                             </tr>
                             </tbody>
@@ -423,7 +423,7 @@ class Main extends \CP_Defender\Controller {
                                         Stay safe,</p>
                                     <p class="last-item"
                                        style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; margin-bottom: 0; padding: 0; text-align: left;">
-                                        CP Security <br><strong>WPMU DEV Security Hero</strong></p>
+                                        PS Security <br><strong>WPMU DEV Security Hero</strong></p>
                                 </td>
                             </tr>
                             </tbody>

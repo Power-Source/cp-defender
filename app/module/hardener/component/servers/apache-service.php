@@ -74,7 +74,7 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 		$deny 		= $this->generateHtAccessRule( false );
 		$allow 		= $this->generateHtAccessRule( true );
 		$default  	= array(
-			PHP_EOL . '## CP Security - Protect PHP Executed ##' . PHP_EOL,
+			PHP_EOL . '## PS Security - Protect PHP Executed ##' . PHP_EOL,
 			'<Files *.php>' . PHP_EOL .
 			$deny  .
 			'</Files>' . PHP_EOL,
@@ -84,7 +84,7 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 			'<Files ms-files.php>' . PHP_EOL .
 			$allow  .
 			'</Files>' . PHP_EOL,
-			'## CP Security - End ##' . PHP_EOL
+			'## PS Security - End ##' . PHP_EOL
 		);
 		/*$status   = wp_remote_head( network_site_url() . 'wp-includes', array( 'user-agent' => $_SERVER['HTTP_USER_AGENT'] ) );
 		if ( 200 == wp_remote_retrieve_response_code( $status ) ) {
@@ -118,11 +118,11 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 		$deny 		= $this->generateHtAccessRule( false );
 		$allow 		= $this->generateHtAccessRule( true );
 		$default  	= array(
-			PHP_EOL . '## CP Security - Protect PHP Executed ##' . PHP_EOL,
+			PHP_EOL . '## PS Security - Protect PHP Executed ##' . PHP_EOL,
 			'<Files *.php>' . PHP_EOL .
 			$deny .
 			'</Files>' . PHP_EOL,
-			'## CP Security - End ##' . PHP_EOL
+			'## PS Security - End ##' . PHP_EOL
 		);
 
 		if ( ! empty( $this->exclude_file_paths ) ) {
@@ -139,7 +139,7 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 			}
 
 			if ( ! empty( $custom_exclude ) ) {
-				array_splice( $default, 2, 0, $custom_exclude ); //Add the excludes before the ## CP Security - End ##
+				array_splice( $default, 2, 0, $custom_exclude ); //Add the excludes before the ## PS Security - End ##
 				$this->new_htconfig = $default; //Set the new array structure for when we want to remove
 			}
 		}
@@ -176,11 +176,11 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 			$deny 		= $this->generateHtAccessRule( false );
 			$allow 		= $this->generateHtAccessRule( true );
 			$default  	= array(
-				PHP_EOL . '## CP Security - Protect PHP Executed ##' . PHP_EOL,
+				PHP_EOL . '## PS Security - Protect PHP Executed ##' . PHP_EOL,
 				'<Files *.php>' . PHP_EOL .
 				$deny .
 				'</Files>' . PHP_EOL,
-				'## CP Security - End ##' . PHP_EOL
+				'## PS Security - End ##' . PHP_EOL
 			);
 
 			if ( ! empty( $this->exclude_file_paths ) ) {
@@ -197,7 +197,7 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 				}
 
 				if ( ! empty( $custom_exclude ) ) {
-					array_splice( $default, 2, 0, $custom_exclude ); //Add the excludes before the ## CP Security - End ##
+					array_splice( $default, 2, 0, $custom_exclude ); //Add the excludes before the ## PS Security - End ##
 					$this->new_htconfig = $default; //Set the new array structure for when we want to remove
 				}
 			}
@@ -221,11 +221,11 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 		$htConfig 	= file_get_contents( $htPath );
 		$deny 		= $this->generateHtAccessRule( false );
 		$default  	= array(
-			PHP_EOL .'## CP Security - Protect PHP Executed ##' . PHP_EOL,
+			PHP_EOL .'## PS Security - Protect PHP Executed ##' . PHP_EOL,
 			'<Files *.php>' . PHP_EOL .
 			$deny  .
 			'</Files>' . PHP_EOL,
-			'## CP Security - End ##' . PHP_EOL
+			'## PS Security - End ##' . PHP_EOL
 		);
 
 		if ( ! empty( $this->new_htconfig ) ) {
@@ -233,7 +233,7 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 		}
 
 		//Introduced regex
-		preg_match_all('/## CP Security(.*?)## CP Security - End ##/s', $htConfig, $matches);
+		preg_match_all('/## PS Security(.*?)## PS Security - End ##/s', $htConfig, $matches);
 		if ( is_array( $matches ) && count( $matches ) > 0 ) {
 			$htConfig = str_replace( implode( '', $matches[0] ), '', $htConfig );
 		} else {
@@ -253,7 +253,7 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 		$deny 		= $this->generateHtAccessRule( false );
 		$allow 		= $this->generateHtAccessRule( true );
 		$default  	= array(
-			PHP_EOL . '## CP Security - Protect PHP Executed ##' . PHP_EOL,
+			PHP_EOL . '## PS Security - Protect PHP Executed ##' . PHP_EOL,
 			'<Files *.php>' . PHP_EOL .
 			$deny  .
 			'</Files>' . PHP_EOL,
@@ -263,10 +263,10 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 			'<Files ms-files.php>' . PHP_EOL .
 			$allow  .
 			'</Files>' . PHP_EOL,
-			'## CP Security - End ##' . PHP_EOL
+			'## PS Security - End ##' . PHP_EOL
 		);
 
-		preg_match_all('/## CP Security(.*?)## CP Security - End ##/s', $htConfig, $matches);
+		preg_match_all('/## PS Security(.*?)## PS Security - End ##/s', $htConfig, $matches);
 		if ( is_array( $matches ) && count( $matches ) > 0 ) {
 			$htConfig = str_replace( implode( '', $matches[0] ), '', $htConfig );
 		} else {
@@ -286,11 +286,11 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 			$htConfig 	= file_get_contents( $htPath );
 			$deny 		= $this->generateHtAccessRule( false );
 			$default  	= array(
-				PHP_EOL .'## CP Security - Protect PHP Executed ##' . PHP_EOL,
+				PHP_EOL .'## PS Security - Protect PHP Executed ##' . PHP_EOL,
 				'<Files *.php>' . PHP_EOL .
 				$deny  .
 				'</Files>' . PHP_EOL,
-				'## CP Security - End ##' . PHP_EOL
+				'## PS Security - End ##' . PHP_EOL
 			);
 
 			if ( ! empty( $this->new_htconfig ) ) {
@@ -298,7 +298,7 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 			}
 
 			//Introduced regex
-			preg_match_all('/## CP Security(.*?)## CP Security - End ##/s', $htConfig, $matches);
+			preg_match_all('/## PS Security(.*?)## PS Security - End ##/s', $htConfig, $matches);
 			if ( is_array( $matches ) && count( $matches ) > 0 ) {
 				$htConfig = str_replace( implode( '', $matches[0] ), '', $htConfig );
 			} else {

@@ -150,10 +150,10 @@ location ~* ^$wp_content/.*\.php$ {
                     </ol>
                     <p><?php echo sprintf( __( "Still having trouble? <a target='_blank' href=\"%s\">Open a support ticket</a>.", cp_defender()->domain ), 'https://premium.wpmudev.org/forums/forum/support#question' ) ?></p>
                     <pre>
-## CP Security - Prevent PHP Execution ##
+## PS Security - Prevent PHP Execution ##
                         <?php echo esc_html( $rules ); ?>
                         <span class="hardener-nginx-extra-instructions"></span>
-                        ## CP Security - End ##
+                        ## PS Security - End ##
                     </pre>
                 </div>
                 <div class="<?php echo ( $setting->active_server != 'iis' ) ? 'wd-hide' : ''; ?> hardener-instructions hardener-instructions-iis">

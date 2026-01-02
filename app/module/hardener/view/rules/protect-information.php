@@ -10,7 +10,7 @@
     <div class="rule-content">
         <h3><?php _e( "Overview", cp_defender()->domain ) ?></h3>
         <div class="line end">
-			<?php _e( "Often servers are incorrectly configured, and can allow an attacker to get access to sensitive information that can be used in attacks. CP Security can help you prevent that disclosure.", cp_defender()->domain ) ?>
+			<?php _e( "Often servers are incorrectly configured, and can allow an attacker to get access to sensitive information that can be used in attacks. PS Security can help you prevent that disclosure.", cp_defender()->domain ) ?>
         </div>
         <h3>
 			<?php _e( "How to fix", cp_defender()->domain ) ?>
@@ -109,7 +109,7 @@ location ~* ^$wp_content/.*\.(txt|md|exe|sh|bak|inc|pot|po|mo|log|sql)$ {
                         </li>
                     </ol>
                     <p><?php echo sprintf( __( "Still having trouble? <a target='_blank' href=\"%s\">Open a support ticket</a>.", cp_defender()->domain ), 'https://premium.wpmudev.org/forums/forum/support#question' ) ?></p>
-                    <pre>## CP Security - Prevent information disclosure ##<?php echo esc_html( $rules ); ?>## CP Security - End ##</pre>
+                    <pre>## PS Security - Prevent information disclosure ##<?php echo esc_html( $rules ); ?>## PS Security - End ##</pre>
                     </div>
                 </div>
                 <div class="<?php echo ( $setting->active_server != 'iis' ) ? 'wd-hide' : ''; ?> hardener-information hardener-information-iis">

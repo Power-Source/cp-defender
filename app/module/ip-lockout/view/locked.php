@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Cache-control" content="max-age=0">
-    <title><?php esc_html_e( "CP Security", cp_defender()->domain ) ?></title>
+    <title><?php esc_html_e( "PS Security", cp_defender()->domain ) ?></title>
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700|Roboto:400,500,300,300italic">
     <style type="text/css">
