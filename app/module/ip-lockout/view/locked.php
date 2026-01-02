@@ -42,7 +42,6 @@
             background-color: #F2F2F2;
             margin: 0 auto;
             border-radius: 50%;
-            background-image: url("<?php echo cp_defender()->getPluginUrl().'assets/img/def-stand.svg' ?>");
             background-repeat: no-repeat;
             background-size: contain;
             margin-bottom: 30px;

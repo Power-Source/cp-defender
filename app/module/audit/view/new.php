@@ -3,7 +3,6 @@
         <h3><?php _e( "EVENT LOGS", cp_defender()->domain ) ?></h3>
     </div>
     <div class="box-content tc">
-        <img src="<?php echo cp_defender()->getPluginUrl() ?>assets/img/def-stand.svg" class="mline">
         <div class="line">
 			<?php _e( "Track and log each and every event when changes are made to your website and get
 			detailed reports on what’s going on behind the scenes, including any hacking attempts on

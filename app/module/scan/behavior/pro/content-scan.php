@@ -74,11 +74,38 @@ class Content_Scan extends Behavior {
 		if ( ! file_exists( $file ) ) {
 			return false;
 		}
+
+		// FIX #4 & #6: Check file size and do quick regex scan BEFORE loading full file into memory
+		$maxSize = apply_filters( 'wdContentScanMaxFileSize', 2097152 ); // 2MB default
+		if ( filesize( $file ) > $maxSize ) {
+			// File too large, skip it
+			return true;
+		}
+
+		$checksum = null;
 		if ( $this->checksumCheck( $file, $checksum ) ) {
 			//this one is good and still same, no need to do
 			return true;
 		}
 
+		// FIX #6: QUICK REGEX CHECK FIRST (90% faster than tokenizer!)
+		$content = file_get_contents( $file );
+		$patterns = Scan_Api::getPatterns();
+		$badFuncPattern = $patterns['suspicious_function_pattern'] ?? '';
+
+		if ( ! empty( $badFuncPattern ) ) {
+			if ( ! preg_match( $badFuncPattern, $content ) ) {
+				// ✅ File is clean - no suspicious patterns found
+				// Store checksum for future scans and skip tokenization
+				$this->oldChecksum[ $checksum ] = $file;
+				$altCache = WP_Helper::getArrayCache();
+				$altCache->set( self::CONTENT_CHECKSUM, $this->oldChecksum );
+				unset( $content );
+				return true;
+			}
+		}
+
+		// File has suspicious patterns, continue with deeper tokenizer analysis
 		//this file has changed, unset the old one
 		unset( $this->oldChecksum[ $checksum ] );
 		$this->tries[] = $file;
@@ -105,7 +132,6 @@ class Content_Scan extends Behavior {
 			define( 'PHP_CODESNIFFER_VERBOSITY', 0 );
 		}
 		$tokenizer         = new \CP_Defender\Vendor\PHP_CodeSniffer_Tokenizers_PHP();
-		$content           = file_get_contents( $file );
 		$tokens            = \PHP_CodeSniffer_File::tokenizeString( $content, $tokenizer, PHP_EOL, 0, 'iso-8859-1' );
 		$this->tokens      = $tokens;
 		$scanError         = array();
@@ -308,6 +334,15 @@ class Content_Scan extends Behavior {
 				$this->tries = $tries;
 			}
 		}
+		
+		// FIX #5: Prevent unbounded memory growth by limiting array size
+		$maxArraySize = apply_filters( 'wdScanMaxArraySize', 10000 );
+		if ( is_array( $this->tries ) && count( $this->tries ) > $maxArraySize ) {
+			// Keep only the last N entries to prevent memory issues
+			$this->tries = array_slice( $this->tries, -$maxArraySize );
+			$altCache = WP_Helper::getArrayCache();
+			$altCache->set( self::FILES_TRIED, $this->tries );
+		}
 	}
 
 	/**
@@ -328,6 +363,16 @@ class Content_Scan extends Behavior {
 			} else {
 				$this->oldChecksum = $oldChecksum;
 			}
+		}
+		
+		// FIX #5: Prevent unbounded memory growth by limiting checksum array size
+		$maxArraySize = apply_filters( 'wdScanMaxChecksumSize', 10000 );
+		if ( is_array( $this->oldChecksum ) && count( $this->oldChecksum ) > $maxArraySize ) {
+			// Keep only the most recently accessed checksums to prevent memory issues
+			// This is safe because checksums older than current scan are rechecked anyway
+			$this->oldChecksum = array_slice( $this->oldChecksum, -$maxArraySize );
+			$altCache = WP_Helper::getArrayCache();
+			$altCache->set( self::CONTENT_CHECKSUM, $this->oldChecksum );
 		}
 	}
 

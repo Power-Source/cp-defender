@@ -189,12 +189,10 @@
 .wpmud .search-box .input-box {
   width: 100%; }
 .wpmud .scanning .box {
-  background-image: url("../img/scanning-man.svg");
   background-repeat: no-repeat;
   background-position: 50% 100%;
   padding-bottom: 160px !important; }
 .wpmud .wd-activator .box {
-  background-image: url("../img/scanning-man.svg");
   background-repeat: no-repeat;
   background-position: 50% 102%;
   padding-bottom: 110px !important; }
@@ -300,32 +298,16 @@
     right: 30px; }
   .wpmud .report-sale .last {
     box-shadow: none; }
-.wpmud .reporting-sale.audit-widget {
-  background-image: url("../img/audit-presale.svg"); }
-  .wpmud .reporting-sale.audit-widget .presale-text div {
-    width: 67%; }
-.wpmud .sale-overlay {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 999;
-  opacity: 0.5;
-  background: #f2f2f2; }
 .wpmud .dev-team:not(.dev-overlay) {
-  background-image: url("../img/dev-team.svg");
   background-repeat: no-repeat;
   background-position: 50% 100%;
   padding-bottom: 35%; }
 .wpmud .dev-team.dev-overlay .box {
   padding-bottom: 270px;
-  background-image: url("../img/dev-team-big.svg");
   background-size: 90%;
   background-repeat: no-repeat;
   background-position: 50% 100%; }
 .wpmud .scanning.scanning-free .box {
-  background-image: url("../img/scanning-free-man.svg");
   background-repeat: no-repeat;
   background-position: 7% 100%;
   padding-bottom: 170px !important; }
@@ -2001,7 +1983,6 @@
       .cp-defender .wdf-scanning table tbody tr td:nth-child(4) a:active, .cp-defender .wdf-scanning table tbody tr td.item-action a:active, .cp-defender .scan-dialog table tbody tr td:nth-child(4) a:active, .cp-defender .scan-dialog table tbody tr td.item-action a:active {
         background: #E6E6E6; }
   .cp-defender .wdf-scanning .has-presale, .cp-defender .scan-dialog .has-presale {
-    background-image: url("../img/scanning-free-man.svg");
     background-repeat: no-repeat;
     background-position: 2% 110%;
     padding-bottom: 160px;
@@ -2072,7 +2053,6 @@
     width: 30%;
     padding-left: 0; }
   .cp-defender .auditing .is-free {
-    background-image: url("../img/scanning-free-man.svg");
     background-repeat: no-repeat;
     background-position: 2% 117%; }
     .cp-defender .auditing .is-free .presale-text div {

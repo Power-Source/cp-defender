@@ -26,14 +26,16 @@
                     <span class="toggle" aria-hidden="true" role="presentation">
                         <input type="hidden" name="scan_vuln" value="0"/>
                         <input role="presentation" type="checkbox" class="toggle-checkbox" name="scan_vuln" value="1"
-                               id="scan-vuln" <?php checked( ! empty( $setting->wpscan_api_token ) && $setting->scan_vuln ) ?> <?php disabled( empty( $setting->wpscan_api_token ) ) ?>/>
+                               id="scan-vuln" <?php checked( $setting->scan_vuln ) ?>/>
                         <label aria-hidden="true" class="toggle-label" for="scan-vuln"></label>
                     </span>
                     <label for="scan-vuln"><?php _e( "Plugins & Themes", cp_defender()->domain ) ?></label>
                     <span class="sub inpos">
                         <?php _e( "Defender looks for publicly reported vulnerabilities in your installed plugins and themes.", cp_defender()->domain ) ?>
                         <?php if ( empty( $setting->wpscan_api_token ) ): ?>
-                            <br/><strong style="color: #FF6D6D;"><?php _e( "Requires WPScan API token (see below)", cp_defender()->domain ) ?></strong>
+                            <br/><span style="color: #FFA500;"><i class="def-icon icon-warning"></i> <?php _e( "Limited Mode: Basic checks active. Optional WPScan API token for expanded vulnerability database.", cp_defender()->domain ) ?></span>
+                        <?php else: ?>
+                            <br/><span style="color: #1ABC9C;"><i class="def-icon icon-tick"></i> <?php _e( "Full Mode: WPScan API token configured for comprehensive vulnerability checks.", cp_defender()->domain ) ?></span>
                         <?php endif; ?>
                     </span>
                     <div class="clear mline"></div>
@@ -60,9 +62,9 @@
                 <div class="column">
                     <input type="text" name="wpscan_api_token" value="<?php echo esc_attr( $setting->wpscan_api_token ) ?>" placeholder="<?php esc_attr_e( "Enter API token", cp_defender()->domain ) ?>" style="width: 100%; max-width: 400px;"/>
                     <?php if ( !empty( $setting->wpscan_api_token ) ): ?>
-                        <span class="sub" style="color: #1ABC9C;"><i class="def-icon icon-tick"></i> <?php _e( "API token configured", cp_defender()->domain ) ?></span>
+                        <span class="sub" style="color: #1ABC9C;"><i class="def-icon icon-tick"></i> <?php _e( "API token configured - Full vulnerability database active", cp_defender()->domain ) ?></span>
                     <?php else: ?>
-                        <span class="sub" style="color: #FF6D6D;"><?php _e( "No API token - vulnerability scanning disabled", cp_defender()->domain ) ?></span>
+                        <span class="sub" style="color: #FFA500;"><i class="def-icon icon-warning"></i> <?php _e( "Optional: Add WPScan API token for comprehensive vulnerability checks. Scanning works in Limited Mode without it.", cp_defender()->domain ) ?></span>
                     <?php endif; ?>
                 </div>
             </div>

@@ -242,20 +242,38 @@ class Scan_Api extends Component {
 			}
 			while ( ! $queue->isEnd() ) {
 				//while in the loop, the model can be set as ERROR, check and return of Error
-				if ( $queue->processItem() == false ) {
-					//we will by pass this if the process is fail
-					//todo we will output the error and let user know
+				$processResult = $queue->processItem();
+				if ( $processResult == false ) {
+					//FIX #7: Error recovery - skip this item instead of aborting entire scan
+					// Track consecutive failures to prevent infinite loops
+					if ( ! isset( $consecutiveErrors ) ) {
+						$consecutiveErrors = 0;
+					}
+					$consecutiveErrors++;
+					
+					// Max 5 consecutive failures before stopping scan
+					if ( $consecutiveErrors >= 5 ) {
+						// Too many failures, abort scan
+						$queue->next();
+						$queue->saveProcess();
+						self::releaseLock();
+						return false;
+					}
+					
+					// Skip this item and continue with next
 					$queue->next();
 					$queue->saveProcess();
-					self::releaseLock();
-
-					return false;
+					continue;
 				} else {
-					//each request onlly allow 10s, or when reached to 64MB ram
+					// Reset error counter on successful processing
+					$consecutiveErrors = 0;
+					
+					//each request allow 30s or when reached to 256MB ram
 					$est      = microtime( true ) - $start;
 					$currMem  = ( memory_get_peak_usage( true ) / 1024 / 1024 );
-					$memLimit = apply_filters( 'defender_scan_memory_alloc', 128 );
-					if ( $est >= 15 || $currMem >= $memLimit || $queue->isEnd() || $queue->key() == 1 ) {
+					$memLimit = apply_filters( 'defender_scan_memory_alloc', 256 );
+					$timeLimit = apply_filters( 'defender_scan_time_limit', 30 );
+					if ( $est >= $timeLimit || $currMem >= $memLimit || $queue->isEnd() || $queue->key() == 1 ) {
 						//save current process and pause
 						$queue->saveProcess();
 
