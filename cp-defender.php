@@ -7,7 +7,7 @@
  * Author:      PSOURCE
  * Author URI:  https://github.com/Power-Source
  * License:     GNU General Public License (Version 2 - GPLv2)
- * Text Domain: wpdef
+ * Text Domain: cpsec
  * Network: true
  */
 
@@ -46,7 +46,7 @@ class CP_Defender {
 	/**
 	 * @var string
 	 */
-	public $domain = 'wpdef';
+	public $domain = 'cpsec';
 
 	/**
 	 * @var string
