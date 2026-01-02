@@ -44,7 +44,7 @@
                         <select name="time">
 							<?php foreach ( \CP_Defender\Behavior\Utils::instance()->getTimes() as $time ): ?>
                                 <option <?php selected( $time, $setting->time ) ?>
-                                        value="<?php echo $time ?>"><?php echo strftime( '%I:%M %p', strtotime( $time ) ) ?></option>
+                                        value="<?php echo $time ?>"><?php echo wp_date( 'h:i A', strtotime( $time ) ) ?></option>
 							<?php endforeach;; ?>
                         </select>
                     </div>

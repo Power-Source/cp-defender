@@ -344,4 +344,32 @@ WDScan.handleFileIssues = function (data) {
             }
         }
     }
-}
+
+    // Clear Cache Button Handler - Handle before WDScan.formHandler
+    $('#clear-cache-form').on('submit', function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var btn = $('#clear-cache-btn');
+        var form = $(this);
+        btn.prop('disabled', true);
+        
+        $.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: form.serialize(),
+            dataType: 'json',
+            success: function(response) {
+                if(response.success) {
+                    Defender.showNotification('success', response.data.message);
+                } else {
+                    Defender.showNotification('error', response.data.message || 'Error clearing cache');
+                }
+                btn.prop('disabled', false);
+            },
+            error: function(xhr, status, error) {
+                Defender.showNotification('error', 'Error clearing cache');
+                btn.prop('disabled', false);
+            }
+        });
+    });
+};

@@ -138,6 +138,23 @@
             <button class="button float-r"><?php _e( "Update Settings", cp_defender()->domain ) ?></button>
             <div class="clear"></div>
         </form>
+        
+        <!-- Clear Cache Section -->
+        <div class="clear mline"></div>
+        <hr class="mline"/>
+        <div class="clear mline"></div>
+        <h4><?php _e( "Cache Management", cp_defender()->domain ) ?></h4>
+        <p class="sub">
+            <?php _e( "Clear the scan cache to reset all checksums and force a fresh analysis. This is useful after updating files or when you want to re-scan without using cached data.", cp_defender()->domain ) ?>
+        </p>
+        <form method="post" id="clear-cache-form">
+            <input type="hidden" name="action" value="clearScanCache"/>
+			<?php wp_nonce_field( 'clearScanCache' ) ?>
+            <button type="submit" class="button button-secondary" id="clear-cache-btn">
+                <i class="def-icon icon-delete" aria-hidden="true"></i>
+                <?php _e( "Clear Scan Cache", cp_defender()->domain ) ?>
+            </button>
+        </form>
     </div>
 </div>
 <dialog id="issue-found" title="<?php esc_attr_e( "Issues found", cp_defender()->domain ) ?>">

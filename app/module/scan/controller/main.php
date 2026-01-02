@@ -52,6 +52,7 @@ class Main extends \CP_Defender\Controller {
 		$this->add_ajax_action( 'deleteItem', 'deleteItem' );
 		$this->add_ajax_action( 'resolveItem', 'resolveItem' );
 		$this->add_ajax_action( 'saveScanSettings', 'saveScanSettings' );
+		$this->add_ajax_action( 'clearScanCache', 'clearScanCache' );
 		$this->add_ajax_action( 'scanBulkAction', 'scanBulkAction' );
 		$this->add_ajax_action( 'pullSrcFile', 'pullSrcFile' );
 		$this->add_ajax_action( 'cancelScan', 'cancelScan' );
@@ -122,6 +123,48 @@ class Main extends \CP_Defender\Controller {
 		wp_send_json_error( array(
 			'message' => ''
 		) );
+	}
+
+	/**
+	 * Clear scan cache - checksums, file tries, and transients
+	 */
+	public function clearScanCache() {
+		if ( ! $this->checkPermission() ) {
+			return;
+		}
+		if ( ! wp_verify_nonce( HTTP_Helper::retrieve_post( '_wpnonce' ), 'clearScanCache' ) ) {
+			wp_send_json_error( array(
+				'message' => __( 'Security verification failed', cp_defender()->domain )
+			) );
+			return;
+		}
+
+		// Clear all scan-related caches
+		try {
+			// Flush Defender's internal cache
+			Scan_Api::flushCache();
+			
+			// Clear WordPress transients
+			delete_site_transient( 'wdscan_active' );
+			delete_site_transient( 'wdscan_checksum' );
+			delete_site_transient( 'wdscan_files_tried' );
+			delete_site_transient( 'wdscan_content_checksum' );
+			
+			// Clear all defender-related transients
+			global $wpdb;
+			$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE '%wdscan%' OR option_name LIKE '%defender_scan%'" );
+			
+			// Flush WordPress cache
+			wp_cache_flush();
+			
+			wp_send_json_success( array(
+				'message' => __( 'Scan cache cleared successfully. The next scan will start fresh without cached checksums.', cp_defender()->domain )
+			) );
+		} catch ( Exception $e ) {
+			wp_send_json_error( array(
+				'message' => __( 'Error clearing cache: ', cp_defender()->domain ) . $e->getMessage()
+			) );
+		}
 	}
 
 	public function pullSrcFile() {
