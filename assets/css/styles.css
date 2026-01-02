@@ -283,11 +283,9 @@
   text-transform: none;
   font: 400 13px/20px 'Roboto Condensed'; }
 .wpmud .reporting-sale {
-  background-image: url("../img/dev-man-pre.svg");
   background-repeat: no-repeat;
   background-position: 30px 100%; }
 .wpmud .report-sale {
-  background-image: url("../img/scanning-free-man.svg");
   background-repeat: no-repeat;
   background-position: 30px 100%;
   padding-bottom: 200px;
@@ -1214,7 +1212,6 @@
       .cp-defender .title:not(.name) span form {
         display: inline; }
   .cp-defender .summary-box {
-    background-image: url("../img/defender.svg");
     background-repeat: no-repeat;
     background-position: 3% 100%; }
     .cp-defender .summary-box .issues-count {
@@ -1786,8 +1783,6 @@
     width: 25%; }
   .cp-defender .hardener .col-two-third {
     width: 75%; }
-  .cp-defender .hardener .summary-box {
-    background-image: url("../img/hardener-man.svg"); }
   .cp-defender .hardener .rules .rule {
     background: #F8F8F8;
     border-left: solid 3px #FECF2F;
@@ -1945,8 +1940,6 @@
         -webkit-transition: 1000ms width ease-in-out;
         -moz-transition: 1000ms width ease-in-out;
         transition: 1000ms width ease-in-out; }
-  .cp-defender .wdf-scanning .summary-box, .cp-defender .scan-dialog .summary-box {
-    background-image: url("../img/scan-result-man.svg"); }
     .cp-defender .wdf-scanning .summary-box .issues-count, .cp-defender .scan-dialog .summary-box .issues-count {
       padding-left: 20px;
       padding-right: 0; }
@@ -2062,7 +2055,6 @@
   .cp-defender .auditing .row > .col-two-third {
     width: 75%; }
   .cp-defender .auditing .summary-box {
-    background-image: url("../img/dev-man-pre.svg");
     background-repeat: no-repeat;
     background-position: 20px 50px; }
     .cp-defender .auditing .summary-box .columns {

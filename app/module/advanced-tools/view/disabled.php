@@ -5,7 +5,6 @@
         </h3>
     </div>
     <div class="box-content issues-box-content tc">
-        <img src="<?php echo cp_defender()->getPluginUrl() . 'assets/img/2factor-disabled.svg' ?>"/>
         <p>
 			<?php _e( "Beef up your website’s security with two-factor authentication. Add an extra step in the login process so that users are required to enter a password and an app-generated passcode using their phone – the best protection against brute force attacks.", cp_defender()->domain ) ?>
         </p>
