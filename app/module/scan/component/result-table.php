@@ -31,23 +31,23 @@ class Result_Table extends \WP_List_Table {
 			default:
 				$columns = array(
 					'col_bulk'   => '<input id="apply-all" type="checkbox"/>',
-					'col_file'   => esc_html__( 'Suspicious File', cp_defender()->domain ),
-					'col_issue'  => esc_html__( 'Issue', cp_defender()->domain ),
+					'col_file'   => esc_html__( 'Verdächtige Datei', cp_defender()->domain ),
+					'col_issue'  => esc_html__( 'Problem', cp_defender()->domain ),
 					'col_action' => '',
 				);
 				break;
 			case Result_Item::STATUS_IGNORED:
 				$columns = array(
 					'col_bulk'           => '<input id="apply-all" type="checkbox"/>',
-					'col_file'           => esc_html__( 'File Name', cp_defender()->domain ),
-					'col_ignore_date'    => esc_html__( 'Date Ignored', cp_defender()->domain ),
+					'col_file'           => esc_html__( 'Dateiname', cp_defender()->domain ),
+					'col_ignore_date'    => esc_html__( 'Datei ignoriert', cp_defender()->domain ),
 					'col_ignored_action' => '',
 				);
 				break;
 			case Result_Item::STATUS_FIXED:
 				$columns = array(
-					'col_file'       => esc_html__( 'File Name', cp_defender()->domain ),
-					'col_fixed_date' => esc_html__( 'Date Cleaned', cp_defender()->domain ),
+					'col_file'       => esc_html__( 'Dateiname', cp_defender()->domain ),
+					'col_fixed_date' => esc_html__( 'Datei bereinigt', cp_defender()->domain ),
 				);
 				break;
 		}
@@ -89,7 +89,7 @@ class Result_Table extends \WP_List_Table {
             <input type="hidden" name="action" value="unIgnoreItem"/>
             <input type="hidden" name="id" value="<?php echo $item->id ?>"/>
 			<?php wp_nonce_field( 'unIgnoreItem' ) ?>
-            <button type="submit" tooltip="<?php esc_attr_e( "Restore File", cp_defender()->domain ) ?>"
+            <button type="submit" tooltip="<?php esc_attr_e( "Datei wiederherstellen", cp_defender()->domain ) ?>"
                     class="button button-small">
                 <i class="wdv-icon wdv-icon-fw wdv-icon-refresh" aria-hidden="true"></i>
             </button>
@@ -151,7 +151,7 @@ class Result_Table extends \WP_List_Table {
 	public function column_col_action( Result_Item $item ) {
 		$content = $item->renderDialog();
 
-		$content .= '<a href="#dia_' . $item->id . '" rel="dialog" role="button" tooltip="' . esc_attr__( "Fix Issue", cp_defender()->domain ) . '" class="fix">
+		$content .= '<a href="#dia_' . $item->id . '" rel="dialog" role="button" tooltip="' . esc_attr__( "Problem beheben", cp_defender()->domain ) . '" class="fix">
                         <img src="' . cp_defender()->getPluginUrl() . 'assets/img/icon-fix.svg">
                     </a>';
 
@@ -161,7 +161,7 @@ class Result_Table extends \WP_List_Table {
 	/**
 	 * Display the table
 	 *
-	 * @since 3.1.0
+	 * @since 1.0.0
 	 * @access public
 	 */
 	public function display() {
@@ -196,15 +196,15 @@ class Result_Table extends \WP_List_Table {
 					<?php wp_nonce_field( 'scanBulkAction' ) ?>
                     <select name="bulk" class="bulk-action">
 						<?php if ( $this->type != Result_Item::STATUS_IGNORED ): ?>
-                            <option value="ignore"><?php _e( "Ignore", cp_defender()->domain ) ?></option>
+                            <option value="ignore"><?php _e( "Ignorieren", cp_defender()->domain ) ?></option>
 <!--                            <option value="resolve">--><?php //_e( "Resolve", cp_defender()->domain ) ?><!--</option>-->
                             <!--                            <option value="delete">--><?php //_e( "Delete", cp_defender()->domain ) ?><!--</option>-->
 						<?php endif; ?>
 						<?php if ( $this->type == Result_Item::STATUS_IGNORED ): ?>
-                            <option value="unignore"><?php _e( "Restore", cp_defender()->domain ) ?></option>
+                            <option value="unignore"><?php _e( "Wiederherstellen", cp_defender()->domain ) ?></option>
 						<?php endif; ?>
                     </select>
-                    <button class="button button-grey"><?php _e( "Apply", cp_defender()->domain ) ?></button>
+                    <button class="button button-grey"><?php _e( "Anwenden", cp_defender()->domain ) ?></button>
                 </form>
             </div>
             <div class="nav">

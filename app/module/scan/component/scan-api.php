@@ -34,12 +34,14 @@ class Scan_Api extends Component {
 
 			$model             = new Scan();
 			$model->status     = Scan::STATUS_INIT;
-			$model->statusText = __( "Initializing...", cp_defender()->domain );
+			$model->statusText = __( "Initialisierung...", cp_defender()->domain );
+			$model->currentFile = '';
+			$model->skippedFiles = 0;
 			$model->save();
 
 			return $model;
 		} else {
-			return new \WP_Error( Error_Code::INVALID, __( "A scan is already in progress", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::INVALID, __( "Ein Scan läuft bereits", cp_defender()->domain ) );
 		}
 	}
 
@@ -98,11 +100,9 @@ class Scan_Api extends Component {
 		/**
 		 * We we will get one level files & folder inside root, all files inside
 		 */
+		// Bypass core cache to always detect new/unknown root files
 		$cache  = Container::instance()->get( 'cache' );
-		$cached = $cache->get( self::CACHE_CORE, false );
-		if ( is_array( $cached ) && ! empty( $cached ) ) {
-			return $cached;
-		}
+		$cached = false;
 
 		$settings        = Settings::instance();
 		$firstLevelFiles = File_Helper::findFiles( ABSPATH, true, true, array(
@@ -121,10 +121,88 @@ class Scan_Api extends Component {
 				ABSPATH . 'wp-includes',
 			)
 		), true, $settings->max_filesize );
+// SECURITY: Filter first-level files/directories to only allow known WordPress files
+		// Unknown files at ABSPATH level are suspicious (potential malware)
+		$firstLevelFiles = self::filterSuspiciousCoreItems( $firstLevelFiles );
 
 		$cache->set( self::CACHE_CORE, array_merge( $firstLevelFiles, $coreFiles ), 0 );
 
 		return array_merge( $firstLevelFiles, $coreFiles );
+	}
+
+	/**
+	 * Filter to identify suspicious files/dirs at WordPress root level
+	 * Only allow known WordPress files - everything else is flagged for scanning
+	 *
+	 * @param array $files
+	 * @return array
+	 */
+	private static function filterSuspiciousCoreItems( $files ) {
+		// Whitelist of legitimate WordPress root-level files
+		$allowed_files = apply_filters( 'defender_core_allowed_files', array(
+			'wp-config.php',
+			'wp-config-sample.php',
+			'wp-blog-header.php',
+			'wp-activate.php',
+			'wp-app.php',
+			'wp-atom.php',
+			'wp-commentsrss2.php',
+			'wp-cron.php',
+			'wp-feed.php',
+			'wp-links-opml.php',
+			'wp-load.php',
+			'wp-login.php',
+			'wp-mail.php',
+			'wp-rdf.php',
+			'wp-rss.php',
+			'wp-rss2.php',
+			'wp-settings.php',
+			'wp-signup.php',
+			'wp-trackback.php',
+			'wp-xmlrpc.php',
+			'index.php',
+			'.htaccess',
+			'robots.txt',
+			'sitemap.xml',
+			'.gitignore',
+			'readme.html',
+			'license.txt',
+		) );
+
+		// Whitelist of legitimate root-level directories
+		$allowed_dirs = apply_filters( 'defender_core_allowed_dirs', array(
+			'wp-content',
+			'wp-admin',
+			'wp-includes',
+		) );
+
+		$safe = array();
+		$suspicious = array();
+
+		foreach ( $files as $file ) {
+			if ( is_dir( $file ) ) {
+				// Directory: check if it's in allowed list
+				$dir_name = basename( $file );
+				if ( in_array( $dir_name, $allowed_dirs, true ) ) {
+					$safe[] = $file;
+				} else {
+					// Unknown directory at root level -> scan as suspicious
+					$suspicious[] = $file;
+				}
+			} else {
+				// File: check if it's in allowed list
+				$file_name = basename( $file );
+				if ( in_array( $file_name, $allowed_files, true ) ) {
+					$safe[] = $file;
+				} else {
+					// Unknown file at root level -> scan as suspicious
+					$suspicious[] = $file;
+				}
+			}
+		}
+
+		// Return both safe and suspicious so core-scan can flag unknown items
+		return array_merge( $safe, $suspicious );
 	}
 
 	/**
@@ -137,15 +215,94 @@ class Scan_Api extends Component {
 			return $cached;
 		}
 		$settings = Settings::instance();
-		$files    = File_Helper::findFiles( WP_CONTENT_DIR, true, false, array(), array(
+		
+		// PHASE 1 OPTIMIZATION: Intelligente Verzeichnisfilterung
+		$excludeDirs = apply_filters( 'defender_scan_exclude_dirs', array(
+			// Development & Build Tools
+			'node_modules',
+			'bower_components',
+			'.git',
+			'.svn',
+			'.hg',
+			'vendor',  // Composer dependencies
+			
+			// Cache & Temporary
+			'cache',
+			'caches',
+			'tmp',
+			'temp',
+			'logs',
+			
+			// Backups
+			'backup',
+			'backups',
+			'_backup',
+			
+			// Known safe plugin directories
+			'uploads/wpcf7_uploads',
+			'et-cache',
+			'w3tc-config',
+			'litespeed',
+		) );
+		
+		// Convert to absolute paths
+		$excludePaths = array();
+		foreach ( $excludeDirs as $dir ) {
+			$excludePaths[] = WP_CONTENT_DIR . '/' . $dir;
+			// Also check in plugin subdirectories
+			$excludePaths[] = WP_CONTENT_DIR . '/plugins/*/' . $dir;
+			$excludePaths[] = WP_CONTENT_DIR . '/themes/*/' . $dir;
+		}
+		
+		$files = File_Helper::findFiles( WP_CONTENT_DIR, true, false, array(
+			'dir' => $excludePaths
+		), array(
 			'ext' => array( 'php' )
 		), true, $settings->max_filesize );
+		
+		// PHASE 1 OPTIMIZATION: Nachfilterung für bekannte sichere Dateien
+		$files = self::filterSafeFiles( $files );
+		
 		//include wp-config.php here
 		$files[] = ABSPATH . 'wp-config.php';
 
 		$cache->set( self::CACHE_CONTENT, $files );
 
 		return $files;
+	}
+
+	/**
+	 * PHASE 1 OPTIMIZATION: Filter out known safe files
+	 * @param array $files
+	 * @return array
+	 */
+	private static function filterSafeFiles( $files ) {
+		$safePatterns = apply_filters( 'defender_scan_safe_patterns', array(
+			'/\.min\.php$/',           // Minified files (usually safe)
+			'/\/languages\//',          // Translation files
+			'/\/fonts\//',             // Font files
+			'/\/assets\//',            // Asset files (usually safe)
+			'/\.bak\.(php|txt)$/',    // Backup files with different extension
+			'/\.example\.php$/',      // Example/template files
+			'/readme.*\.php$/',        // Readme files
+			'/license.*\.php$/',       // License files
+		) );
+		
+		$filtered = array();
+		foreach ( $files as $file ) {
+			$skip = false;
+			foreach ( $safePatterns as $pattern ) {
+				if ( preg_match( $pattern, $file ) ) {
+					$skip = true;
+					break;
+				}
+			}
+			if ( ! $skip ) {
+				$filtered[] = $file;
+			}
+		}
+		
+		return $filtered;
 	}
 
 	/**
@@ -189,7 +346,7 @@ class Scan_Api extends Component {
 		$model = self::getActiveScan();
 		$start = microtime( true );
 		if ( ! is_object( $model ) ) {
-			return new \WP_Error( Error_Code::INVALID, __( "No scan record exists", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::INVALID, __( "Es existiert kein Scan-Datensatz.", cp_defender()->domain ) );
 		}
 
 		if ( $model->status == Scan::STATUS_ERROR ) {
@@ -229,13 +386,13 @@ class Scan_Api extends Component {
 				//this is newly, we will update the status text here
 				switch ( $step ) {
 					case 'core':
-						$model->statusText = __( "Analyzing WordPress Core...", cp_defender()->domain );
+						$model->statusText = __( "Analysiere WordPress Core...", cp_defender()->domain );
 						break;
 					case 'content':
-						$model->statusText = __( "Analyzing WordPress Content...", cp_defender()->domain );
+						$model->statusText = __( "Analysiere WordPress Inhalt...", cp_defender()->domain );
 						break;
 					case 'vuln':
-						$model->statusText = __( "Checking for any published vulnerabilities your plugins & themes...", cp_defender()->domain );
+						$model->statusText = __( "Überprüfe veröffentlichte Schwachstellen in deinen Plugins & Themes...", cp_defender()->domain );
 						break;
 				}
 				$model->save();
@@ -276,6 +433,9 @@ class Scan_Api extends Component {
 					if ( $est >= $timeLimit || $currMem >= $memLimit || $queue->isEnd() || $queue->key() == 1 ) {
 						//save current process and pause
 						$queue->saveProcess();
+						
+						// Save model to persist currentFile and skippedFiles for UI
+						$model->save();
 
 						//unlock before return
 						self::releaseLock();
@@ -320,6 +480,9 @@ class Scan_Api extends Component {
 
 			return true;
 		}
+
+		// Persist progress so UI (currentFile, skippedFiles) is visible each poll
+		$model->save();
 		self::releaseLock();
 
 		return false;

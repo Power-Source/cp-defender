@@ -34,6 +34,18 @@ jQuery(function ($) {
                 $('.status-text.scan-status').text(data.data.statusText);
                 $('.scan-progress-text span').text(data.data.percent + '%');
                 $('.scan-progress-bar span').css('width', data.data.percent + '%');
+                
+                // Update erweiterte Scan-Informationen
+                if (data.data.currentFile) {
+                    $('.current-file-name').text(data.data.currentFile);
+                }
+                if (typeof data.data.suspiciousCount !== 'undefined') {
+                    $('.suspicious-count').text(data.data.suspiciousCount);
+                }
+                if (typeof data.data.skippedFiles !== 'undefined') {
+                    $('.skipped-count').text(data.data.skippedFiles);
+                }
+                
                 setTimeout(function () {
                     $('#process-scan').trigger('submit');
                 }, 1500);

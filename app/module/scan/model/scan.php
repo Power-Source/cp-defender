@@ -72,6 +72,18 @@ class Scan extends Model {
 	 * @var int
 	 */
 	public $dateFinished;
+	
+	/**
+	 * Currently scanning file (for UI display)
+	 * @var string
+	 */
+	public $currentFile;
+	
+	/**
+	 * Number of skipped files (too large)
+	 * @var int
+	 */
+	public $skippedFiles;
 
 	/**
 	 * @return array
@@ -109,6 +121,14 @@ class Scan extends Model {
 			'dateFinished' => array(
 				'type' => 'wp',
 				'map'  => 'post_modified_gmt'
+			),
+			'currentFile'  => array(
+				'type' => 'meta',
+				'map'  => 'current_file'
+			),
+			'skippedFiles' => array(
+				'type' => 'meta',
+				'map'  => 'skipped_files'
 			)
 		);
 	}

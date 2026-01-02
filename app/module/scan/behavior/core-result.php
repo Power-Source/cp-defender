@@ -54,11 +54,11 @@ class Core_Result extends Behavior {
 	public function getIssueDetail() {
 		$raw = $this->getRaw();
 		if ( $raw['type'] == 'unknown' ) {
-			return esc_html__( "Unknown file in WordPress core", cp_defender()->domain );
+			return esc_html__( "Unbekannte Datei im WordPress-Kern", cp_defender()->domain );
 		} elseif ( $raw['type'] == 'dir' ) {
-			return esc_html__( "This directory doesn't belong to WordPress core", cp_defender()->domain );
+			return esc_html__( "Dieses Verzeichnis gehört nicht zum WordPress-Kern", cp_defender()->domain );
 		} elseif ( $raw['type'] == 'modified' ) {
-			return esc_html__( "This WordPress core file appears modified", cp_defender()->domain );
+			return esc_html__( "Diese WordPress-Kerndatei scheint verändert worden zu sein", cp_defender()->domain );
 		}
 	}
 
@@ -72,13 +72,13 @@ class Core_Result extends Behavior {
 		if ( $raw['type'] == 'unknown' ) {
 			$res = unlink( $raw['file'] );
 			if ( $res == false ) {
-				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "Defender doesn't have enough permission to remove this file", cp_defender()->domain ) );
+				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "PS Security hat nicht genügend Berechtigungen, um diese Datei zu entfernen", cp_defender()->domain ) );
 			}
 			$this->getOwner()->delete();
 
 			return true;
 		} elseif ( $raw['type'] == 'modified' ) {
-			return new \WP_Error( Error_Code::INVALID, __( "This file can't be removed", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::INVALID, __( "Diese Datei kann nicht entfernt werden", cp_defender()->domain ) );
 		} elseif ( $raw['type'] == 'dir' ) {
 			$res = $this->deleteFolder( $raw['file'] );
 			if ( is_wp_error( $res ) ) {

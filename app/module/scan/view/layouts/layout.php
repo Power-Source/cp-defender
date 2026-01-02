@@ -2,7 +2,7 @@
     <div id="cp-defender" class="cp-defender">
         <div class="wdf-scanning">
             <h2 class="title">
-				<?php _e( "File Scanning", cp_defender()->domain ) ?>
+				<?php _e( "Dateiscanning", cp_defender()->domain ) ?>
                 <span>
                     <form id="start-a-scan" method="post" class="scan-frm">
 						<?php
@@ -10,7 +10,7 @@
 						?>
                         <input type="hidden" name="action" value="startAScan"/>
                         <button type="submit"
-                                class="button button-small"><?php _e( "New Scan", cp_defender()->domain ) ?></button>
+                                class="button button-small"><?php _e( "Neuer Scan", cp_defender()->domain ) ?></button>
                 </form>
             </span>
             </h2>
@@ -23,9 +23,9 @@
                                 <div>
                                     <h5 class="def-issues def-issues-top-left"><?php echo $countAll = $model->countAll( \CP_Defender\Module\Scan\Model\Result_Item::STATUS_ISSUE ) ?></h5>
                                     <?php if ( $countAll > 0 ) : ?>
-                                    <span class="def-issues-top-left-icon" tooltip="<?php esc_attr_e( sprintf( __('You have %d suspicious file(s) needing attention.', cp_defender()->domain ), $countAll ) ); ?>">
+                                    <span class="def-issues-top-left-icon" tooltip="<?php esc_attr_e( sprintf( __('Du hast %d verdächtige Datei(en), die Aufmerksamkeit erfordern.', cp_defender()->domain ), $countAll ) ); ?>">
                                     <?php else: ?>
-                                    <span class="def-issues-top-left-icon" tooltip="<?php esc_attr_e( 'Your code is clean, the skies are clear.', cp_defender()->domain ); ?>">
+                                    <span class="def-issues-top-left-icon" tooltip="<?php esc_attr_e( 'Dein Code ist sauber, alles in Ordnung.', cp_defender()->domain ); ?>">
                                     <?php endif; ?>
 									<?php
 									$icon = $countAll == 0 ? ' <i class="def-icon icon-tick" aria-hidden="true"></i>' : ' <i class="def-icon icon-warning fill-red" aria-hidden="true"></i>';
@@ -33,10 +33,10 @@
 									?>
                                 </span>
                                     <div class="clear"></div>
-                                    <span class="sub"><?php _e( "File scanning issues need attention.", cp_defender()->domain ) ?></span>
+                                    <span class="sub"><?php _e( "Probleme beim Scannen von Dateien erfordern Aufmerksamkeit.", cp_defender()->domain ) ?></span>
                                     <div class="clear mline"></div>
                                     <strong><?php echo $lastScanDate ?></strong>
-                                    <span class="sub"><?php _e( "Last scan", cp_defender()->domain ) ?></span>
+                                    <span class="sub"><?php _e( "Letzter Scan", cp_defender()->domain ) ?></span>
                                 </div>
                             </div>
                             <div class="column is-5">
@@ -53,13 +53,24 @@
                                         <div>
                                             <span class="list-label"><?php _e( "Plugins & Themes", cp_defender()->domain ) ?></span>
                                             <span class="list-detail def-issues-top-right-pt">
-                                                <?php echo $model->getCount( 'vuln' ) == 0 ? ' <i class="def-icon icon-tick"></i>' : '<span class="def-tag tag-error">' . $model->getCount( 'vuln' ) . '</span>' ?>
+                                                <?php 
+                                                $vuln_count = $model->getCount( 'vuln' );
+                                                $has_wpscan_token = ! empty( trim( \CP_Defender\Module\Scan\Model\Settings::instance()->wpscan_api_token ) );
+                                                
+                                                if ( $vuln_count > 0 ) {
+                                                    echo '<span class="def-tag tag-error">' . $vuln_count . '</span>';
+                                                } elseif ( $has_wpscan_token ) {
+                                                    echo ' <i class="def-icon icon-tick"></i>';
+                                                } else {
+                                                    echo ' <i class="def-icon icon-info" style="color: #ffc107;" title="' . esc_attr( __( 'Limited Mode: Nur Basis-Versionscheck aktiv. Konfiguriere WPScan API-Token für erweiterte Vulnerabilitätsprüfung.', cp_defender()->domain ) ) . '"></i>';
+                                                }
+                                                ?>
                                             </span>
                                         </div>
                                     </li>
                                     <li>
                                         <div>
-                                            <span class="list-label"><?php _e( "Suspicious Code", cp_defender()->domain ) ?></span>
+                                            <span class="list-label"><?php _e( "Verdächtiger Code", cp_defender()->domain ) ?></span>
                                             <span class="list-detail def-issues-top-right-sc">
                                                 <?php echo $model->getCount( 'content' ) == 0 ? ' <i class="def-icon icon-tick"></i>' : '<span class="def-tag tag-error">' . $model->getCount( 'content' ) . '</span>' ?>
                                             </span>
@@ -82,7 +93,7 @@
 										$issues = $model->countAll( \CP_Defender\Module\Scan\Model\Result_Item::STATUS_ISSUE );
 										$tooltip = '';
 										if ( $issues > 0 ) :
-											$tooltip = 'tooltip="' . esc_attr( sprintf( __("You have %d suspicious file(s) needing attention", cp_defender()->domain ), $countAll ) ) . '"';
+											$tooltip = 'tooltip="' . esc_attr( sprintf( __("Du hast %d verdächtige Dateien, die Deine Aufmerksamkeit erfordern.", cp_defender()->domain ), $countAll ) ) . '"';
 										endif;
 										echo $issues > 0 ? '<span class="def-tag tag-error def-issues-below" ' . $tooltip . '>' . $issues . '</span>' : '' ?>
 									</a>
@@ -128,11 +139,11 @@
 									<option <?php selected( '', \Hammer\Helper\HTTP_Helper::retrieve_get( 'view' ) ) ?>
 											value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-scan' ) ?>"><?php _e( "Issues", cp_defender()->domain ) ?></option>
 									<option <?php selected( 'ignored', \Hammer\Helper\HTTP_Helper::retrieve_get( 'view' ) ) ?>
-											value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-scan', array( 'view' => 'ignored' ) ) ?>"><?php _e( "Ignored", cp_defender()->domain ) ?></option>
+											value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-scan', array( 'view' => 'ignored' ) ) ?>"><?php _e( "Ignoriert", cp_defender()->domain ) ?></option>
 									<option <?php selected( 'settings', \Hammer\Helper\HTTP_Helper::retrieve_get( 'view' ) ) ?>
-											value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-scan', array( 'view' => 'settings' ) ) ?>"><?php _e( "Settings", cp_defender()->domain ) ?></option>
+											value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-scan', array( 'view' => 'settings' ) ) ?>"><?php _e( "Einstellungen", cp_defender()->domain ) ?></option>
 									<option <?php selected( 'reporting', \Hammer\Helper\HTTP_Helper::retrieve_get( 'view' ) ) ?>
-											value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-scan', array( 'view' => 'reporting' ) ) ?>"><?php _e( "Reporting", cp_defender()->domain ) ?></option>
+											value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-scan', array( 'view' => 'reporting' ) ) ?>"><?php _e( "Berichte", cp_defender()->domain ) ?></option>
 								</select>
 							</nav>
                         </div>

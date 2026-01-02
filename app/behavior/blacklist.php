@@ -9,7 +9,7 @@ use Hammer\Base\Behavior;
 use CP_Defender\Component\Error_Code;
 
 class Blacklist extends Behavior {
-	private $end_point = "https://premium.wpmudev.org/api/defender/v1/blacklist-monitoring";
+	private $end_point = "https://github.com/Power-Source/api/defender/v1/blacklist-monitoring";
 
 	public function renderBlacklistWidget() {
 		// Show real blacklist monitor (local mode - always clean status)
@@ -35,15 +35,13 @@ class Blacklist extends Behavior {
             </div>
             <div class="box-content">
                 <div class="line">
-					<?php _e( "Automatically check if you’re on Google’s blacklist every 6 hours. If something’s
-                    wrong, we’ll let you know via email.", cp_defender()->domain ) ?>
+					<?php _e( "Wir prüfen automatisch alle 6 Stunden, ob Deine Domain auf der Google-Blacklist steht. Sollte etwas nicht stimmen, benachrichtigen wir Dich per E-Mail.", cp_defender()->domain ) ?>
                 </div>
                 <div class="well well-blue with-cap mline">
-                    <i class="def-icon icon-warning fill-blue"></i> <?php _e( "We are currently requesting
-                    your domain status from Google. This can take anywhere
-                    from a few minutes up to 12 hours.", cp_defender()->domain ) ?>
+                    <i class="def-icon icon-warning fill-blue"></i> <?php _e( "Wir fragen derzeit Deinen Domainstatus bei Google ab.
+					Dies kann zwischen wenigen Minuten und 12 Stunden dauern.", cp_defender()->domain ) ?>
                 </div>
-                <p class="sub tc"><?php printf( __( "Want to know more about blacklisting? <a href=\"%s\">Read this article.</a>", cp_defender()->domain ), "https://premium.wpmudev.org/blog/get-off-googles-blacklist/" ) ?>
+                <p class="sub tc"><?php printf( __( "Möchtest Du mehr über Blacklisting erfahren? <a href=\"%s\">Lies diesen Artikel.</a>", cp_defender()->domain ), "https://github.com/Power-Source/blog/get-off-googles-blacklist/" ) ?>
                 </p>
             </div>
             <form method="post" class="blacklist-widget">
@@ -175,7 +173,7 @@ class Blacklist extends Behavior {
 						<?php _e( 'Your domain is currently clean.', cp_defender()->domain ) ?>
                     </div>
 				<?php endif; ?>
-                <p class="sub tc"><?php printf( __( "Want to know more about blacklisting? <a href=\"%s\">Read this article.</a>", cp_defender()->domain ), "https://premium.wpmudev.org/blog/get-off-googles-blacklist/" ) ?>
+                <p class="sub tc"><?php printf( __( "Want to know more about blacklisting? <a href=\"%s\">Read this article.</a>", cp_defender()->domain ), "https://github.com/Power-Source/blog/get-off-googles-blacklist/" ) ?>
                 </p>
             </div>
         </div>

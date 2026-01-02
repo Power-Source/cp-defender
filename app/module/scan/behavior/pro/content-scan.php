@@ -75,10 +75,17 @@ class Content_Scan extends Behavior {
 			return false;
 		}
 
+		// Update current file for UI display (saved by queue at end of iteration)
+		$this->model->currentFile = str_replace( ABSPATH, '', $file );
+
 		// FIX #4 & #6: Check file size and do quick regex scan BEFORE loading full file into memory
 		$maxSize = apply_filters( 'wdContentScanMaxFileSize', 2097152 ); // 2MB default
 		if ( filesize( $file ) > $maxSize ) {
-			// File too large, skip it
+			// File too large, skip it - increment skip counter
+			if ( ! isset( $this->model->skippedFiles ) ) {
+				$this->model->skippedFiles = 0;
+			}
+			$this->model->skippedFiles++;
 			return true;
 		}
 
@@ -93,7 +100,9 @@ class Content_Scan extends Behavior {
 		$patterns = Scan_Api::getPatterns();
 		$badFuncPattern = $patterns['suspicious_function_pattern'] ?? '';
 
+		// PHASE 2 OPTIMIZATION: Multi-Pattern Pre-Screening
 		if ( ! empty( $badFuncPattern ) ) {
+			// Quick dirty check - if no suspicious functions found at all
 			if ( ! preg_match( $badFuncPattern, $content ) ) {
 				// ✅ File is clean - no suspicious patterns found
 				// Store checksum for future scans and skip tokenization
@@ -102,6 +111,34 @@ class Content_Scan extends Behavior {
 				$altCache->set( self::CONTENT_CHECKSUM, $this->oldChecksum );
 				unset( $content );
 				return true;
+			}
+			
+			// PHASE 2: Additional quick checks before expensive tokenization
+			$suspiciousCount = 0;
+			
+			// Check for base64 encoded strings (potential malware)
+			if ( preg_match_all( '/[a-zA-Z0-9+\/]{200,}={0,2}/', $content, $matches ) ) {
+				$suspiciousCount += count( $matches[0] );
+			}
+			
+			// Check for obfuscated code patterns
+			if ( preg_match( '/\\$[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*\\s*=\\s*["\'][a-zA-Z0-9+\/=]{50,}["\']/', $content ) ) {
+				$suspiciousCount++;
+			}
+			
+			// If multiple suspicious patterns but file is small and looks normal, quick validate
+			if ( $suspiciousCount > 3 && strlen( $content ) < 50000 ) {
+				// High suspicion - definitely needs tokenization
+			} elseif ( $suspiciousCount <= 1 && strlen( $content ) > 100000 ) {
+				// Large file with minimal suspicion - might be framework code, proceed carefully
+				// Allow filter to skip heavy files with low suspicion
+				if ( apply_filters( 'defender_skip_low_suspicion_large_files', false, $file, $suspiciousCount ) ) {
+					$this->oldChecksum[ $checksum ] = $file;
+					$altCache = WP_Helper::getArrayCache();
+					$altCache->set( self::CONTENT_CHECKSUM, $this->oldChecksum );
+					unset( $content );
+					return true;
+				}
 			}
 		}
 

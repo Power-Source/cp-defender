@@ -130,6 +130,9 @@ class Main extends \CP_Defender\Controller {
 	 */
 	public function clearScanCache() {
 		if ( ! $this->checkPermission() ) {
+			wp_send_json_error( array(
+				'message' => __( 'No permission to clear scan cache.', cp_defender()->domain )
+			) );
 			return;
 		}
 		if ( ! wp_verify_nonce( HTTP_Helper::retrieve_post( '_wpnonce' ), 'clearScanCache' ) ) {
@@ -507,8 +510,11 @@ class Main extends \CP_Defender\Controller {
 		$ret   = Scan_Api::processActiveScan();
 		$model = Scan_Api::getActiveScan();
 		$data  = array(
-			'percent'    => Scan_Api::getScanProgress(),
-			'statusText' => is_object( $model ) ? $model->statusText : null
+			'percent'        => Scan_Api::getScanProgress(),
+			'statusText'     => is_object( $model ) ? $model->statusText : null,
+			'currentFile'    => is_object( $model ) && isset( $model->currentFile ) ? $model->currentFile : '',
+			'suspiciousCount'=> is_object( $model ) ? $model->countAll( Result_Item::STATUS_ISSUE ) : 0,
+			'skippedFiles'   => is_object( $model ) && isset( $model->skippedFiles ) ? $model->skippedFiles : 0
 		);
 		if ( $ret == true ) {
 			$data['url'] = \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-scan' );
@@ -564,7 +570,7 @@ return;
 }
 
 		$cap = is_multisite() ? 'manage_network_options' : 'manage_options';
-		add_submenu_page( 'cp-defender', esc_html__( "File Scanning", cp_defender()->domain ), esc_html__( "File Scanning", cp_defender()->domain ), $cap, $this->slug, array(
+		add_submenu_page( 'cp-defender', esc_html__( "Dateien Scannen", cp_defender()->domain ), esc_html__( "Dateien Scannen", cp_defender()->domain ), $cap, $this->slug, array(
 			&$this,
 			'actionIndex'
 		) );
@@ -575,8 +581,8 @@ return;
 	 */
 	public function scripts() {
 		$data = array(
-			'scanning_title' => __( "Scan In Progress", cp_defender()->domain ) . '<form class="scan-frm float-r"><input type="hidden" name="action" value="cancelScan"/>' . wp_nonce_field( 'cancelScan', '_wpnonce', true, false ) . '<button type="submit" class="button button-small button-secondary">' . __( "Cancel", cp_defender()->domain ) . '</button></form>',
-			'no_issues'      => __( "Your code is currently clean! There were no issues found during the last scan, though you can always perform a new scan anytime.", cp_defender()->domain )
+			'scanning_title' => __( "Scanvorgang läuft", cp_defender()->domain ) . '<form class="scan-frm float-r"><input type="hidden" name="action" value="cancelScan"/>' . wp_nonce_field( 'cancelScan', '_wpnonce', true, false ) . '<button type="submit" class="button button-small button-secondary">' . __( "Abbrechen", cp_defender()->domain ) . '</button></form>',
+			'no_issues'      => __( "Dein Code ist aktuell fehlerfrei! Beim letzten Scan wurden keine Probleme gefunden, Du kannst aber jederzeit einen neuen Scan durchführen.", cp_defender()->domain )
 		);
 		if ( $this->isInPage() ) {
 			\WDEV_Plugin_Ui::load( cp_defender()->getPluginUrl() . 'shared-ui/' );

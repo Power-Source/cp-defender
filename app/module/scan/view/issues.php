@@ -27,14 +27,14 @@
 		$table->prepare_items();
 		if ( $table->get_pagination_arg( 'total_items' ) > 0 ) {
 			?>
-            <p class="line"><?php _e( "Defender has found potentially harmful files on your website. In many cases, the security scan will pick up harmless files, but in some cases you may wish to remove the files listed below that look suspicious.", cp_defender()->domain ) ?></p>
+            <p class="line"><?php _e( "PS Security hat potenziell schädliche Dateien auf Deiner Webseite gefunden. In vielen Fällen erkennt der Sicherheitsscan harmlose Dateien, in manchen Fällen möchtest Du jedoch möglicherweise die unten aufgeführten, verdächtigen Dateien entfernen.", cp_defender()->domain ) ?></p>
 			<?php
 			$table->display();
 		} else {
 			?>
             <div class="well well-green with-cap">
                 <i class="def-icon icon-tick" aria-hidden="true"></i>
-				<?php _e( "Your code is currently clean! There were no issues found during the last scan, though you can always perform a new scan anytime.", cp_defender()->domain ) ?>
+				<?php _e( "Dein Code ist derzeit sauber! Während des letzten Scans wurden keine Probleme gefunden, aber Du kannst jederzeit einen neuen Scan durchführen.", cp_defender()->domain ) ?>
             </div>
 			<?php
 		}

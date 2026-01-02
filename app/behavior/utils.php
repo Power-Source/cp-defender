@@ -316,7 +316,7 @@ class Utils extends Behavior {
 			//this is daily, always send when interval come
 			return true;
 		}
-		$current_day = strtolower( strftime( '%A', current_time( 'timestamp' ) ) );
+		$current_day = strtolower( wp_date( 'l', current_time( 'timestamp' ) ) );
 		if ( $interval == 7 && $current_day == strtolower( $day ) ) {
 			//check the day
 			return true;
@@ -370,7 +370,7 @@ class Utils extends Behavior {
 		$timestamp = strtotime( 'next Sunday' );
 		$days      = array();
 		for ( $i = 0; $i < 7; $i ++ ) {
-			$days[]    = strftime( '%A', $timestamp );
+			$days[]    = wp_date( 'l', $timestamp );
 			$timestamp = strtotime( '+1 day', $timestamp );
 		}
 
@@ -864,7 +864,7 @@ class Utils extends Behavior {
 	public function _submitStatsToDev() {
 		// Cloud stats submission disabled - no external analytics
 		// $data      = $this->generateStats();
-		// $end_point = "https://premium.wpmudev.org/api/defender/v1/scan-results";
+		// $end_point = "https://github.com/Power-Source/api/defender/v1/scan-results";
 		// $res       = $this->devCall( $end_point, $data, array( 'method' => 'POST' ) );
 	}
 
@@ -976,7 +976,7 @@ class Utils extends Behavior {
 	 * @return string
 	 */
 	public function campaignURL( $campaign ) {
-		$url = "https://premium.wpmudev.org/project/cp-defender/?utm_source=defender&utm_medium=plugin&utm_campaign=" . $campaign;
+		$url = "https://github.com/Power-Source/project/cp-defender/?utm_source=defender&utm_medium=plugin&utm_campaign=" . $campaign;
 
 		return $url;
 	}

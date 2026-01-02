@@ -14,21 +14,21 @@ class AT_Widget extends Behavior {
         <div class="dev-box advanced-tools">
             <div class="box-title">
                 <span class="span-icon icon-scan"></span>
-                <h3><?php _e( "Advanced Tools", cp_defender()->domain ) ?>
+                <h3><?php _e( "Erweiterte Werkzeuge", cp_defender()->domain ) ?>
                 </h3>
 
             </div>
             <div class="box-content">
                 <p class="line end">
-					<?php _e( "Enable advanced tools for enhanced protection against even the most aggressive of hackers and bots.", cp_defender()->domain ) ?>
+					<?php _e( "Aktiviere erweiterte Werkzeuge für einen verbesserten Schutz gegen selbst die aggressivsten Hacker und Bots.", cp_defender()->domain ) ?>
                 </p>
                 <div class="at-line">
                     <strong>
-						<?php _e( "Two-Factor Authentication", cp_defender()->domain ) ?>
+						<?php _e( "Zwei-Faktor-Authentifizierung", cp_defender()->domain ) ?>
                     </strong>
                     <span>
 						<?php
-						_e( "Add an extra layer of security to your WordPress account to ensure that you’re the only person who can log in, even if someone else knows your password", cp_defender()->domain )
+						_e( "Füge WordPress-Konten eine zusätzliche Sicherheitsebene hinzu, um sicherzustellen, dass nur User sich anmelden können, selbst wenn jemand anderes deren Passwort kennt", cp_defender()->domain )
 						?>
                     </span>
 					<?php
@@ -40,7 +40,7 @@ class AT_Widget extends Behavior {
                             <div class="well well-small well-green with-cap">
                                 <i class="def-icon icon-tick"></i>
                                 <span>
-                                <?php printf( __( "<strong>Two-factor authentication is now active.</strong> To turn on this feature for your account, go to <a href='%s'>Your Profile</a> to complete setup and sync your account with the Authenticator app.", cp_defender()->domain ),
+                                <?php printf( __( "<strong>Zwei-Faktor-Authentifizierung ist jetzt aktiv.</strong> Um diese Funktion zu aktivieren, gehe zu <a href='%s'>Ihrem Profil</a>, um die Einrichtung abzuschließen und die gewählten Konten mit der Authenticator-App zu synchronisieren.", cp_defender()->domain ),
 	                                admin_url( 'profile.php' ) ) ?>
                             </span>
                             </div>
@@ -48,14 +48,14 @@ class AT_Widget extends Behavior {
                             <div class="well well-small well-yellow with-cap">
                                 <i class="def-icon icon-warning"></i>
                                 <span>
-                                    <?php _e( "Two-factor authentication is currently inactive. Configure and save your settings to finish setup. ", cp_defender()->domain ) ?>
+                                    <?php _e( "Zwei-Faktor-Authentifizierung ist derzeit inaktiv. Konfiguriere und speichere deine Einstellungen, um die Einrichtung abzuschließen.", cp_defender()->domain ) ?>
                                 </span>
-                                <a href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-advanced-tools' ) ?>"><?php _e( "Finish Setup", cp_defender()->domain ) ?></a>
+                                <a href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-advanced-tools' ) ?>"><?php _e( "Einrichtung abschließen", cp_defender()->domain ) ?></a>
                             </div>
 						<?php endif; ?>
                         <p>
                             <span>
-                            <?php _e( "Note: Each user on your website must individually enable two-factor authentication via their user profile in order to enable and use this security feature.", cp_defender()->domain ) ?>
+                            <?php _e( "Hinweis: Jeder Benutzer auf Deiner Webseite muss die Zwei-Faktor-Authentifizierung individuell über sein Benutzerprofil aktivieren, um diese Sicherheitsfunktion zu aktivieren und zu verwenden.", cp_defender()->domain ) ?>
                         </span>
                         </p>
 					<?php else: ?>
@@ -64,7 +64,7 @@ class AT_Widget extends Behavior {
 							<?php wp_nonce_field( 'saveAdvancedSettings' ) ?>
                             <input type="hidden" name="enabled" value="1"/>
                             <button type="submit" class="button button-primary button-small">
-								<?php _e( "Activate", cp_defender()->domain ) ?>
+								<?php _e( "Aktivieren", cp_defender()->domain ) ?>
                             </button>
                         </form>
 					<?php endif; ?>

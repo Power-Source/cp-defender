@@ -86,11 +86,6 @@
 												</div>
 											</div>
 										</div>
-										<?php if ( WD_Utils::get_dev_api() == false ): ?>
-											<div
-												tooltip="<?php esc_attr_e( "PSOURCE Dashboard is required for this scan", cp_defender()->domain ) ?>"
-												class="wd-overlay"></div>
-										<?php endif; ?>
 										<div class="wd-clear"></div>
 									</div>
 									<div class="group wd-relative-position">

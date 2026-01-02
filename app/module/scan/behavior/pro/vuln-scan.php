@@ -11,12 +11,15 @@ use CP_Defender\Module\Scan\Component\Scan_Api;
 use CP_Defender\Module\Scan\Model\Result_Item;
 
 class Vuln_Scan extends Behavior {
-	protected $endPoint = "https://premium.wpmudev.org/api/defender/v1/vulnerabilities";
+	protected $endPoint = "https://github.com/Power-Source/api/defender/v1/vulnerabilities";
 	protected $model;
 
 	public function processItemInternal( $args, $current ) {
 		$model       = $args['model'];
 		$this->model = $model;
+
+		// Show progress in UI during vulnerability phase
+		$model->currentFile = __( 'Prüfe bekannte Schwachstellen…', cp_defender()->domain );
 		$this->scan();
 
 		return true;
@@ -50,7 +53,9 @@ class Vuln_Scan extends Behavior {
 		$api_token = trim( $settings->wpscan_api_token );
 		
 		if ( empty( $api_token ) ) {
-			// No API token configured - skip vulnerability scan
+			// Limited Mode: perform basic version/outdated checks so scan does not stall
+			$this->model->currentFile = __( 'Prüfe Versionsstände…', cp_defender()->domain );
+			$this->runBasicVersionCheck( $wp_version, $plugins, $themes );
 			return true;
 		}
 
@@ -147,6 +152,76 @@ class Vuln_Scan extends Behavior {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Limited mode fallback: mark outdated plugins/themes/core as issues when no WPScan token exists.
+	 */
+	private function runBasicVersionCheck( $wp_version, $plugins, $themes ) {
+		// Core updates
+		if ( function_exists( 'get_core_updates' ) ) {
+			$core_updates = get_core_updates( array( 'dismissed' => false ) );
+			if ( is_array( $core_updates ) ) {
+				foreach ( $core_updates as $update ) {
+					if ( isset( $update->response ) && $update->response === 'upgrade' && isset( $update->current ) && isset( $update->version ) ) {
+						$this->createOutdatedItem( 'wordpress', 'wordpress', $update->current, $update->version );
+					}
+				}
+			}
+		}
+
+		// Plugin updates
+		$plugin_updates = get_site_transient( 'update_plugins' );
+		if ( is_object( $plugin_updates ) && isset( $plugin_updates->response ) && is_array( $plugin_updates->response ) ) {
+			foreach ( $plugin_updates->response as $plugin_file => $info ) {
+				$slug = dirname( $plugin_file );
+				if ( isset( $plugins[ $slug ] ) && isset( $info->new_version ) ) {
+					$current_version = $plugins[ $slug ];
+					$new_version     = $info->new_version;
+					if ( version_compare( $current_version, $new_version, '<' ) ) {
+						$this->createOutdatedItem( 'plugin', $slug, $current_version, $new_version );
+					}
+				}
+			}
+		}
+
+		// Theme updates
+		$theme_updates = get_site_transient( 'update_themes' );
+		if ( is_object( $theme_updates ) && isset( $theme_updates->response ) && is_array( $theme_updates->response ) ) {
+			foreach ( $theme_updates->response as $slug => $info ) {
+				if ( isset( $themes[ $slug ] ) && isset( $info['new_version'] ) ) {
+					$current_version = $themes[ $slug ];
+					$new_version     = $info['new_version'];
+					if ( version_compare( $current_version, $new_version, '<' ) ) {
+						$this->createOutdatedItem( 'theme', $slug, $current_version, $new_version );
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Create a Result_Item entry for an outdated asset (plugin/theme/core).
+	 */
+	private function createOutdatedItem( $type, $slug, $current_version, $new_version ) {
+		$item           = new Result_Item();
+		$item->type     = 'vuln';
+		$item->parentId = $this->model->id;
+		$item->status   = Result_Item::STATUS_ISSUE;
+		$item->raw      = array(
+			'type' => $type,
+			'slug' => $slug,
+			'bugs' => array(
+				array(
+					'vuln_type' => __( 'Veraltete Version', cp_defender()->domain ),
+					'title'     => sprintf( __( 'Update empfohlen: %s → %s', cp_defender()->domain ), $current_version, $new_version ),
+					'fixed_in'  => $new_version,
+				),
+			),
+		);
+		$item->save();
 	}
 
 	/**

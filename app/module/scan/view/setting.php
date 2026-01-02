@@ -155,6 +155,36 @@
                 <?php _e( "Clear Scan Cache", cp_defender()->domain ) ?>
             </button>
         </form>
+
+        <script>
+        jQuery(function($){
+            $('#clear-cache-form').off('submit.clearcache').on('submit.clearcache', function(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var btn  = $('#clear-cache-btn');
+                var form = $(this);
+                btn.prop('disabled', true);
+
+                $.ajax({
+                    type: 'POST',
+                    url: ajaxurl,
+                    data: form.serialize(),
+                    dataType: 'json'
+                }).done(function(response){
+                    if (response && response.success) {
+                        Defender.showNotification('success', response.data.message || '<?php echo esc_js( __( 'Scan cache cleared successfully.', cp_defender()->domain ) ); ?>');
+                    } else {
+                        var msg = (response && response.data && response.data.message) ? response.data.message : '<?php echo esc_js( __( 'Error clearing cache', cp_defender()->domain ) ); ?>';
+                        Defender.showNotification('error', msg);
+                    }
+                }).fail(function(){
+                    Defender.showNotification('error', '<?php echo esc_js( __( 'Error clearing cache', cp_defender()->domain ) ); ?>');
+                }).always(function(){
+                    btn.prop('disabled', false);
+                });
+            });
+        });
+        </script>
     </div>
 </div>
 <dialog id="issue-found" title="<?php esc_attr_e( "Issues found", cp_defender()->domain ) ?>">

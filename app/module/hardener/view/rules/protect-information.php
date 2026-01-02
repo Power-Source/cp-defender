@@ -108,7 +108,7 @@ location ~* ^$wp_content/.*\.(txt|md|exe|sh|bak|inc|pot|po|mo|log|sql)$ {
                             <?php esc_html_e( "Reload NGINX.", cp_defender()->domain ) ?>
                         </li>
                     </ol>
-                    <p><?php echo sprintf( __( "Still having trouble? <a target='_blank' href=\"%s\">Open a support ticket</a>.", cp_defender()->domain ), 'https://premium.wpmudev.org/forums/forum/support#question' ) ?></p>
+                    <p><?php echo sprintf( __( "Still having trouble? <a target='_blank' href=\"%s\">Open a support ticket</a>.", cp_defender()->domain ), 'https://github.com/Power-Source/forums/forum/support#question' ) ?></p>
                     <pre>## PS Security - Prevent information disclosure ##<?php echo esc_html( $rules ); ?>## PS Security - End ##</pre>
                     </div>
                 </div>
