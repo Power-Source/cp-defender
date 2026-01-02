@@ -68,6 +68,7 @@ class Queue extends Component implements \Iterator, \ArrayAccess, \Countable {
 	/**
 	 * @return mixed|null
 	 */
+	#[\ReturnTypeWillChange]
 	public function current() {
 		if ( isset( $this->data[ $this->position ] ) ) {
 			return $this->data[ $this->position ];
@@ -79,7 +80,7 @@ class Queue extends Component implements \Iterator, \ArrayAccess, \Countable {
 	/**
 	 * move to next pos
 	 */
-	public function next() {
+	public function next(): void {
 		$this->position ++;
 	}
 
@@ -87,6 +88,7 @@ class Queue extends Component implements \Iterator, \ArrayAccess, \Countable {
 	 * return current index
 	 * @return int
 	 */
+	#[\ReturnTypeWillChange]
 	public function key() {
 		return $this->position;
 	}
@@ -94,14 +96,14 @@ class Queue extends Component implements \Iterator, \ArrayAccess, \Countable {
 	/**
 	 * @return bool
 	 */
-	public function valid() {
+	public function valid(): bool {
 		return ( isset( $this->data[ $this->position ] ) );
 	}
 
 	/**
 	 * reset pos
 	 */
-	public function rewind() {
+	public function rewind(): void {
 		$this->position = 0;
 	}
 
@@ -110,7 +112,7 @@ class Queue extends Component implements \Iterator, \ArrayAccess, \Countable {
 	 *
 	 * @return bool
 	 */
-	public function offsetExists( $offset ) {
+	public function offsetExists( $offset ): bool {
 		return isset( $this->data[ $offset ] );
 	}
 
@@ -119,6 +121,7 @@ class Queue extends Component implements \Iterator, \ArrayAccess, \Countable {
 	 *
 	 * @return mixed|null
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 		if ( $this->offsetExists( $offset ) ) {
 			return $this->data[ $offset ];
@@ -131,7 +134,7 @@ class Queue extends Component implements \Iterator, \ArrayAccess, \Countable {
 	 * @param mixed $offset
 	 * @param mixed $value
 	 */
-	public function offsetSet( $offset, $value ) {
+	public function offsetSet( $offset, $value ): void {
 		if ( is_null( $offset ) ) {
 			$this->data[] = $value;
 		} else {
@@ -142,7 +145,7 @@ class Queue extends Component implements \Iterator, \ArrayAccess, \Countable {
 	/**
 	 * @param mixed $offset
 	 */
-	public function offsetUnset( $offset ) {
+	public function offsetUnset( $offset ): void {
 		unset( $this->data[ $offset ] );
 	}
 

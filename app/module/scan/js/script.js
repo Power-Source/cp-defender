@@ -23,7 +23,7 @@ jQuery(function ($) {
         });
     }
     if ($('#process-scan').length > 0) {
-        $('#process-scan').submit();
+        $('#process-scan').trigger('submit');
         $('div.wdf-scanning').on('form-submitted', function (e, data, form) {
             if (form.attr('id') != 'process-scan') {
                 return;
