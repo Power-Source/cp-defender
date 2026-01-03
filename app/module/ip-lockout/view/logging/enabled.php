@@ -1,6 +1,6 @@
 <div class="dev-box">
     <div class="box-title">
-        <h3><?php esc_html_e( "LOCKOUT LOGS", cp_defender()->domain ) ?></h3>
+        <h3><?php esc_html_e( "IP-SPERRUNGEN PROTOKOLLE", cp_defender()->domain ) ?></h3>
         <button type="button" data-target=".lockout-logs-filter" rel="show-filter"
                 class="button button-secondary button-small"><?php _e( "Filter", cp_defender()->domain ) ?></button>
     </div>

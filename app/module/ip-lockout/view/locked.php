@@ -70,8 +70,8 @@
         </div>
         <p><?php echo $message ?></p>
     </div>
-    <div class="powered"><?php esc_html_e( "Powered by", cp_defender()->domain ) ?>
-        <strong><?php esc_html_e( "Defender", cp_defender()->domain ) ?></strong></div>
+    <div class="powered"><?php esc_html_e( "Geschützt durch", cp_defender()->domain ) ?>
+        <strong><?php esc_html_e( "PS Security", cp_defender()->domain ) ?></strong></div>
 </div>
 </body>
 </html>

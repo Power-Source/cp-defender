@@ -15,7 +15,7 @@ class Settings extends \Hammer\WP\Settings {
 	public $login_protection_login_attempt = 5;
 	public $login_protection_lockout_timeframe = 300;
 	public $login_protection_lockout_duration = 300;
-	public $login_protection_lockout_message = "You have been locked out due to too many invalid login attempts.";
+	public $login_protection_lockout_message = "Dein Konto wurde aufgrund zu vieler ungültiger Anmeldeversuche gesperrt.";
 	public $login_protection_ban_admin_brute = false;
 	public $login_protection_lockout_ban = false;
 	public $username_blacklist = '';
@@ -26,13 +26,13 @@ class Settings extends \Hammer\WP\Settings {
 	public $detect_404_lockout_duration = 300;
 	public $detect_404_whitelist;
 	public $detect_404_ignored_filetypes;
-	public $detect_404_lockout_message = "You have been locked out due to too many attempts to access a file that doesn’t exist.";
+	public $detect_404_lockout_message = "Du wurdest aufgrund zu vieler Versuche, auf eine nicht existierende Datei zuzugreifen, gesperrt.";
 	public $detect_404_lockout_ban = false;
 	public $detect_404_logged = true;
 
 	public $ip_blacklist;
 	public $ip_whitelist;
-	public $ip_lockout_message = 'The administrator has blocked your IP from accessing this website.';
+	public $ip_lockout_message = 'Der Administrator hat deine IP gesperrt und den Zugriff auf diese Website blockiert.';
 
 	public $login_lockout_notification = true;
 	public $ip_lockout_notification = true;

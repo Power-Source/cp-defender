@@ -14,7 +14,7 @@ class Widget extends Behavior {
         <div class="dev-box hardener-widget">
             <div class="box-title">
                 <span class="span-icon hardener-icon" aria-hidden="true"></span>
-                <h3><?php _e( "Sicherheitsoptimierungen", cp_defender()->domain ) ?>
+                <h3><?php _e( "Sicherheits-Tweaks", cp_defender()->domain ) ?>
 					<?php
                     $hardener_issues = count( Settings::instance()->issues );
                     if ( $hardener_issues ): ?>

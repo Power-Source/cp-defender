@@ -37,15 +37,15 @@ class Reporting extends Behavior {
 		switch ( $settings->report_frequency ) {
 			case '1':
 				$after_time = 'yesterday midnight';
-				$time_unit  = __( "In the past 24 hours", cp_defender()->domain );
+				$time_unit  = __( "In den letzten 24 Stunden", cp_defender()->domain );
 				break;
 			case '7':
 				$after_time = '-7 days';
-				$time_unit  = __( "In the past week", cp_defender()->domain );
+				$time_unit  = __( "In der vergangenen Woche", cp_defender()->domain );
 				break;
 			case '30':
 				$after_time = '-30 days';
-				$time_unit  = __( "In the month", cp_defender()->domain );
+				$time_unit  = __( "Im vergangenen Monat", cp_defender()->domain );
 				break;
 		}
 		$after_time = strtotime( $after_time, current_time( 'timestamp' ) );
@@ -65,10 +65,10 @@ class Reporting extends Behavior {
 				$no_reply_email = "noreply@" . parse_url( get_site_url(), PHP_URL_HOST );
 				$no_reply_email = apply_filters( 'wd_lockout_noreply_email', $no_reply_email );
 				$headers        = array(
-					'From: Defender <' . $no_reply_email . '>',
+					'From: PS Security <' . $no_reply_email . '>',
 					'Content-Type: text/html; charset=UTF-8'
 				);
-				wp_mail( $user->user_email, sprintf( __( "Defender Lockouts Report for %s", cp_defender()->domain ), network_site_url() ), $content, $headers );
+				wp_mail( $user->user_email, sprintf( __( "PS Security-Sperrbericht für %s", cp_defender()->domain ), network_site_url() ), $content, $headers );
 			}
 		}
 		$settings->lastReportSent = time();

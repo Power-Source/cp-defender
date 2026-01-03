@@ -34,7 +34,7 @@ class Log_Model extends DB_Model {
 		if ( ! $format ) {
 			return esc_html( $this->log );
 		} else {
-			$text = sprintf( __( "Request for file <span class='log-text-table' tooltip='%s'>%s</span> which doesn't exist", cp_defender()->domain ), esc_attr( $this->log ), pathinfo( $this->log, PATHINFO_BASENAME ) );
+			$text = sprintf( __( "Anfrage für die nicht existierende Datei <span class='log-text-table' tooltip='%s'>%s</span>", cp_defender()->domain ), esc_attr( $this->log ), pathinfo( $this->log, PATHINFO_BASENAME ) );
 
 			return $text;
 		}
@@ -60,11 +60,11 @@ class Log_Model extends DB_Model {
 	 */
 	public function get_type() {
 		$types = array(
-			'auth_fail'        => __( "Failed login attempts", cp_defender()->domain ),
-			'auth_lock'        => __( "Login lockout", cp_defender()->domain ),
-			'404_error'        => __( "404 error", cp_defender()->domain ),
-			'404_error_ignore' => __( "404 error", cp_defender()->domain ),
-			'404_lockout'      => __( "404 lockout", cp_defender()->domain )
+			'auth_fail'        => __( "Fehlgeschlagene Anmeldeversuche", cp_defender()->domain ),
+			'auth_lock'        => __( "Anmelde-Sperre", cp_defender()->domain ),
+			'404_error'        => __( "404 Fehler", cp_defender()->domain ),
+			'404_error_ignore' => __( "404 Fehler", cp_defender()->domain ),
+			'404_lockout'      => __( "404 Sperre", cp_defender()->domain )
 		);
 
 		if ( isset( $types[ $this->type ] ) ) {

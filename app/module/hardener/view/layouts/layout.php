@@ -1,6 +1,6 @@
 <div class="wrap">
     <div id="cp-defender" class="cp-defender">
-        <h2 class="title"><?php _e( "Security Tweaks", cp_defender()->domain ) ?></h2>
+        <h2 class="title"><?php _e( "Sicherheits-Tweaks", cp_defender()->domain ) ?></h2>
         <div class="hardener">
             <div class="dev-box summary-box">
                 <div class="box-content">
@@ -15,9 +15,9 @@
                                 <?php if ( $controller->getCount( 'issues' ) > 0 ) :
                                     $hardener_issues = ( $controller->getCount( 'fixed' ) + $controller->getCount( 'ignore' ) ) . '/' . count( \CP_Defender\Module\Hardener\Model\Settings::instance()->getDefinedRules( false ) );
                                 ?>
-                                    <span class="" tooltip="<?php esc_attr_e( sprintf( __('You have actioned %s security tweaks.', cp_defender()->domain ), $hardener_issues ) ); ?>">
+                                    <span class="" tooltip="<?php esc_attr_e( sprintf( __('Du hast %s Sicherheitsanpassungen vorgenommen.', cp_defender()->domain ), $hardener_issues ) ); ?>">
                                 <?php else : ?>
-                                    <span class="" tooltip="<?php esc_attr_e( 'You have no outstanding security issues.', cp_defender()->domain ); ?>">
+                                    <span class="" tooltip="<?php esc_attr_e( 'Es bestehen keine offenen Sicherheitslücken.', cp_defender()->domain ); ?>">
                                 <?php endif; ?>
 									<?php
 									$icon = $controller->getCount( 'issues' ) == 0 ? ' <i class="def-icon icon-tick icon-active" aria-hidden="true"></i>' : ' <i class="def-icon icon-warning" aria-hidden="true"></i>';
@@ -25,7 +25,7 @@
 									?>
                                 </span>
                                 <div class="clear"></div>
-                                <span class="sub"><?php _e( "Security tweaks actioned", cp_defender()->domain ) ?></span>
+                                <span class="sub"><?php _e( "Sicherheitsanpassungen vorgenommen", cp_defender()->domain ) ?></span>
                             </div>
                         </div>
                         <div class="column is-5">
@@ -40,10 +40,10 @@
                                     <div>
                                         <span class="list-label"><?php echo function_exists('classicpress_version') ? __( "ClassicPress Version", cp_defender()->domain ) : __( "WordPress Version", cp_defender()->domain ) ?></span>
                                         <span class="list-detail">
-                                                <?php
-                                                echo \CP_Defender\Behavior\Utils::instance()->getWPVersion();
-                                                ?>
-                                                </span>
+                                            <?php
+                                            echo \CP_Defender\Behavior\Utils::instance()->getWPVersion();
+                                            ?>
+                                        </span>
                                     </div>
                                 </li>
                             </ul>
@@ -58,11 +58,11 @@
 							<li>
 								<a class="<?php echo \Hammer\Helper\HTTP_Helper::retrieve_get( 'view', false ) == false ? 'active' : null ?>"
 								href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-hardener' ) ?>">
-									<?php _e( "Issues", cp_defender()->domain ) ?>
+									<?php _e( "Sicherheitslücken", cp_defender()->domain ) ?>
 									<?php
 										$tooltip = '';
 										if ( $controller->getCount( 'issues' ) > 0 ) :
-											$tooltip = 'tooltip="'.esc_attr( sprintf( __('You have %d security tweak(s) needing attention.', cp_defender()->domain ), $controller->getCount( 'issues' ) ) ).'"';
+											$tooltip = 'tooltip="'.esc_attr( sprintf( __('Du hast %d Sicherheitsanpassung(en), die Aufmerksamkeit benötigen.', cp_defender()->domain ), $controller->getCount( 'issues' ) ) ).'"';
 										endif;
 									?>
 									<span class="def-tag count-issues tag-yellow <?php echo $controller->getCount( 'issues' ) == 0 ? 'wd-hide' : null ?>" <?php echo $tooltip; ?>><?php echo $controller->getCount( 'issues' ) ?></span>
@@ -71,14 +71,14 @@
 							<li>
 								<a class="<?php echo $controller->isView( 'resolved' ) ? 'active' : null ?>"
 								href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-hardener', array( 'view' => 'resolved' ) ) ?>">
-									<?php _e( "Resolved", cp_defender()->domain ) ?>
+									<?php _e( "Behoben", cp_defender()->domain ) ?>
 									<span class="count-resolved <?php echo $controller->getCount( 'fixed' ) == 0 ? 'wd-hide' : null ?>"><?php echo $controller->getCount( 'fixed' ) ?></span>
 								</a>
 							</li>
 							<li>
 								<a class="<?php echo $controller->isView( 'ignored' ) ? 'active' : null ?>"
 								href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-hardener', array( 'view' => 'ignored' ) ) ?>">
-									<?php _e( "Ignored", cp_defender()->domain ) ?>
+									<?php _e( "Ignoriert", cp_defender()->domain ) ?>
 									<span class="count-ignored <?php echo $controller->getCount( 'ignore' ) == 0 ? 'wd-hide' : null ?>"><?php echo $controller->getCount( 'ignore' ) ?></span>
 								</a>
 							</li>
@@ -95,11 +95,11 @@
 						<nav role="navigation" aria-label="Filters">
 							<select class="mobile-nav">
 								<option <?php selected( '', \Hammer\Helper\HTTP_Helper::retrieve_get( 'view' ) ) ?>
-								value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-hardener' ) ?>"><?php _e( "Issues", cp_defender()->domain ) ?></option>
+								value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-hardener' ) ?>"><?php _e( "Sicherheitslücken", cp_defender()->domain ) ?></option>
 						<option <?php selected( 'resolved', \Hammer\Helper\HTTP_Helper::retrieve_get( 'view' ) ) ?>
-								value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-hardener', array( 'view' => 'resolved' ) ) ?>"><?php _e( "Resolved", cp_defender()->domain ) ?></option>
+								value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-hardener', array( 'view' => 'resolved' ) ) ?>"><?php _e( "Behoben", cp_defender()->domain ) ?></option>
 						<option <?php selected( 'ignored', \Hammer\Helper\HTTP_Helper::retrieve_get( 'view' ) ) ?>
-								value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-hardener', array( 'view' => 'ignored' ) ) ?>"><?php _e( "Ignored", cp_defender()->domain ) ?></option>
+								value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-hardener', array( 'view' => 'ignored' ) ) ?>"><?php _e( "Ignoriert", cp_defender()->domain ) ?></option>
 							</select>
 						</nav>
                     </div>

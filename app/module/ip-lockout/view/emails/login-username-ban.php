@@ -414,10 +414,10 @@
                                                 <td class="hero-title"
                                                     style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; padding-bottom: 18px; text-align: left; vertical-align: bottom; word-wrap: break-word;">
                                                     <h2 style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 30px; font-weight: 700; line-height: 1em; margin: 0; margin-bottom: 0; padding: 0; padding-left: 9px; text-align: left; text-transform: uppercase; word-wrap: normal;">
-														<?php esc_html_e( "Protected By", cp_defender()->domain ) ?></h2>
+														<?php esc_html_e( "Geschützt durch", cp_defender()->domain ) ?></h2>
                                                     <h1 class="plugin-brand"
                                                         style="Margin: 0; Margin-bottom: 0; color: #ff5c28; font-family: Helvetica, Arial, sans-serif; font-size: 60px; font-weight: 700; line-height: 1em; margin: 0; margin-bottom: 0; padding: 0; padding-left: 6px; text-align: left; text-transform: uppercase; word-wrap: normal;">
-														<?php esc_html_e( "Defender!", cp_defender()->domain ) ?></h1>
+														<?php esc_html_e( "PS Security!", cp_defender()->domain ) ?></h1>
                                                 </td>
                                                 <td class="hero-image"
                                                     style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;">
@@ -457,11 +457,11 @@
 													<?php $utils = \CP_Defender\Behavior\Utils::instance() ?>
                                                     <p style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; margin-bottom: 0; padding: 0 0 24px; text-align: left;">
 														<?php
-														$lockout_duration = $setting->login_protection_lockout_ban == true ? __( "They have been banned permanently.", cp_defender()->domain ) : sprintf( __( "They have been locked out for <strong>%s seconds.</strong>", cp_defender()->domain ), $setting->login_protection_lockout_duration );
-														printf( __( "We've just locked out the host <strong>%s</strong> from %s due to attempting to login with a banned username. They have been banned permanently.", cp_defender()->domain ), $ip, network_site_url() ) ?>
+														$lockout_duration = $setting->login_protection_lockout_ban == true ? __( "Du wurdest dauerhaft gesperrt.", cp_defender()->domain ) : sprintf( __( "Du wurdest für <strong>%s Sekunden</strong> ausgesperrt.", cp_defender()->domain ), $setting->login_protection_lockout_duration );
+														printf( __( "Wir haben gerade den Host <strong>%s</strong> von %s gesperrt, da versucht wurde, sich mit einem gesperrten Benutzernamen anzumelden. Du wurdest dauerhaft gesperrt.", cp_defender()->domain ), $ip, network_site_url() ) ?>
                                                     </p>
                                                     <p style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; margin-bottom: 0; padding: 0 0 24px; text-align: left;">
-														<?php printf( __( "You can view the full lockout logs <a href=\"%s\">here</a>", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-ip-lockout', array( 'view' => 'logs' ) ) ) ?>
+														<?php printf( __( "Du kannst die vollständigen Sperrprotokolle <a href=\"%s\">hier</a> einsehen.", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-ip-lockout', array( 'view' => 'logs' ) ) ) ?>
                                                         .</p>
                                                 </td>
                                             </tr>
@@ -515,51 +515,55 @@
                                             <tr style="padding: 0; text-align: left; vertical-align: top;">
                                                 <td style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;">
                                                     <table class="related-items row collapse" align="center"
-                                                           style="border-collapse: collapse; border-spacing: 0; display: table; padding: 0; position: relative; text-align: left; vertical-align: top; width: 100%;">
-                                                        <tbody>
-                                                        <tr style="padding: 0; text-align: left; vertical-align: top;">
-                                                            <th class="small-12 large-6 columns first" align="left"
-                                                                valign="top"
-                                                                style="Margin: 0 auto; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0 auto; padding: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; text-align: left; width: 298px;">
-                                                                <a class="related-item plugin-link"
-                                                                   href="https://github.com/Power-Source/project/wp-hummingbird/"
-                                                                   style="Margin: 0; color: #555555; display: table; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 20px; margin: 0; padding: 0; text-align: left; text-decoration: none;">
-                                                                    <img
-                                                                            src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/plugin-hummingbird.png"
-                                                                            alt="Hummingbird" class="plugin-image"
-                                                                            style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: table-cell; max-width: 100%; outline: none; text-decoration: none; width: auto;">
-                                                                    <span class="plugin-info"
-                                                                          style="display: table-cell; padding-left: 10px; vertical-align: bottom;">
-                                              <span><?php esc_html_e( "Optimize your site with", cp_defender()->domain ) ?></span>
+													       style="border-collapse: collapse; border-spacing: 0; display: table; padding: 0; position: relative; text-align: left; vertical-align: top; width: 100%;">
+														<tbody>
+														<tr style="padding: 0; text-align: left; vertical-align: top;">
+															<th class="small-12 large-6 columns first" align="left"
+															    valign="top"
+															    style="Margin: 0 auto; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0 auto; padding: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; text-align: left; width: 298px;">
+																<a class="related-item plugin-link"
+																   href="https://power-source.github.io/psource-branding/"
+																   style="Margin: 0; color: #555555; display: table; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 20px; margin: 0; padding: 0; text-align: left; text-decoration: none;">
+																	<img
+																		src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/plugin-hummingbird.png"
+																		alt="PSOURCE Toolkit" class="plugin-image"
+																		style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: table-cell; max-width: 100%; outline: none; text-decoration: none; width: auto;">
+																	<span class="plugin-info"
+																	      style="display: table-cell; padding-left: 10px; vertical-align: bottom;">
+                                              <span><?php esc_html_e( "Optimiere deine Seite mit", cp_defender()->domain ) ?></span>
                                               <span class="plugin-title hummingbird"
-                                                    style="color: #febd30; display: block;"><strong><?php esc_html_e( "Hummingbird", cp_defender()->domain ) ?></strong></span>
+                                                    style="color: #febd30; display: block;"><strong><?php esc_html_e( "PSOURCE Toolkit", cp_defender()->domain ) ?></strong></span>
                                               </span>
-                                                                </a>
-                                                            </th>
-                                                            <th class="small-12 large-6 columns last" align="left"
-                                                                valign="top"
-                                                                style="Margin: 0 auto; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0 auto; padding: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; text-align: left; width: 298px;">
-                                                                <a class="related-item plugin-link"
-                                                                   href="https://github.com/Power-Source/project/snapshot/"
-                                                                   style="Margin: 0; color: #555555; display: table; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 20px; margin: 0; padding: 0; text-align: left; text-decoration: none;">
-                                                                    <img
-                                                                            src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/psource-logo.png"
-                                                                            alt="Snapshot"
-                                                                            class="plugin-image"
-                                                                            style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: table-cell; max-width: 100%; outline: none; text-decoration: none; width: auto;">
-                                                                    <span class="plugin-info"
-                                                                          style="display: table-cell; padding-left: 10px; vertical-align: bottom;">
+																</a>
+															</th>
+															<th class="small-12 large-6 columns last" align="left"
+															    valign="top"
+															    style="Margin: 0 auto; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0 auto; padding: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; text-align: left; width: 298px;">
+																<a class="related-item plugin-link"
+																   href="https://github.com/Power-Source/project/snapshot/"
+																   style="Margin: 0; color: #555555; display: table; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 20px; margin: 0; padding: 0; text-align: left; text-decoration: none;">
+																	<img
+																		src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/psource-logo.png"
+																		alt="Snapshot"
+																		class="plugin-image"
+																		style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: table-cell; max-width: 100%; outline: none; text-decoration: none; width: auto;">
+																	<span class="plugin-info"
+																	      style="display: table-cell; padding-left: 10px; vertical-align: bottom;">
                                               <span><?php esc_html_e( "Back up your hard work with", cp_defender()->domain ) ?></span>
                                               <span class="plugin-title snapshot"
                                                     style="color: #642486; display: block;"><strong><?php _e( "Snapshot", cp_defender()->domain ) ?></strong></span>
                                               </span>
-                                                                </a>
-                                                            </th>
-                                                            <th class="expander"
-                                                                style="Margin: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; padding: 0 !important; text-align: left; visibility: hidden; width: 0;"></th>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
+																</a>
+															</th>
+															<th class="expander"
+															    style="Margin: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; padding: 0 !important; text-align: left; visibility: hidden; width: 0;"></th>
+														</tr>
+														</tbody>
+													</table>
+												</td>
+											</tr>
+											</tbody>
+										</table>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -597,42 +601,28 @@
 							</table>
 							<!-- End Preferences -->
 
-                            <table class="company-info" align="left" valign="middle"
-                                   style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; text-align: left; vertical-align: top; width: 100%;">
-                                <tbody>
-                                <tr style="padding: 0; text-align: left; vertical-align: top;">
-                                    <td class="company-info-inner"
-                                        style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; border-top: 2px solid #e9ebe7; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 40px; text-align: left; vertical-align: top; word-wrap: break-word;">
-                                        <table class="company-info-content row collapse" align="left" valign="top"
-                                               style="border-collapse: collapse; border-spacing: 0; display: table; padding: 0; position: relative; text-align: left; vertical-align: top; width: 100%;">
-                                            <tbody>
-                                            <tr style="padding: 0; text-align: left; vertical-align: top;">
-                                                <th class="small-12 large-8 columns first copy" align="left"
-                                                    style="Margin: 0 auto; color: #707070; font-family: Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; line-height: 20px; margin: 0 auto; padding: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; text-align: left; width: 394.66667px;">
-                                                    <p style="Margin: 0; Margin-bottom: 0; color: #707070; font-family: Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; line-height: 20px; margin: 0; margin-bottom: 0; padding: 0; text-align: left;">
-                                                        Copyright © Incsub, All rights reserved.</p>
-                                                    <p style="Margin: 0; Margin-bottom: 0; color: #707070; font-family: Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; line-height: 20px; margin: 0; margin-bottom: 0; padding: 0; text-align: left;">
-                                                        Incsub PO box 163 Albert Park, Victoria 3206 Australia</p>
-                                                </th>
-                                                <th class="small-12 large-4 columns last logo" align="right"
-                                                    style="Margin: 0 auto; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0 auto; padding: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; text-align: right; width: 201.33333px;">
-                                                    <a href="https://github.com/Power-Source" class="logo-link"
-                                                       style="Margin: 0; color: #555555; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: right; text-decoration: none;">
-                                                        <img
-                                                                src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/psource-logo.png"
-                                                                alt="PSOURCE"
-                                                                style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: inline-block; max-width: 100%; outline: none; text-align: right; text-decoration: none; width: auto;">
-                                                    </a>
-                                                </th>
-                                                <th class="expander"
-                                                    style="Margin: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; padding: 0 !important; text-align: left; visibility: hidden; width: 0;"></th>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                             <table class="social-content" align="center"
+										       style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top;">
+											<tbody>
+											<tr style="padding: 0; text-align: left; vertical-align: top;">
+												<td class="social-content-inner"
+													style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; text-align: center; vertical-align: top; word-wrap: break-word;">
+													<a href="https://github.com/Power-Source" target="_blank"
+													   class="github"
+													   style="Margin: 0; color: #555555; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.3; margin: 0; margin-right: 4px; padding: 0; text-align: left; text-decoration: none;"><img
+															src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/icon-github.png"
+															alt="Power-Source on GitHub"
+															style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: block; max-width: 100%; outline: none; text-decoration: none; width: auto;"></a>
+													<a href="https://nerdservice.eimen.net" target="_blank"
+													   class="website"
+													   style="Margin: 0; color: #555555; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.3; margin: 0; margin-right: 0; padding: 0; text-align: left; text-decoration: none;"><img
+															src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/icon-website.png"
+															alt="Nerdservice Website"
+															style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: block; max-width: 100%; outline: none; text-decoration: none; width: auto;"></a>
+												</td>
+											</tr>
+											</tbody>
+										</table>
                             <!-- end company-info -->
 
                             <table class="wrapper social" align="center"

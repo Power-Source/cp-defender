@@ -1,21 +1,21 @@
 <div class="dev-box">
     <div class="box-title">
-        <h3><?php esc_html_e( "Reporting", cp_defender()->domain ) ?></h3>
+        <h3><?php esc_html_e( "Berichterstattung", cp_defender()->domain ) ?></h3>
     </div>
     <div class="box-content">
         <form method="post" id="settings-frm" class="ip-frm">
             <div class="columns">
                 <div class="column is-one-third">
                     <label>
-						<?php esc_html_e( "Lockouts report", cp_defender()->domain ) ?>
+						<?php esc_html_e( "Aussperrungsbericht", cp_defender()->domain ) ?>
                     </label>
                     <span class="sub">
-                        <?php esc_html_e( "Configure Defender to automatically email you a lockout report for this website. ", cp_defender()->domain ) ?>
+                        <?php esc_html_e( "Konfiguriere PS Security so, dass dir automatisch ein Aussperrungsbericht für diese Website per E-Mail gesendet wird.", cp_defender()->domain ) ?>
 					</span>
                 </div>
                 <div class="column">
                     <span
-                            tooltip="<?php echo esc_attr( __( "Send regular email report", cp_defender()->domain ) ) ?>"
+                            tooltip="<?php echo esc_attr( __( "Regelmäßigen E-Mail-Bericht senden", cp_defender()->domain ) ) ?>"
                             class="toggle float-l">
 	                                        <input type="hidden" name="report" value="0"/>
                                 <input type="checkbox"
@@ -29,18 +29,18 @@
                     </label>
                     <div class="clear mline"></div>
                     <div class="well well-white schedule-box">
-                        <strong><?php esc_html_e( "SCHEDULE", cp_defender()->domain ) ?></strong>
-                        <label><?php esc_html_e( "Frequency", cp_defender()->domain ) ?></label>
+                        <strong><?php esc_html_e( "ZEITPLAN", cp_defender()->domain ) ?></strong>
+                        <label><?php esc_html_e( "Häufigkeit", cp_defender()->domain ) ?></label>
                         <select name="report_frequency">
                             <option <?php selected( '1', $settings->report_frequency ) ?>
-                                    value="1"><?php esc_html_e( "Daily", cp_defender()->domain ) ?></option>
+                                    value="1"><?php esc_html_e( "Täglich", cp_defender()->domain ) ?></option>
                             <option <?php selected( '7', $settings->report_frequency ) ?>
-                                    value="7"><?php esc_html_e( "Weekly", cp_defender()->domain ) ?></option>
+                                    value="7"><?php esc_html_e( "Wöchentlich", cp_defender()->domain ) ?></option>
                             <option <?php selected( '30', $settings->report_frequency ) ?>
-                                    value="30"><?php esc_html_e( "Monthly", cp_defender()->domain ) ?></option>
+                                    value="30"><?php esc_html_e( "Monatlich", cp_defender()->domain ) ?></option>
                         </select>
                         <div class="days-container">
-                            <label><?php esc_html_e( "Day of the week", cp_defender()->domain ) ?></label>
+                            <label><?php esc_html_e( "Tag der Woche", cp_defender()->domain ) ?></label>
                             <select name="report_day">
 								<?php foreach ( \CP_Defender\Behavior\Utils::instance()->getDaysOfWeek() as $day ): ?>
                                     <option <?php selected( $settings->report_day, strtolower( $day ) ) ?>
@@ -48,7 +48,7 @@
 								<?php endforeach;; ?>
                             </select>
                         </div>
-                        <label><?php esc_html_e( "Time of day", cp_defender()->domain ) ?></label>
+                        <label><?php esc_html_e( "Uhrzeit", cp_defender()->domain ) ?></label>
                         <select name="report_time">
 							<?php foreach ( \CP_Defender\Behavior\Utils::instance()->getTimes() as $timestamp => $time ): ?>
                                 <option <?php selected( $settings->report_time, $timestamp ) ?>
@@ -64,10 +64,10 @@
             <div class="columns">
                 <div class="column is-one-third">
                     <label>
-						<?php esc_html_e( "Email recipients", cp_defender()->domain ) ?>
+						<?php esc_html_e( "-Mail-Empfänger", cp_defender()->domain ) ?>
                     </label>
                     <span class="sub">
-						<?php esc_html_e( "Choose which of your website’s users will receive the lockout report.", cp_defender()->domain ) ?>
+						<?php esc_html_e( "Wähle aus, welche Nutzer Deiner Webseite den Aussperrungsbericht erhalten sollen.", cp_defender()->domain ) ?>
 					</span>
                 </div>
                 <div class="column">
@@ -78,7 +78,7 @@
 			<?php wp_nonce_field( 'saveLockoutSettings' ) ?>
             <input type="hidden" name="action" value="saveLockoutSettings"/>
             <button type="submit" class="button button-primary float-r">
-				<?php esc_html_e( "UPDATE SETTINGS", cp_defender()->domain ) ?>
+				<?php esc_html_e( "EINSTELLUNGEN AKTUALISIEREN", cp_defender()->domain ) ?>
             </button>
             <div class="clear"></div>
         </form>

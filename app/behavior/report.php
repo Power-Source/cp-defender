@@ -12,12 +12,11 @@ class Report extends Behavior {
         <div class="dev-box">
             <div class="box-title">
                 <span class="span-icon icon-report"></span>
-                <h3><?php _e( "REPORTING", cp_defender()->domain ) ?></h3>
+                <h3><?php _e( "BERICHTERSTATTUNG", cp_defender()->domain ) ?></h3>
             </div>
             <div class="box-content">
                 <div class="line">
-					<?php _e( "Get tailored security reports delivered to your inbox so you don’t have to worry
-                    about checking in.", cp_defender()->domain ) ?>
+					<?php _e( "Erhalte maßgeschneiderte Sicherheitsberichte direkt in deinen Posteingang, damit du dir keine Sorgen machen musst, regelmäßig nachzusehen.", cp_defender()->domain ) ?>
                 </div>
                 <div class="row">
                     <div class="col-half">
@@ -48,20 +47,20 @@ class Report extends Behavior {
                 class="report-status <?php echo $class ?>">
             <a href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-ip-lockout', array( 'view' => 'reporting' ) ) ?>">
                 <img src="<?php echo cp_defender()->getPluginUrl() ?>assets/img/lockout-pre.svg">
-                <strong><?php _e( "IP LOCKOUTS", cp_defender()->domain ) ?></strong>
+                <strong><?php _e( "IP SPERREN", cp_defender()->domain ) ?></strong>
 				<?php if ( \CP_Defender\Module\IP_Lockout\Model\Settings::instance()->report ): ?>
                     <span class="def-tag tag-active">
                                <i class="def-icon icon-tick"></i>
 						<?php
 						switch ( \CP_Defender\Module\IP_Lockout\Model\Settings::instance()->report_frequency ) {
 							case '1':
-								_e( "Daily", cp_defender()->domain );
+								_e( "Täglich", cp_defender()->domain );
 								break;
 							case '7':
-								_e( "Weekly", cp_defender()->domain );
+								_e( "Wöchentlich", cp_defender()->domain );
 								break;
 							case '30':
-								_e( "Monthly", cp_defender()->domain );
+								_e( "Monatlich", cp_defender()->domain );
 								break;
 						}
 						?>
@@ -69,9 +68,9 @@ class Report extends Behavior {
 					<?php
 				else:?>
                     <span class="def-tag tag-inactive">
-                                        <?php _e( "Inactive", cp_defender()->domain ) ?>
+                                        <?php _e( "Inaktiv", cp_defender()->domain ) ?>
                                     </span>
-                    <div tooltip="<?php esc_attr_e( "Get a daily, weekly or monthly summary of lockouts that have occurred within the report period." ) ?>"
+                    <div tooltip="<?php esc_attr_e( "Erhalte eine tägliche, wöchentliche oder monatliche Zusammenfassung der Sperren, die im Berichtszeitraum aufgetreten sind." ) ?>"
                          class="corner">
                         <i class="def-icon icon-warning"></i>
                     </div>
@@ -93,9 +92,9 @@ class Report extends Behavior {
                 class="report-status <?php echo $class ?>">
             <a href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging', array( 'view' => 'report' ) ) ?>">
                 <img src="<?php echo cp_defender()->getPluginUrl() ?>assets/img/audit-pre.svg">
-                <strong><?php _e( "AUDIT LOGGING", cp_defender()->domain ) ?></strong>
+                <strong><?php _e( "AUDIT PROTOKOLLIERUNG", cp_defender()->domain ) ?></strong>
 				<?php if ( \CP_Defender\Module\Audit\Model\Settings::instance()->enabled == false ): ?>
-                    <div tooltip="<?php esc_attr_e( "To activate this report you must first enable the Audit Logging module." ) ?>"
+                    <div tooltip="<?php esc_attr_e( "Um diesen Bericht zu aktivieren, musst du zuerst das Audit-Protokollierungsmodul aktivieren." ) ?>"
                          class="corner">
                         <i class="def-icon icon-warning"></i>
                     </div>
@@ -105,13 +104,13 @@ class Report extends Behavior {
 						<?php
 						switch ( \CP_Defender\Module\Audit\Model\Settings::instance()->frequency ) {
 							case '1':
-								_e( "Daily", cp_defender()->domain );
+								_e( "Täglich", cp_defender()->domain );
 								break;
 							case '7':
-								_e( "Weekly", cp_defender()->domain );
+								_e( "Wöchentlich", cp_defender()->domain );
 								break;
 							case '30':
-								_e( "Monthly", cp_defender()->domain );
+								_e( "Monatlich", cp_defender()->domain );
 								break;
 						}
 						?>
@@ -119,7 +118,7 @@ class Report extends Behavior {
 					<?php
 				else:?>
                     <span class="def-tag tag-inactive">
-                        <?php _e( "Inactive", cp_defender()->domain ) ?>
+                        <?php _e( "Inaktiv", cp_defender()->domain ) ?>
                     </span>
 				<?php endif; ?>
             </a>
@@ -135,20 +134,20 @@ class Report extends Behavior {
                 class="report-status <?php echo $class ?>">
             <a href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-scan', array( 'view' => 'reporting' ) ) ?>">
                 <img src="<?php echo cp_defender()->getPluginUrl() ?>assets/img/scanning-pre.svg">
-                <strong><?php _e( "FILE SCANNING", cp_defender()->domain ) ?></strong>
+                <strong><?php _e( "DATEIÜBERPRÜFUNG", cp_defender()->domain ) ?></strong>
 				<?php if ( Settings::instance()->notification ): ?>
                     <span class="def-tag tag-active">
                                         <i class="def-icon icon-tick"></i>
 						<?php
 						switch ( Settings::instance()->frequency ) {
 							case '1':
-								_e( "Daily", cp_defender()->domain );
+								_e( "Täglich", cp_defender()->domain );
 								break;
 							case '7':
-								_e( "Weekly", cp_defender()->domain );
+								_e( "Wöchentlich", cp_defender()->domain );
 								break;
 							case '30':
-								_e( "Monthly", cp_defender()->domain );
+								_e( "Monatlich", cp_defender()->domain );
 								break;
 						}
 						?>
@@ -156,7 +155,7 @@ class Report extends Behavior {
 					<?php
 				else:?>
                     <span class="def-tag tag-inactive">
-                                            <?php _e( "Inactive", cp_defender()->domain ) ?>
+                                            <?php _e( "Inaktiv", cp_defender()->domain ) ?>
                                         </span>
 				<?php endif; ?>
             </a>
@@ -175,7 +174,7 @@ class Report extends Behavior {
 			return null;
 		}
 
-		$toolstip = sprintf( __( "Scan reports are active scheduled to send %s", cp_defender()->domain ),
+		$toolstip = sprintf( __( "Scanberichte sind aktiv und werden zum Senden von %s geplant.", cp_defender()->domain ),
 			$settings->frequency == 1 ? $this->frequencyToText( $settings->frequency ) . '/' . $this->formatTime( $settings->time ) : $this->frequencyToText( $settings->frequency ) . '/' . $settings->day . '/' . $this->formatTime( $settings->time ) );
 		$toolstip = strlen( $toolstip ) ? ' tooltip="' . esc_attr( $toolstip ) . '" ' : null;
 
@@ -189,7 +188,7 @@ class Report extends Behavior {
 			return null;
 		}
 
-		$toolstip = sprintf( __( "Audit reports are active scheduled to send %s", cp_defender()->domain ),
+		$toolstip = sprintf( __( "Auditberichte sind aktiv und werden zum Senden von %s geplant.", cp_defender()->domain ),
 			$settings->frequency == 1 ? $this->frequencyToText( $settings->frequency ) . '/' . $this->formatTime( $settings->time ) : $this->frequencyToText( $settings->frequency ) . '/' . $settings->day . '/' . $this->formatTime( $settings->time ) );
 		$toolstip = strlen( $toolstip ) ? ' tooltip="' . esc_attr( $toolstip ) . '" ' : null;
 
@@ -203,7 +202,7 @@ class Report extends Behavior {
 			return null;
 		}
 
-		$toolstip = sprintf( __( "Lockout reports are active scheduled to send %s", cp_defender()->domain ),
+		$toolstip = sprintf( __( "IP-Sperrberichte sind aktiv und werden zum Senden von %s geplant.", cp_defender()->domain ),
 			$settings->report_frequency == 1 ? $this->frequencyToText( $settings->report_frequency ) . '/' . $this->formatTime( $settings->report_time ) : $this->frequencyToText( $settings->report_frequency ) . '/' . $settings->report_day . '/' . $this->formatTime( $settings->report_time ) );
 		$toolstip = strlen( $toolstip ) ? ' tooltip="' . esc_attr( $toolstip ) . '" ' : null;
 
@@ -219,13 +218,13 @@ class Report extends Behavior {
 		$text = '';
 		switch ( $freq ) {
 			case 1:
-				$text = __( "daily", cp_defender()->domain );
+				$text = __( "täglich", cp_defender()->domain );
 				break;
 			case 7:
-				$text = __( "weekly", cp_defender()->domain );
+				$text = __( "wöchentlich", cp_defender()->domain );
 				break;
 			case 30:
-				$text = __( "monthly", cp_defender()->domain );
+				$text = __( "monatlich", cp_defender()->domain );
 				break;
 		}
 

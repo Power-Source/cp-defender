@@ -56,7 +56,7 @@ class Login_Protection_Api extends Component {
 			$model->status       = IP_Model::STATUS_BLOCKED;
 			$model->release_time = strtotime( '+ ' . $settings->login_protection_lockout_duration . ' seconds' );
 			if ( $blacklist && $force ) {
-				$model->lockout_message = esc_html__( "You have been locked out by the administrator for attempting to login with a banned username", cp_defender()->domain );
+				$model->lockout_message = esc_html__( "Dein Konto wurde vom Administrator gesperrt, da du versucht hast, dich mit einem gesperrten Benutzernamen anzumelden.", cp_defender()->domain );
 			} else {
 				$model->lockout_message = $settings->login_protection_lockout_message;
 			}
@@ -69,11 +69,11 @@ class Login_Protection_Api extends Component {
 			$lock_log->ip         = $log->ip;
 			$lock_log->user_agent = $_SERVER['HTTP_USER_AGENT'];
 			if ( $force && $blacklist ) {
-				$lock_log->log = esc_html__( "Lockout occurred: Attempting to login with a banned username.", cp_defender()->domain );
+				$lock_log->log = esc_html__( "Sperre aufgetreten: Versuch, sich mit einem gesperrten Benutzernamen anzumelden.", cp_defender()->domain );
 			} elseif ( ! empty( $log->tried ) ) {
-				$lock_log->log = sprintf( esc_html__( "Lockout occurred: Too many failed login attempts for the username %s", cp_defender()->domain ), $log->tried );
+				$lock_log->log = sprintf( esc_html__( "Sperre aufgetreten: Zu viele fehlgeschlagene Anmeldeversuche für den Benutzernamen %s", cp_defender()->domain ), $log->tried );
 			} else {
-				$lock_log->log = esc_html__( "Lockout occurred: Too many failed login attempts", cp_defender()->domain );
+				$lock_log->log = esc_html__( "Sperre aufgetreten: Zu viele fehlgeschlagene Anmeldeversuche", cp_defender()->domain );
 			}
 			$lock_log->save();
 			//if fail2ban, we will add that IP to blacklist
@@ -151,7 +151,7 @@ class Login_Protection_Api extends Component {
 			$lock_log->ip         = $log->ip;
 			$lock_log->user_agent = $_SERVER['HTTP_USER_AGENT'];
 			$uri                  = esc_url( $_SERVER['REQUEST_URI'] );
-			$lock_log->log        = sprintf( esc_html__( "Lockout occurred:  Too many 404 requests for %s", cp_defender()->domain ), $uri );
+			$lock_log->log        = sprintf( esc_html__( "Sperrung aufgetreten: Zu viele 404-Anfragen an %s", cp_defender()->domain ), $uri );
 			$lock_log->save();
 			//if fail2ban, we will add that IP to blacklist
 			if ( $settings->detect_404_lockout_ban ) {
@@ -251,9 +251,9 @@ class Login_Protection_Api extends Component {
 		$nonce = wp_create_nonce( 'lockoutIPAction' );
 		if ( $ip != $log->ip ) {
 			if ( ! in_array( $log->ip, $blacklist ) ) {
-				$links[] = '<a data-nonce="' . $nonce . '" class="ip-action" data-type="blacklist" data-id="' . $log->id . '" href="#">' . __( "Ban", cp_defender()->domain ) . '</a>';
+				$links[] = '<a data-nonce="' . $nonce . '" class="ip-action" data-type="blacklist" data-id="' . $log->id . '" href="#">' . __( "Sperren", cp_defender()->domain ) . '</a>';
 			} else {
-				$links[] = '<a data-nonce="' . $nonce . '" class="ip-action" data-type="unblacklist" data-id="' . $log->id . '" href="#">' . __( "Unban", cp_defender()->domain ) . '</a>';
+				$links[] = '<a data-nonce="' . $nonce . '" class="ip-action" data-type="unblacklist" data-id="' . $log->id . '" href="#">' . __( "Entsperren", cp_defender()->domain ) . '</a>';
 			}
 		}
 

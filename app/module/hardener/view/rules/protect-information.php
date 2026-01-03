@@ -5,25 +5,25 @@
 		<?php else: ?>
             <i class="def-icon icon-tick" aria-hidden="true"></i>
 		<?php endif; ?>
-		<?php _e( "Prevent Information Disclosure", cp_defender()->domain ) ?>
+		<?php _e( "Verhinderung der Offenlegung von Informationen", cp_defender()->domain ) ?>
     </div>
     <div class="rule-content">
-        <h3><?php _e( "Overview", cp_defender()->domain ) ?></h3>
+        <h3><?php _e( "Übersicht", cp_defender()->domain ) ?></h3>
         <div class="line end">
-			<?php _e( "Often servers are incorrectly configured, and can allow an attacker to get access to sensitive information that can be used in attacks. PS Security can help you prevent that disclosure.", cp_defender()->domain ) ?>
+			<?php _e( "Oft sind Server falsch konfiguriert und können einem Angreifer den Zugriff auf sensible Informationen ermöglichen, die für Angriffe verwendet werden können. PS Security kann dir helfen, diese Offenlegung zu verhindern.", cp_defender()->domain ) ?>
         </div>
         <h3>
-			<?php _e( "How to fix", cp_defender()->domain ) ?>
+			<?php _e( "Wie man es behebt", cp_defender()->domain ) ?>
         </h3>
         <div class="well">
 			<?php if ( $controller->check() ): ?>
-                <p class="line"><?php _e( "Your WordPress is protected.", cp_defender()->domain ) ?></p>
+                <p class="line"><?php _e( "Dein WordPress ist geschützt.", cp_defender()->domain ) ?></p>
                 <form method="post" class="hardener-frm rule-process">
 					<?php $controller->createNonceField(); ?>
                     <input type="hidden" name="action" value="processRevert"/>
                     <input type="hidden" name="slug" value="<?php echo $controller::$slug ?>"/>
                     <button class="button button-small button-grey"
-                            type="submit"><?php _e( "Revert", cp_defender()->domain ) ?></button>
+                            type="submit"><?php _e( "Zurücksetzen", cp_defender()->domain ) ?></button>
                 </form>
 			<?php else:
                 $servers        = \CP_Defender\Behavior\Utils::instance()->serverTypes();
@@ -32,7 +32,7 @@
             ?>
                 <div class="columns">
                     <div class="column is-one-third">
-                        <?php _e( 'Server Type:', cp_defender()->domain ); ?>
+                        <?php _e( 'Server Typ:', cp_defender()->domain ); ?>
                     </div>
                     <div class="column is-one-third">
                         <select class="mline hardener-server-list information" name="server">
@@ -44,26 +44,26 @@
                 </div>
                 <div class="<?php echo ( $setting->active_server != 'apache' ) ? 'wd-hide' : ''; ?> hardener-information hardener-information-apache">
                     <div class="line">
-                        <p><?php _e( "We will place <strong>.htaccess</strong> file into the root folder to lock down the files and folders inside.", cp_defender()->domain ) ?></p>
+                        <p><?php _e( "Wir werden eine <strong>.htaccess</strong>-Datei im Stammverzeichnis platzieren, um die darin enthaltenen Dateien und Ordner zu sperren.", cp_defender()->domain ) ?></p>
                     </div>
                     <form method="post" class="hardener-frm rule-process">
                         <?php $controller->createNonceField(); ?>
                         <input type="hidden" name="action" value="processHardener"/>
                         <input type="hidden" name="slug" value="<?php echo $controller::$slug ?>"/>
                         <button class="button float-r"
-                                type="submit"><?php _e( "Add .htaccess file", cp_defender()->domain ) ?></button>
+                                type="submit"><?php _e( "Füge .htaccess-Datei hinzu", cp_defender()->domain ) ?></button>
                     </form>
                 </div>
                 <div class="<?php echo ( $setting->active_server != 'litespeed' ) ? 'wd-hide' : ''; ?> hardener-information hardener-information-litespeed">
                     <div class="line">
-                        <p><?php _e( "We will place <strong>.htaccess</strong> file into the root folder to lock down the files and folders inside.", cp_defender()->domain ) ?></p>
+                        <p><?php _e( "Wir werden eine <strong>.htaccess</strong>-Datei im Stammverzeichnis platzieren, um die darin enthaltenen Dateien und Ordner zu sperren.", cp_defender()->domain ) ?></p>
                     </div>
                     <form method="post" class="hardener-frm rule-process">
                         <?php $controller->createNonceField(); ?>
                         <input type="hidden" name="action" value="processHardener"/>
                         <input type="hidden" name="slug" value="<?php echo $controller::$slug ?>"/>
                         <button class="button float-r"
-                                type="submit"><?php _e( "Add .htaccess file", cp_defender()->domain ) ?></button>
+                                type="submit"><?php _e( "Füge .htaccess-Datei hinzu", cp_defender()->domain ) ?></button>
                     </form>
                 </div>
                 <div class="<?php echo ( $setting->active_server != 'nginx' ) ? 'wd-hide' : ''; ?> hardener-information hardener-information-nginx">
@@ -95,31 +95,31 @@ location ~* ^$wp_content/.*\.(txt|md|exe|sh|bak|inc|pot|po|mo|log|sql)$ {
 ";
                     ?>
                     <div class="">
-                    <p><?php esc_html_e( "For NGINX servers:", cp_defender()->domain ) ?></p>
+                    <p><?php esc_html_e( "Für NGINX-Server:", cp_defender()->domain ) ?></p>
                     <ol>
                         <li>
-                            <?php esc_html_e( "Copy the generated code into your site specific .conf file usually located in a subdirectory under /etc/nginx/... or /usr/local/nginx/conf/...", cp_defender()->domain ) ?>
+                            <?php esc_html_e( "Kopiere den generierten Code in deine sitespezifische .conf-Datei, die sich normalerweise in einem Unterverzeichnis unter /etc/nginx/... oder /usr/local/nginx/conf/... befindet.", cp_defender()->domain ) ?>
                         </li>
                         <li>
-                            <?php _e( "Add the code above inside the <strong>server</strong> section in the file, right before the php location block. Looks something like:", cp_defender()->domain ) ?>
+                            <?php _e( "Füge den obigen Code innerhalb des <strong>server</strong>-Abschnitts in der Datei ein, direkt vor dem PHP-Standortblock. Sieht ungefähr so aus:", cp_defender()->domain ) ?>
                             <pre>location ~ \.php$ {</pre>
                         </li>
                         <li>
-                            <?php esc_html_e( "Reload NGINX.", cp_defender()->domain ) ?>
+                            <?php esc_html_e( "Lade NGINX neu.", cp_defender()->domain ) ?>
                         </li>
                     </ol>
-                    <p><?php echo sprintf( __( "Still having trouble? <a target='_blank' href=\"%s\">Open a support ticket</a>.", cp_defender()->domain ), 'https://github.com/Power-Source/forums/forum/support#question' ) ?></p>
+                    <p><?php echo sprintf( __( "Hast du immer noch Probleme? <a target='_blank' href=\"%s\">Support-Ticket eröffnen</a>.", cp_defender()->domain ), 'https://github.com/Power-Source/forums/forum/support#question' ) ?></p>
                     <pre>## PS Security - Prevent information disclosure ##<?php echo esc_html( $rules ); ?>## PS Security - End ##</pre>
                     </div>
                 </div>
                 <div class="<?php echo ( $setting->active_server != 'iis' ) ? 'wd-hide' : ''; ?> hardener-information hardener-information-iis">
                     <div class="line">
-                        <p><?php printf( __( 'For IIS servers, <a href="%s">visit Microsoft TechNet</a>', cp_defender()->domain ), 'https://technet.microsoft.com/en-us/library/cc754807(v=ws.10).aspx' ); ?></p>
+                        <p><?php printf( __( 'Für IIS-Server, <a href="%s">besuche Microsoft TechNet</a>', cp_defender()->domain ), 'https://technet.microsoft.com/en-us/library/cc754807(v=ws.10).aspx' ); ?></p>
                     </div>
                 </div>
                 <div class="<?php echo ( $setting->active_server != 'iis-7' ) ? 'wd-hide' : ''; ?> hardener-information hardener-information-iis-7">
                     <div class="line">
-                        <p><?php printf( __( 'For IIS 7 servers, <a href="%s">visit Microsoft TechNet</a>', cp_defender()->domain ), 'https://technet.microsoft.com/en-us/library/cc754807(v=ws.10).aspx' ); ?></p>
+                        <p><?php printf( __( 'Für IIS 7-Server, <a href="%s">besuche Microsoft TechNet</a>', cp_defender()->domain ), 'https://technet.microsoft.com/en-us/library/cc754807(v=ws.10).aspx' ); ?></p>
                     </div>
                 </div>
                 <?php $controller->showIgnoreForm() ?>

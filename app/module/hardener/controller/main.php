@@ -146,7 +146,7 @@ return;
 }
 
 		$cap = is_multisite() ? 'manage_network_options' : 'manage_options';
-		add_submenu_page( 'cp-defender', esc_html__( "Sicherheitsoptimierungen", cp_defender()->domain ), esc_html__( "Sicherheitsoptimierungen", cp_defender()->domain ), $cap, $this->slug, array(
+		add_submenu_page( 'cp-defender', esc_html__( "Sicherheits-Tweaks", cp_defender()->domain ), esc_html__( "Sicherheits-Tweaks", cp_defender()->domain ), $cap, $this->slug, array(
 			&$this,
 			'actionIndex'
 		) );

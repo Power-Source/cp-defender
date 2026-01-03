@@ -12,7 +12,7 @@
 
 <dialog id="defLockoutUpgrade">
     <div class="line">
-		<?php _e( "Please hold on, we are updating your data, please don't close this tab...", cp_defender()->domain ) ?>
+		<?php _e( "Einen Moment bitte, wir aktualisieren Deine Daten. Bitte schließe diesen Tab nicht...", cp_defender()->domain ) ?>
     </div>
     <div class="well mline">
         <div class="scan-progress">

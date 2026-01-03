@@ -3,7 +3,7 @@
         <div id="cp-defender" class="cp-defender">
             <div class="iplockout">
                 <h2 class="title">
-					<?php _e( "IP LOCKOUTS", cp_defender()->domain ) ?>
+					<?php _e( "IP-SPERRUNGEN", cp_defender()->domain ) ?>
                 </h2>
                 <div class="dev-box summary-box" id="lockoutSummary">
                     <div class="wd-overlay">
@@ -16,28 +16,28 @@
                                 <div>
                                     <h5 class="lockoutToday">.</h5>
                                     <div class="clear"></div>
-                                    <span class="sub"><?php _e( "Lockouts in the past 24 hours", cp_defender()->domain ) ?></span>
+                                    <span class="sub"><?php _e( "Aussperrungen in den letzten 24 Stunden", cp_defender()->domain ) ?></span>
                                     <h6 class="lockoutThisMonth">.</h6>
-                                    <span class="sub"><?php _e( "Total lockouts in the past 30 days", cp_defender()->domain ) ?></span>
+                                    <span class="sub"><?php _e( "Gesamtzahl der Aussperrungen in den letzten 30 Tagen", cp_defender()->domain ) ?></span>
                                 </div>
                             </div>
                             <div class="column is-5">
                                 <ul class="dev-list bold">
                                     <li>
                                         <div>
-                                            <span class="list-label"><?php _e( "Last lockout", cp_defender()->domain ) ?></span>
+                                            <span class="list-label"><?php _e( "Letzte Aussperrung", cp_defender()->domain ) ?></span>
                                             <span class="list-detail lastLockout">.</span>
                                         </div>
                                     </li>
                                     <li>
                                         <div>
-                                            <span class="list-label"><?php _e( "Login lockouts in the past 7 days", cp_defender()->domain ) ?></span>
+                                            <span class="list-label"><?php _e( "Login-Aussperrungen in den letzten 7 Tagen", cp_defender()->domain ) ?></span>
                                             <span class="list-detail loginLockoutThisWeek">.</span>
                                         </div>
                                     </li>
                                     <li>
                                         <div>
-                                            <span class="list-label"><?php _e( "404 lockouts in the past 7 days", cp_defender()->domain ) ?></span>
+                                            <span class="list-label"><?php _e( "404-Aussperrungen in den letzten 7 Tagen", cp_defender()->domain ) ?></span>
                                             <span class="list-detail lockout404ThisWeek">.</span>
                                         </div>
                                     </li>

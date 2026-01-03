@@ -143,7 +143,7 @@ class Main extends Controller {
 		$count   = Log_Model::deleteAll( array(), '0,' . $perPage );
 		if ( $count == 0 ) {
 			wp_send_json_success( array(
-				'message' => __( "Your logs have been successfully deleted.", cp_defender()->domain )
+				'message' => __( "Protokolle wurden erfolgreich gelöscht.", cp_defender()->domain )
 			) );
 		}
 
@@ -183,12 +183,12 @@ class Main extends Controller {
 				) );
 			} else {
 				wp_send_json_success( array(
-					'message' => sprintf( __( "IP %s has been added to your blacklist. You can control your blacklist in <a href=\"%s\">IP Lockouts.</a>", cp_defender()->domain ), $ip, \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-ip-lockout', array( 'view' => 'blacklist' ) ) )
+					'message' => sprintf( __( "IP %s wurde zu Deiner Sperrliste hinzugefügt. Du kannst Deine Sperrliste unter <a href=\"%s\">IP-Sperren</a> verwalten.", cp_defender()->domain ), $ip, \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-ip-lockout', array( 'view' => 'blacklist' ) ) )
 				) );
 			}
 		} else {
 			wp_send_json_error( array(
-				'message' => __( "No record found", cp_defender()->domain )
+				'message' => __( "Kein Eintrag gefunden", cp_defender()->domain )
 			) );
 		}
 	}
@@ -394,7 +394,7 @@ class Main extends Controller {
 					'From: Defender <' . $no_reply_email . '>',
 					'Content-Type: text/html; charset=UTF-8'
 				);
-				wp_mail( $user->user_email, sprintf( __( "404 lockout alert for %s", cp_defender()->domain ), network_site_url() ), $content, $headers );
+				wp_mail( $user->user_email, sprintf( __( "404-Sperrhinweis für %s", cp_defender()->domain ), network_site_url() ), $content, $headers );
 			}
 		}
 	}
@@ -421,7 +421,7 @@ class Main extends Controller {
 					'From: Defender <' . $no_reply_email . '>',
 					'Content-Type: text/html; charset=UTF-8'
 				);
-				wp_mail( $user->user_email, sprintf( __( "Login lockout alert for %s", cp_defender()->domain ), network_site_url() ), $content, $headers );
+				wp_mail( $user->user_email, sprintf( __( "Login-Sperrhinweis für %s", cp_defender()->domain ), network_site_url() ), $content, $headers );
 			}
 		}
 	}
@@ -519,7 +519,7 @@ class Main extends Controller {
 		$model             = new Log_Model();
 		$model->ip         = $this->getUserIp();
 		$model->user_agent = $_SERVER['HTTP_USER_AGENT'];
-		$model->log        = sprintf( esc_html__( "Failed login attempt with username %s", cp_defender()->domain ), $username );
+		$model->log        = sprintf( esc_html__( "Anmeldeversuch mit Benutzername %s fehlgeschlagen", cp_defender()->domain ), $username );
 		$model->date       = time();
 		$model->type       = 'auth_fail';
 		$model->tried      = $username;
@@ -580,19 +580,19 @@ class Main extends Controller {
 				} else {
 					$unameBlacklisted = $settings->getUsernameBlacklist();
 					if ( in_array( $username, $unameBlacklisted ) ) {
-						$user->add( 'def_warning', esc_html__( "You have been locked out by the administrator for attempting to login with a banned username", cp_defender()->domain ) );
+						$user->add( 'def_warning', esc_html__( "Du wurdest vom Administrator gesperrt, weil du versucht hast, dich mit einem gesperrten Benutzernamen anzumelden", cp_defender()->domain ) );
 					} else {
-						$user->add( 'def_warning', sprintf( esc_html__( "%d login attempts remaining", cp_defender()->domain ), $settings->login_protection_login_attempt - $attempt ) );
+						$user->add( 'def_warning', sprintf( esc_html__( "%d verbleibende Anmeldeversuche", cp_defender()->domain ), $settings->login_protection_login_attempt - $attempt ) );
 					}
 				}
 			} else {
 				$settings         = Settings::instance();
 				$unameBlacklisted = $settings->getUsernameBlacklist();
 				if ( in_array( $username, $unameBlacklisted ) ) {
-					$user->add( 'def_warning', esc_html__( "You have been locked out by the administrator for attempting to login with a banned username", cp_defender()->domain ) );
+					$user->add( 'def_warning', esc_html__( "Du wurdest vom Administrator gesperrt, weil du versucht hast, dich mit einem gesperrten Benutzernamen anzumelden", cp_defender()->domain ) );
 				} else {
 					//becase authenticate hook fire before wp_login_fail, so at this state, we dont have any data, we will decrease by one
-					$user->add( 'def_warning', sprintf( esc_html__( "%d login attempts remaining", cp_defender()->domain ), $settings->login_protection_login_attempt - 1 ) );
+					$user->add( 'def_warning', sprintf( esc_html__( "%d verbleibende Anmeldeversuche", cp_defender()->domain ), $settings->login_protection_login_attempt - 1 ) );
 				}
 			}
 		}
@@ -681,27 +681,27 @@ class Main extends Controller {
 			$isBLSelf = WP_Helper::getArrayCache()->get( 'isBlacklistSelf', false );
 			if ( $faultIps || $isBLSelf ) {
 				$res = array(
-					'message' => sprintf( __( "Your settings have been updated, however some IPs were removed because invalid format, or you blacklist yourself", cp_defender()->domain ), implode( ',', $faultIps ) ),
+					'message' => sprintf( __( "Deine Einstellungen wurden aktualisiert, jedoch wurden einige IPs entfernt, da sie ein ungültiges Format haben oder du dich selbst auf die Sperrliste gesetzt hast", cp_defender()->domain ), implode( ',', $faultIps ) ),
 					'reload'  => 1
 				);
 			} else {
-				$res = array( 'message' => __( "Your settings have been updated.", cp_defender()->domain ), );
+				$res = array( 'message' => __( "Deine Einstellungen wurden aktualisiert.", cp_defender()->domain ), );
 			}
 			if ( ( $lastSettings->login_protection != $settings->login_protection )
 			     || ( $lastSettings->detect_404 != $settings->detect_404 )
 			) {
 				if ( isset( $data['login_protection'] ) ) {
 					if ( $data['login_protection'] == 1 ) {
-						$status = __( "Login Protection has been activated.", cp_defender()->domain );
+						$status = __( "Login-Schutz wurde aktiviert.", cp_defender()->domain );
 					} else {
-						$status = __( "Login Protection has been deactivated.", cp_defender()->domain );
+						$status = __( "Login-Schutz wurde deaktiviert.", cp_defender()->domain );
 					}
 				}
 				if ( isset( $data['detect_404'] ) ) {
 					if ( $data['detect_404'] == 1 ) {
-						$status = __( "404 Detection has been activated.", cp_defender()->domain );
+						$status = __( "404-Erkennung wurde aktiviert.", cp_defender()->domain );
 					} else {
-						$status = __( "404 Detection has been deactivated.", cp_defender()->domain );
+						$status = __( "404-Erkennung wurde deaktiviert.", cp_defender()->domain );
 					}
 				}
 				//mean enabled or disabled, reload
@@ -736,7 +736,7 @@ return;
 		if ( get_site_option( 'defenderLockoutNeedUpdateLog' ) == 1 ) {
 			$action = "actionMigration";
 		}
-		add_submenu_page( 'cp-defender', esc_html__( "IP Lockouts", cp_defender()->domain ), esc_html__( "IP Lockouts", cp_defender()->domain ), $cap, $this->slug, array(
+		add_submenu_page( 'cp-defender', esc_html__( "IP-Sperren", cp_defender()->domain ), esc_html__( "IP-Sperren", cp_defender()->domain ), $cap, $this->slug, array(
 			&$this,
 			$action
 		) );
@@ -753,19 +753,19 @@ return;
 		$id = HTTP_Helper::retrieve_post( 'file' );
 		if ( ! is_object( get_post( $id ) ) ) {
 			wp_send_json_error( array(
-				'message' => __( "Your file is invalid!", cp_defender()->domain )
+				'message' => __( "Deine Datei ist ungültig!", cp_defender()->domain )
 			) );
 		}
 		$file = get_attached_file( $id );
 		if ( ! is_file( $file ) ) {
 			wp_send_json_error( array(
-				'message' => __( "Your file is invalid!", cp_defender()->domain )
+				'message' => __( "Deine Datei ist ungültig!", cp_defender()->domain )
 			) );
 		}
 
 		if ( ! ( $data = Login_Protection_Api::verifyImportFile( $file ) ) ) {
 			wp_send_json_error( array(
-				'message' => __( "Your file content is invalid!", cp_defender()->domain )
+				'message' => __( "Der Inhalt deiner Datei ist ungültig!", cp_defender()->domain )
 			) );
 		}
 		$settings = Settings::instance();
@@ -774,7 +774,7 @@ return;
 			$settings->addIpToList( $line[0], $line[1] );
 		}
 		wp_send_json_success( array(
-			'message' => __( "Your whitelist/blacklist has been successfully imported.", cp_defender()->domain ),
+			'message' => __( "Deine White-/Black-Liste wurde erfolgreich importiert.", cp_defender()->domain ),
 			'reload'  => 1
 		) );
 	}
@@ -959,7 +959,7 @@ return;
 			delete_site_option( 'defenderLogsMovedCount' );
 			delete_site_option( 'defenderLockoutNeedUpdateLog' );
 			wp_send_json_success( array(
-				'message' => __( "Thanks for your patience. All set.", cp_defender()->domain )
+				'message' => __( "Danke für Deine Geduld. Alles erledigt.", cp_defender()->domain )
 			) );
 		}
 

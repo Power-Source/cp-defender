@@ -106,7 +106,7 @@ abstract class Rule extends Component {
             <input type="hidden" name="action" value="ignoreHardener"/>
             <input type="hidden" name="slug" value="<?php echo static::$slug ?>"/>
             <button type="submit" name="ignore" value="ignore"
-                    class="button button-secondary"><?php _e( "Ignore", cp_defender()->domain ) ?></button>
+                    class="button button-secondary"><?php _e( "Ignorieren", cp_defender()->domain ) ?></button>
         </form>
 		<?php
 	}
@@ -131,7 +131,7 @@ abstract class Rule extends Component {
                     <input type="hidden" name="action" value="restoreHardener"/>
                     <input type="hidden" name="slug" value="<?php echo static::$slug ?>"/>
                     <button type="submit"
-                            class="button button-secondary button-small"><?php _e( "Restore", cp_defender()->domain ) ?></button>
+                            class="button button-secondary button-small"><?php _e( "Wiederherstellen", cp_defender()->domain ) ?></button>
                 </form>
                 <div class="clear"></div>
             </div>

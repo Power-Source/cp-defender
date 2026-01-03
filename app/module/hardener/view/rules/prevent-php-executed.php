@@ -5,27 +5,27 @@
 		<?php else: ?>
             <i class="def-icon icon-tick" aria-hidden="true"></i>
 		<?php endif; ?>
-		<?php _e( "Prevent PHP execution", cp_defender()->domain ) ?>
+		<?php _e( "PHP-Ausführung verhindern", cp_defender()->domain ) ?>
     </div>
     <div class="rule-content">
-        <h3><?php _e( "Overview", cp_defender()->domain ) ?></h3>
+        <h3><?php _e( "Übersicht", cp_defender()->domain ) ?></h3>
         <div class="line end">
-			<?php _e( "By default, a plugin/theme vulnerability could allow a PHP file to get uploaded into your site's directories and in turn execute harmful scripts that can wreak havoc on your website. Prevent this altogether by disabling direct PHP execution in directories that don't require it.", cp_defender()->domain ) ?>
+			<?php _e( "Standardmäßig könnte eine Schwachstelle in einem Plugin/Theme dazu führen, dass eine PHP-Datei in die Verzeichnisse deiner Website hochgeladen wird und schädliche Skripte ausgeführt werden, die deiner Website erheblichen Schaden zufügen können. Verhindere dies vollständig, indem du die direkte PHP-Ausführung in Verzeichnissen deaktivierst, die sie nicht benötigen.", cp_defender()->domain ) ?>
         </div>
         <h3>
-			<?php _e( "How to fix", cp_defender()->domain ) ?>
+			<?php _e( "Wie man es behebt", cp_defender()->domain ) ?>
         </h3>
         <div class="well">
 			<?php
             $setting = \CP_Defender\Module\Hardener\Model\Settings::instance();
 
             if ( $controller->check() ): ?>
-                <p class="line"><?php _e( "PHP execution is locked down.", cp_defender()->domain ) ?>
+                <p class="line"><?php _e( "Die PHP-Ausführung ist gesperrt.", cp_defender()->domain ) ?>
                 <?php
                 if ( in_array( $setting->active_server, array( 'apache', 'litespeed' ) ) ) {
                     $file_paths = $setting->getExcludedFilePaths();
                     if ( !empty( $file_paths ) && is_array( $file_paths ) && count( $file_paths ) > 0 ) {
-                        _e(" The following file paths have been allowed in the /wp-content directory :", cp_defender()->domain );
+                        _e(" Die folgenden Dateipfade wurden im Verzeichnis /wp-content zugelassen :", cp_defender()->domain );
 						?>
                         <div class="hardener-instructions hardener-instructions-apache-litespeed">
                             <textarea class="hardener-php-excuted-ignore"><?php echo implode( "\n", $file_paths ); ?></textarea>
@@ -36,7 +36,7 @@
                                 <input type="hidden" name="current_server" value="<?php echo $setting->active_server; ?>"/>
                                 <input type="hidden" name="slug" value="<?php echo $controller::$slug ?>"/>
                                 <button class="button button-small float-r"
-                                        type="submit"><?php _e( "Update .htaccess file", cp_defender()->domain ) ?></button>
+                                        type="submit"><?php _e( "Aktualisiere .htaccess-Datei", cp_defender()->domain ) ?></button>
                             </form>
                         </div>
 						<?php
@@ -49,7 +49,7 @@
                     <input type="hidden" name="action" value="processRevert"/>
                     <input type="hidden" name="slug" value="<?php echo $controller::$slug ?>"/>
                     <button class="button button-small button-grey"
-                            type="submit"><?php _e( "Revert", cp_defender()->domain ) ?></button>
+                            type="submit"><?php _e( "Zurücksetzen", cp_defender()->domain ) ?></button>
                 </form>
 			<?php else:
                 $servers = \CP_Defender\Behavior\Utils::instance()->serverTypes();
@@ -74,7 +74,7 @@
             ?>
                 <div class="columns">
                     <div class="column is-one-third">
-                        <?php _e( 'Server Type:', cp_defender()->domain ); ?>
+                        <?php _e( 'Server Typ:', cp_defender()->domain ); ?>
                     </div>
                     <div class="column is-one-third">
                         <select class="mline hardener-server-list" name="server">
@@ -88,7 +88,7 @@
                 <input type="hidden" class="hardener-wp-includes-dir" value="<?php echo $wp_includes; ?>" />
                 <div class="<?php echo ( $setting->active_server != 'apache' ) ? 'wd-hide' : ''; ?> hardener-instructions hardener-instructions-apache">
                     <div class="line">
-                        <p><?php _e( "We will place <strong>.htaccess</strong> file into the root folder to lock down the files and folders inside.", cp_defender()->domain ) ?></p>
+                        <p><?php _e( "Wir werden eine <strong>.htaccess</strong>-Datei im Stammverzeichnis platzieren, um die darin enthaltenen Dateien und Ordner zu sperren.", cp_defender()->domain ) ?></p>
                     </div>
                     <form method="post" class="hardener-frm hardener-apache-frm rule-process">
                         <?php $controller->createNonceField(); ?>
@@ -97,12 +97,12 @@
                         <input type="hidden" name="current_server" value="apache"/>
                         <input type="hidden" name="slug" value="<?php echo $controller::$slug ?>"/>
                         <button class="button float-r"
-                                type="submit"><?php _e( "Add .htaccess file", cp_defender()->domain ) ?></button>
+                                type="submit"><?php _e( "Füge .htaccess-Datei hinzu", cp_defender()->domain ) ?></button>
                     </form>
                 </div>
                 <div class="<?php echo ( $setting->active_server != 'litespeed' ) ? 'wd-hide' : ''; ?> hardener-instructions hardener-instructions-litespeed">
                     <div class="line">
-                        <p><?php _e( "We will place <strong>.htaccess</strong> file into the root folder to lock down the files and folders inside.", cp_defender()->domain ) ?></p>
+                        <p><?php _e( "Wir werden eine <strong>.htaccess</strong>-Datei im Stammverzeichnis platzieren, um die darin enthaltenen Dateien und Ordner zu sperren.", cp_defender()->domain ) ?></p>
                     </div>
                     <form method="post" class="hardener-frm hardener-litespeed-frm rule-process">
                         <?php $controller->createNonceField(); ?>
@@ -111,7 +111,7 @@
                         <input type="hidden" name="current_server" value="litespeed"/>
                         <input type="hidden" name="slug" value="<?php echo $controller::$slug ?>"/>
                         <button class="button float-r"
-                                type="submit" ><?php _e( "Add .htaccess file", cp_defender()->domain ) ?></button>
+                                type="submit" ><?php _e( "Füge .htaccess-Datei hinzu", cp_defender()->domain ) ?></button>
                     </form>
                 </div>
                 <div class="<?php echo ( $setting->active_server != 'nginx' ) ? 'wd-hide' : ''; ?> hardener-instructions hardener-instructions-nginx">
@@ -135,20 +135,20 @@ location ~* ^$wp_content/.*\.php$ {
 ";
                     ?>
 
-                    <p><?php esc_html_e( "For NGINX servers:", cp_defender()->domain ) ?></p>
+                    <p><?php esc_html_e( "Für NGINX-Server:", cp_defender()->domain ) ?></p>
                     <ol>
                         <li>
-                            <?php esc_html_e( "Copy the generated code into your site specific .conf file usually located in a subdirectory under /etc/nginx/... or /usr/local/nginx/conf/...", cp_defender()->domain ) ?>
+                            <?php esc_html_e( "Kopiere den generierten Code in deine sitespezifische .conf-Datei, die sich normalerweise in einem Unterverzeichnis unter /etc/nginx/... oder /usr/local/nginx/conf/... befindet.", cp_defender()->domain ) ?>
                         </li>
                         <li>
-                            <?php _e( "Add the code above inside the <strong>server</strong> section in the file, right before the php location block. Looks something like:", cp_defender()->domain ) ?>
+                            <?php _e( "Füge den obigen Code innerhalb des <strong>server</strong>-Abschnitts in der Datei ein, direkt vor dem PHP-Standortblock. Sieht ungefähr so aus:", cp_defender()->domain ) ?>
                             <pre>location ~ \.php$ {</pre>
                         </li>
                         <li>
-                            <?php esc_html_e( "Reload NGINX.", cp_defender()->domain ) ?>
+                            <?php esc_html_e( "Lade NGINX neu.", cp_defender()->domain ) ?>
                         </li>
                     </ol>
-                    <p><?php echo sprintf( __( "Still having trouble? <a target='_blank' href=\"%s\">Open a support ticket</a>.", cp_defender()->domain ), 'https://github.com/Power-Source/forums/forum/support#question' ) ?></p>
+                    <p><?php echo sprintf( __( "Hast du immer noch Probleme? <a target='_blank' href=\"%s\">Eröffne ein Support-Ticket</a>.", cp_defender()->domain ), 'https://github.com/Power-Source/forums/forum/support#question' ) ?></p>
                     <pre>
 ## PS Security - Prevent PHP Execution ##
                         <?php echo esc_html( $rules ); ?>
@@ -158,15 +158,15 @@ location ~* ^$wp_content/.*\.php$ {
                 </div>
                 <div class="<?php echo ( $setting->active_server != 'iis' ) ? 'wd-hide' : ''; ?> hardener-instructions hardener-instructions-iis">
                     <div class="line">
-                        <p><?php printf( __( 'For IIS servers, <a href="%s">visit Microsoft TechNet</a>', cp_defender()->domain ), 'https://technet.microsoft.com/en-us/library/cc725855(v=ws.10).aspx' ); ?></p>
+                        <p><?php printf( __( 'Für IIS-Server besuche <a href="%s">Microsoft TechNet</a></a>', cp_defender()->domain ), 'https://technet.microsoft.com/en-us/library/cc725855(v=ws.10).aspx' ); ?></p>
                     </div>
                 </div>
                 <div class="<?php echo ( $setting->active_server != 'iis-7' ) ? 'wd-hide' : ''; ?> hardener-instructions hardener-instructions-iis-7">
                     <div class="line">
-                        <p><?php _e( "We will place <strong>web.config</strong> file into the uploads folder to lock down the files and folders inside.", cp_defender()->domain ) ?></p>
+                        <p><?php _e( "Wir werden eine <strong>web.config</strong>-Datei in den Uploads-Ordner legen, um die darin enthaltenen Dateien und Ordner zu sperren.", cp_defender()->domain ) ?></p>
                     </div>
                     <div class="line">
-                        <p><?php printf( __( 'For more information, please <a href="%s">visit Microsoft TechNet</a>', cp_defender()->domain ), 'https://technet.microsoft.com/en-us/library/cc725855(v=ws.10).aspx' ); ?></p>
+                        <p><?php printf( __( 'Für weitere Informationen besuche bitte <a href="%s">Microsoft TechNet</a>', cp_defender()->domain ), 'https://technet.microsoft.com/en-us/library/cc725855(v=ws.10).aspx' ); ?></p>
                     </div>
                     <form method="post" class="hardener-frm hardener-litespeed-frm rule-process">
                         <?php $controller->createNonceField(); ?>
@@ -174,7 +174,7 @@ location ~* ^$wp_content/.*\.php$ {
                         <input type="hidden" name="current_server" value="iis-7"/>
                         <input type="hidden" name="slug" value="<?php echo $controller::$slug ?>"/>
                         <button class="button float-r"
-                                type="submit" ><?php _e( "Add web.config file", cp_defender()->domain ) ?></button>
+                                type="submit" ><?php _e( "web.config-Datei hinzufügen", cp_defender()->domain ) ?></button>
                     </form>
 
                 </div>
@@ -189,7 +189,7 @@ location ~* ^$wp_content/.*\.php$ {
                         <?php _e( "Exceptions", cp_defender()->domain ) ?>
                     </h3>
                     <div class="line">
-                        <p><?php _e( "By default Defender will lock down directories WordPress doesn't need to allow PHP execution for. However, if you have specific files you need to allow PHP execution for you can add exceptions. Add file name one per line", cp_defender()->domain ) ?></p>
+                        <p><?php _e( "Standardmäßig sperrt PS Security Verzeichnisse, für die WordPress keine PHP-Ausführung benötigt. Wenn du jedoch bestimmte Dateien hast, für die du die PHP-Ausführung zulassen musst, kannst du Ausnahmen hinzufügen. Füge einen Dateinamen pro Zeile hinzu", cp_defender()->domain ) ?></p>
                         <button class="button button-grey hardener-php-excuted-execption" type="button"><?php _e( "Add Exception", cp_defender()->domain ) ?></button>
                     </div>
                     <div class="line">

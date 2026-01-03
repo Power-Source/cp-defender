@@ -35,7 +35,7 @@ class Logs_Table extends \WP_List_Table {
 	function get_columns() {
 		$columns = array(
 			'reason' => esc_html__( 'DETAILS', cp_defender()->domain ),
-			'date'   => esc_html__( 'DATE', cp_defender()->domain ),
+			'date'   => esc_html__( 'DATUM', cp_defender()->domain ),
 			'ip'     => esc_html__( 'IP', cp_defender()->domain ),
 			'action' => ''
 		);
@@ -128,7 +128,7 @@ class Logs_Table extends \WP_List_Table {
 	public function column_ip( Log_Model $log ) {
 		$ip = \CP_Defender\Behavior\Utils::instance()->getUserIp();
 		if ( $ip == $log->get_ip() ) {
-			return '<span tooltip="' . esc_attr( $ip ) . '" class="badge">' . __( "You", cp_defender()->domain ) . '</span>';
+			return '<span tooltip="' . esc_attr( $ip ) . '" class="badge">' . __( "Du", cp_defender()->domain ) . '</span>';
 		} else {
 			return $log->get_ip();
 		}
@@ -148,18 +148,18 @@ class Logs_Table extends \WP_List_Table {
                     <div class="columns">
                         <div class="column is-5">
                             <select name="interval">
-                                <option value="1"><?php _e( "Last 24 hours", cp_defender()->domain ) ?></option>
-                                <option value="7"><?php _e( "Last 7 days", cp_defender()->domain ) ?></option>
+                                <option value="1"><?php _e( "Letzte 24 Stunden", cp_defender()->domain ) ?></option>
+                                <option value="7"><?php _e( "Letzte 7 Tage", cp_defender()->domain ) ?></option>
                                 <option value="30"
-                                        selected><?php _e( "Last 30 days", cp_defender()->domain ) ?></option>
+                                        selected><?php _e( "Letzte 30 Tage", cp_defender()->domain ) ?></option>
                             </select>
                         </div>
                         <div class="column is-5">
                             <select name="type">
-                                <option value=""><?php esc_html_e( "All", cp_defender()->domain ) ?></option>
+                                <option value=""><?php esc_html_e( "Alle", cp_defender()->domain ) ?></option>
                                 <option <?php selected( \CP_Defender\Module\IP_Lockout\Model\Log_Model::AUTH_FAIL, \Hammer\Helper\HTTP_Helper::retrieve_get( 'filter' ) ) ?>
                                         value="<?php echo \CP_Defender\Module\IP_Lockout\Model\Log_Model::AUTH_FAIL ?>">
-									<?php esc_html_e( "Failed login attempts", cp_defender()->domain ) ?></option>
+									<?php esc_html_e( "Fehlgeschlagene Anmeldeversuche", cp_defender()->domain ) ?></option>
                                 <option <?php selected( \CP_Defender\Module\IP_Lockout\Model\Log_Model::AUTH_LOCK, \Hammer\Helper\HTTP_Helper::retrieve_get( 'filter' ) ) ?>
                                         value="<?php echo \CP_Defender\Module\IP_Lockout\Model\Log_Model::AUTH_LOCK ?>"><?php esc_html_e( "Login lockout", cp_defender()->domain ) ?></option>
                                 <option <?php selected( \CP_Defender\Module\IP_Lockout\Model\Log_Model::ERROR_404, \Hammer\Helper\HTTP_Helper::retrieve_get( 'filter' ) ) ?>
@@ -195,7 +195,7 @@ class Logs_Table extends \WP_List_Table {
 			<?php else: ?>
                 <div class="well with-cap well-blue">
                     <i class="def-icon icon-info fill-blue"></i>
-					<?php _e( "No lockout events have been logged within the selected time period.", cp_defender()->domain ) ?>
+					<?php _e( "Innerhalb des ausgewählten Zeitraums wurden keine Sperrereignisse protokolliert.", cp_defender()->domain ) ?>
                 </div>
 			<?php endif; ?>
         </div>
@@ -242,12 +242,12 @@ class Logs_Table extends \WP_List_Table {
                 <div class="bulk-action">
 					<?php if ( $which === 'top' ): ?>
                         <p><?php
-							$dayText = sprintf( _n( '%s day', '%s days', HTTP_Helper::retrieve_get( 'interval', 30 ), cp_defender()->domain ), HTTP_Helper::retrieve_get( 'interval', 30 ) );
-							printf( esc_html__( 'Your website\'s lockout log for the past %s.', cp_defender()->domain ), $dayText ) ?></p>
+							$dayText = sprintf( _n( '%s Tag', '%s Tage', HTTP_Helper::retrieve_get( 'interval', 30 ), cp_defender()->domain ), HTTP_Helper::retrieve_get( 'interval', 30 ) );
+							printf( esc_html__( 'Sperrprotokoll Deiner Webseite für die letzten %s.', cp_defender()->domain ), $dayText ) ?></p>
 					<?php endif; ?>
                 </div>
                 <div class="nav">
-                    <span><?php echo sprintf( esc_html__( "%s results", cp_defender()->domain ), $this->get_pagination_arg( 'total_items' ) ) ?></span>
+                    <span><?php echo sprintf( esc_html__( "%s Ergebnisse", cp_defender()->domain ), $this->get_pagination_arg( 'total_items' ) ) ?></span>
                     <div class="button-group">
 						<?php $this->pagination( $which ); ?>
                     </div>
@@ -338,7 +338,7 @@ class Logs_Table extends \WP_List_Table {
 
 		if ( ! empty( $columns['cb'] ) ) {
 			static $cb_counter = 1;
-			$columns['cb'] = '<label class="screen-reader-text" for="cb-select-all-' . $cb_counter . '">' . __( 'Select All' ) . '</label>'
+			$columns['cb'] = '<label class="screen-reader-text" for="cb-select-all-' . $cb_counter . '">' . __( 'Alle auswählen' ) . '</label>'
 			                 . '<input id="cb-select-all-' . $cb_counter . '" type="checkbox" />';
 			$cb_counter ++;
 		}
