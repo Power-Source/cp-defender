@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Audit\Controller;
 
@@ -81,20 +79,20 @@ class Main extends \CP_Defender\Controller {
 		$logs    = $data['data'];
 		$fp      = fopen( 'php://memory', 'w' );
 		$headers = array(
-			__( "Summary", cp_defender()->domain ),
-			__( "Date / Time", cp_defender()->domain ),
-			__( "Context", cp_defender()->domain ),
-			__( "Type", cp_defender()->domain ),
-			__( "IP address", cp_defender()->domain ),
-			__( "User", cp_defender()->domain )
+			__( "Zusammenfassung", cp_defender()->domain ),
+			__( "Datum / Uhrzeit", cp_defender()->domain ),
+			__( "Kontext", cp_defender()->domain ),
+			__( "Typ", cp_defender()->domain ),
+			__( "IP-Adresse", cp_defender()->domain ),
+			__( "Benutzer", cp_defender()->domain )
 		);
 		fputcsv( $fp, $headers );
 		foreach ( $logs as $fields ) {
 			$vars = array(
 				$fields['msg'],
 				is_array( $fields['timestamp'] )
-					? $this->formatDateTime( date( 'Y-m-d H:i:s', $fields['timestamp'][0] ) )
-					: $this->formatDateTime( date( 'Y-m-d H:i:s', $fields['timestamp'] ) ),
+					? $this->formatDateTime( date( 'd.m.Y H:i:s', $fields['timestamp'][0] ) )
+					: $this->formatDateTime( date( 'd.m.Y H:i:s', $fields['timestamp'] ) ),
 				ucwords( Audit_API::get_action_text( $fields['context'] ) ),
 				ucwords( Audit_API::get_action_text( $fields['action_type'] ) ),
 				$fields['ip'],
@@ -141,7 +139,7 @@ class Main extends \CP_Defender\Controller {
 			) );
 		}
 
-		$lastEventDate   = __( "Never", cp_defender()->domain );
+		$lastEventDate   = __( "Keine", cp_defender()->domain );
 		$dailyEventCount = 0;
 
 		if ( $eventsInMonth['total_items'] > 0 ) {
@@ -156,7 +154,7 @@ class Main extends \CP_Defender\Controller {
 			if ( is_array( $lastEventDate ) ) {
 				$lastEventDate = $lastEventDate[0];
 			}
-			$lastEventDate = $this->formatDateTime( date( 'Y-m-d H:i:s', $lastEventDate ) );
+			$lastEventDate = $this->formatDateTime( date( 'd.m.Y H:i:s', $lastEventDate ) );
 		}
 		$content = $this->renderPartial( 'widget', array(
 			'eventMonth' => $eventsInMonth['total_items'],
@@ -194,16 +192,16 @@ class Main extends \CP_Defender\Controller {
 			wp_schedule_event( $cronTime, 'daily', 'auditReportCron' );
 		}
 		$res = array(
-			'message' => __( "Your settings have been updated.", cp_defender()->domain )
+			'message' => __( "Deine Einstellungen wurden aktualisiert.", cp_defender()->domain )
 		);
 
 		if ( $settings->notification == true ) {
 			$res['notification'] = 1;
 			$res['frequency']    = ucfirst( \CP_Defender\Behavior\Utils::instance()->frequencyToText( $settings->frequency ) );
 			if ( $settings->frequency == 1 ) {
-				$res['schedule'] = sprintf( __( "at %s", cp_defender()->domain ), strftime( '%I:%M %p', strtotime( $settings->time ) ) );
+				$res['schedule'] = sprintf( __( "um %s", cp_defender()->domain ), strftime( '%I:%M %p', strtotime( $settings->time ) ) );
 			} else {
-				$res['schedule'] = sprintf( __( "%s at %s", cp_defender()->domain ), ucfirst( $settings->day ), strftime( '%I:%M %p', strtotime( $settings->time ) ) );
+				$res['schedule'] = sprintf( __( "%s um %s", cp_defender()->domain ), ucfirst( $settings->day ), strftime( '%I:%M %p', strtotime( $settings->time ) ) );
 			}
 		} else {
 			$res['notification'] = 0;
@@ -345,7 +343,7 @@ class Main extends \CP_Defender\Controller {
                                     style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;">
                                     <h3 style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 32px; font-weight: normal; line-height: 32px; margin: 0; margin-bottom: 0; padding: 0 0 28px; text-align: left; word-wrap: normal;"><?php _e( "Hi {USER_NAME},", cp_defender()->domain ) ?></h3>
                                     <p style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; margin-bottom: 0; padding: 0 0 24px; text-align: left;">
-										<?php printf( __( "It’s PS Security here, reporting from the frontline with a quick update on what’s been happening at <a href=\"%s\">%s</a>.", cp_defender()->domain ), site_url(), site_url() ) ?></p>
+										<?php printf( __( "Hier ist PS Security mit einem kurzen Bericht von der Frontlinie über die aktuellen Ereignisse bei <a href=\"%s\">%s</a>.", cp_defender()->domain ), site_url(), site_url() ) ?></p>
                                 </td>
                             </tr>
                             </tbody>
@@ -361,7 +359,7 @@ class Main extends \CP_Defender\Controller {
                                 </th>
                                 <th class="result-list-data-title"
                                     style="Margin: 0; color: #ff5c28; font-family: Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 700; line-height: 48px; margin: 0; padding: 0; text-align: left;">
-									<?php _e( "Action Summaries", cp_defender()->domain ) ?>
+									<?php _e( "Handlungszusammenfassungen", cp_defender()->domain ) ?>
                                 </th>
                             </tr>
                             </thead>
@@ -404,10 +402,10 @@ class Main extends \CP_Defender\Controller {
                                            href="<?php echo network_admin_url( 'admin.php?page=wdf-logging&date_from=' . date( 'm/d/Y', strtotime( $date_from ) ) . '&date_to=' . date( 'm/d/Y', strtotime( $date_to ) ) ) ?>"
                                            style="Margin: 0; color: #ff5c28; display: inline-block; font: inherit; font-family: Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: left; text-decoration: none;"><?php _e( "You can view the full audit report for your site here.", cp_defender()->domain ) ?>
                                             <img
-                                                    class="icon-arrow-right"
-                                                    src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/icon-arrow-right-defender.png"
-                                                    alt="Arrow"
-                                                    style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: inline-block; margin: -2px 0 0 5px; max-width: 100%; outline: none; text-decoration: none; vertical-align: middle; width: auto;"></a>
+                                                class="icon-arrow-right"
+                                                src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/icon-arrow-right-defender.png"
+                                                alt="Arrow"
+                                                style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: inline-block; margin: -2px 0 0 5px; max-width: 100%; outline: none; text-decoration: none; vertical-align: middle; width: auto;"></a>
                                     </p>
                                 </td>
                             </tr>
@@ -423,7 +421,7 @@ class Main extends \CP_Defender\Controller {
                                         Stay safe,</p>
                                     <p class="last-item"
                                        style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; margin-bottom: 0; padding: 0; text-align: left;">
-                                        PS Security <br><strong>WPMU DEV Security Hero</strong></p>
+                                        PS Security <br><strong>Sicherheit von PSOURCE</strong></p>
                                 </td>
                             </tr>
                             </tbody>
@@ -435,12 +433,12 @@ class Main extends \CP_Defender\Controller {
 			<?php
 			$table = ob_get_clean();
 		} else {
-			$table = '<p>' . sprintf( esc_html__( "There were no events logged for %s", cp_defender()->domain ), network_site_url() ) . '</p>';
+			$table = '<p>' . sprintf( esc_html__( "Es wurden keine Ereignisse für %s protokolliert", cp_defender()->domain ), network_site_url() ) . '</p>';
 		}
 
 		$template = $this->renderPartial( 'email_template', array(
 			'message' => $table,
-			'subject' => sprintf( esc_html__( "Here’s what’s been happening at %s", cp_defender()->domain ), network_site_url() )
+			'subject' => sprintf( esc_html__( "Hier ist, was bei %s passiert ist", cp_defender()->domain ), network_site_url() )
 		), false );
 
 
@@ -466,7 +464,7 @@ class Main extends \CP_Defender\Controller {
 			foreach ( $params as $key => $val ) {
 				$email_content = str_replace( '{' . $key . '}', $val, $email_content );
 			}
-			wp_mail( $email, sprintf( esc_html__( "Here’s what’s been happening at %s", cp_defender()->domain ), network_site_url() ), $email_content, $headers );
+			wp_mail( $email, sprintf( esc_html__( "Hier ist, was bei %s passiert ist", cp_defender()->domain ), network_site_url() ), $email_content, $headers );
 		}
 
 		$settings->lastReportSent = time();
@@ -503,7 +501,7 @@ class Main extends \CP_Defender\Controller {
 	 */
 	public function adminMenu() {
 		$cap = is_multisite() ? 'manage_network_options' : 'manage_options';
-		add_submenu_page( 'cp-defender', esc_html__( "Audit Logging", cp_defender()->domain ), esc_html__( "Audit Logging", cp_defender()->domain ), $cap, $this->slug, array(
+		add_submenu_page( 'cp-defender', esc_html__( "Audit-Protokollierung", cp_defender()->domain ), esc_html__( "Audit-Protokollierung", cp_defender()->domain ), $cap, $this->slug, array(
 			&$this,
 			'actionIndex'
 		) );
@@ -559,8 +557,8 @@ class Main extends \CP_Defender\Controller {
 		if ( Settings::instance()->enabled ) {
 			$date_format = 'm/d/Y';
 			$this->email_search->add_script();
-			$this->email_search->placeholder = __( "Type a user’s name", cp_defender()->domain );
-			$this->email_search->empty_msg   = __( "We did not find an user with this name...", cp_defender()->domain );
+			$this->email_search->placeholder = __( "Gib einen Benutzernamen ein", cp_defender()->domain );
+			$this->email_search->empty_msg   = __( "Wir haben keinen Benutzer mit diesem Namen gefunden...", cp_defender()->domain );
 			$from                            = Http_Helper::retrieve_get( 'date_from', date( $date_format, strtotime( 'today midnight', strtotime( '-7 days', current_time( 'timestamp' ) ) ) ) );
 			$to                              = Http_Helper::retrieve_get( 'date_to', date( $date_format, current_time( 'timestamp' ) ) );
 			$this->render( 'main', array(

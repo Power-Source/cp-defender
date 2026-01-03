@@ -423,7 +423,7 @@
                                                     style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;">
                                                     <a href="https://github.com/Power-Source/"
                                                        style="Margin: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: left; text-decoration: none;"><img
-                                                                src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/hero-defender.png"
+                                                                src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/psource-logo.png"
                                                                 alt="Defender"
                                                                 style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: block; max-width: 100%; outline: none; text-decoration: none; width: auto;"></a>
                                                 </td>
@@ -476,7 +476,7 @@
 																<?php esc_html_e( "Last Lockout: ", cp_defender()->domain ) ?>
                                                                 <strong><?php
 																	$format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
-																	echo esc_html( get_date_from_gmt( date( 'Y-m-d H:i:s', $last_lockout->date ), $format ) );
+																	echo esc_html( get_date_from_gmt( date( 'd.m.Y H:i:s', $last_lockout->date ), $format ) );
 																	?>
                                                                 </strong>
                                                             </p>
@@ -576,7 +576,7 @@
                                                                    href="https://github.com/Power-Source/project/snapshot/"
                                                                    style="Margin: 0; color: #555555; display: table; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: normal; line-height: 20px; margin: 0; padding: 0; text-align: left; text-decoration: none;">
                                                                     <img
-                                                                            src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/plugin-snapshot.png"
+                                                                            src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/psource-logo.png"
                                                                             alt="Snapshot"
                                                                             class="plugin-image"
                                                                             style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: table-cell; max-width: 100%; outline: none; text-decoration: none; width: auto;">
@@ -649,10 +649,10 @@
                                                 </th>
                                                 <th class="small-12 large-4 columns last logo" align="right"
                                                     style="Margin: 0 auto; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0 auto; padding: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; text-align: right; width: 201.33333px;">
-                                                    <a href="https://premium.wpmudev.org" class="logo-link"
+                                                    <a href="https://github.com/Power-Source" class="logo-link"
                                                        style="Margin: 0; color: #555555; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: right; text-decoration: none;">
                                                         <img
-                                                                src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/wpmudev-logo.png"
+                                                                src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/psource-logo.png"
                                                                 alt="PSOURCE"
                                                                 style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: inline-block; max-width: 100%; outline: none; text-align: right; text-decoration: none; width: auto;">
                                                     </a>

@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Hardener\Component;
 
@@ -30,7 +28,7 @@ class DB_Prefix extends Rule {
 	}
 
 	public function getTitle() {
-		return __( "Change default database prefix", cp_defender()->domain );
+		return __( "Standarddatenbankpräfix ändern", cp_defender()->domain );
 	}
 
 	function process() {

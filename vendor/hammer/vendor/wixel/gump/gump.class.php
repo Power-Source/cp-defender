@@ -1736,7 +1736,7 @@ if ( ! class_exists( 'GUMP', false ) ) {
 		 * Usage: '<index>' => 'date'
 		 *
 		 * @param string $field
-		 * @param string $input date ('Y-m-d') or datetime ('Y-m-d H:i:s')
+		 * @param string $input date ('Y-m-d') or datetime ('d.m.Y H:i:s')
 		 * @param null $param
 		 *
 		 * @return mixed
@@ -1747,7 +1747,7 @@ if ( ! class_exists( 'GUMP', false ) ) {
 			}
 
 			$cdate1 = date( 'Y-m-d', strtotime( $input[ $field ] ) );
-			$cdate2 = date( 'Y-m-d H:i:s', strtotime( $input[ $field ] ) );
+			$cdate2 = date( 'd.m.Y H:i:s', strtotime( $input[ $field ] ) );
 
 			if ( $cdate1 != $input[ $field ] && $cdate2 != $input[ $field ] ) {
 				return array(
@@ -1765,7 +1765,7 @@ if ( ! class_exists( 'GUMP', false ) ) {
 		 * Usage: '<index>' => 'min_age,13'
 		 *
 		 * @param string $field
-		 * @param string $input date ('Y-m-d') or datetime ('Y-m-d H:i:s')
+		 * @param string $input date ('Y-m-d') or datetime ('d.m.Y H:i:s')
 		 * @param string $param int
 		 *
 		 * @return mixed

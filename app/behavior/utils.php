@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Behavior;
 
@@ -167,7 +165,7 @@ class Utils extends Behavior {
 		if ( $i18n == false ) {
 			return date( $format, $timestring );
 		} else {
-			$time = get_date_from_gmt( date( 'Y-m-d H:i:s', $timestring ), 'Y-m-d H:i:s' );
+			$time = get_date_from_gmt( date( 'd.m.Y H:i:s', $timestring ), 'd.m.Y H:i:s' );
 
 			return date_i18n( $format, strtotime( $time ) );
 		}
@@ -770,7 +768,7 @@ class Utils extends Behavior {
 			'date_to'   => date( 'Y-m-d' ) . ' 23:59:59',
 		) );
 
-		$last_event_date = __( 'Never', cp_defender()->domain );
+		$last_event_date = __( 'Keine', cp_defender()->domain );
 
 		if ( ! is_wp_error( $events_in_month ) ) {
 			$last_event_date = $events_in_month['data'][0]['timestamp'];

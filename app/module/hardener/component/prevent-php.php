@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Hardener\Component;
 
@@ -33,7 +31,7 @@ class Prevent_Php extends Rule {
 	 * @return string|void
 	 */
 	public function getTitle() {
-		return __( "Prevent PHP execution", cp_defender()->domain );
+		return __( "PHP-Ausführung verhindern", cp_defender()->domain );
 	}
 
 

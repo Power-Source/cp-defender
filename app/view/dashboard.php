@@ -13,37 +13,37 @@
 									?></h5>
 								<?php if ( $countAll == 0 ): ?>
                                 <span class=""
-                                      tooltip="<?php esc_attr_e( 'You have no outstanding security issues.', cp_defender()->domain ); ?>">
+                                      tooltip="<?php esc_attr_e( 'Es bestehen keine offenen Sicherheitslücken.', cp_defender()->domain ); ?>">
                                         <i class="def-icon icon-tick" aria-hidden="true"></i>
 									<?php else: ?>
 									<?php
 									if ( $sCount > 0 && $hCount > 0 ) :
 									?>
                                     <span class=""
-                                          tooltip="<?php esc_attr_e( sprintf( __( 'You have %d security tweak(s)  and %d suspicious file(s) needing attention.', cp_defender()->domain ), $hCount, $sCount ) ); ?>">
+                                          tooltip="<?php esc_attr_e( sprintf( __( 'Du hast %d Sicherheitsanpassung(en) und %d verdächtige Datei(en), die Aufmerksamkeit benötigen.', cp_defender()->domain ), $hCount, $sCount ) ); ?>">
                                         <?php elseif ( $hCount > 0 ): ?>
                                         <span class=""
-                                              tooltip="<?php esc_attr_e( sprintf( __( 'You have %d security tweak(s) needing attention.', cp_defender()->domain ), $hCount ) ); ?>">
+                                              tooltip="<?php esc_attr_e( sprintf( __( 'Du hast %d Sicherheitsanpassung(en), die Aufmerksamkeit benötigen.', cp_defender()->domain ), $hCount ) ); ?>">
                                         <?php elseif ( $sCount > 0 ): ?>
                                             <span class=""
-                                                  tooltip="<?php esc_attr_e( sprintf( __( 'You have %d suspicious file(s) needing attention.', cp_defender()->domain ), $sCount ) ); ?>">
+                                                  tooltip="<?php esc_attr_e( sprintf( __( 'Du hast %d verdächtige Datei(en), die Aufmerksamkeit benötigen.', cp_defender()->domain ), $sCount ) ); ?>">
                                         <?php else: ?>
                                                 <span class=""
-                                                      tooltip="<?php esc_attr_e( 'You have no outstanding security issues.', cp_defender()->domain ); ?>">
+                                                      tooltip="<?php esc_attr_e( 'Es bestehen keine offenen Sicherheitslücken.', cp_defender()->domain ); ?>">
                                         <?php endif; ?>
                                                     <i class="def-icon icon-warning icon-yellow <?php echo $sCount > 0 ? 'fill-red' : null ?>" aria-hidden="true"></i>
 													<?php endif; ?>
                                 </span>
                                 <div class="clear"></div>
                                 <span class="sub"><?php
-	                                _e( "security issues", cp_defender()->domain ) ?></span>
+	                                _e( "Sicherheitsprobleme", cp_defender()->domain ) ?></span>
                             </div>
                         </div>
                         <div class="column is-5">
                             <ul class="dev-list bold">
                                 <li>
                                     <div>
-                                        <span class="list-label"><?php _e( "Security tweaks actioned", cp_defender()->domain ) ?></span>
+                                        <span class="list-label"><?php _e( "Sicherheitsanpassungen durchgeführt", cp_defender()->domain ) ?></span>
                                         <span class="list-detail"><span>
                                             <?php
                                             $settings = \CP_Defender\Module\Hardener\Model\Settings::instance();
@@ -55,7 +55,7 @@
                                 </li>
                                 <li>
                                     <div>
-                                        <span class="list-label"><?php _e( "File Scan Issues", cp_defender()->domain ) ?></span>
+                                        <span class="list-label"><?php _e( "Datei-Scan-Probleme", cp_defender()->domain ) ?></span>
                                         <span class="list-detail">
                                        <?php echo $controller->renderScanStatusText() ?>
                                     </span>
@@ -63,7 +63,7 @@
                                 </li>
                                 <li>
                                     <div>
-                                        <span class="list-label"><?php _e( "Last Lockout" ) ?></span>
+                                        <span class="list-label"><?php _e( "Letzte IP-Sperrung" ) ?></span>
                                         <span class="list-detail lastLockout">.</span>
                                     </div>
                                 </li>

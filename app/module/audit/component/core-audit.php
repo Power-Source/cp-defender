@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Audit\Component;
 
@@ -17,7 +15,7 @@ class Core_Audit extends Event_Abstract {
 		return array(
 			'switch_theme'              => array(
 				'args'        => array( 'new_name' ),
-				'text'        => sprintf( esc_html__( "%s activated theme: %s", cp_defender()->domain ), '{{wp_user}}', '{{new_name}}' ),
+				'text'        => sprintf( esc_html__( "%s aktiviertes Design: %s", cp_defender()->domain ), '{{wp_user}}', '{{new_name}}' ),
 				'level'       => self::LOG_LEVEL_NOTICE,
 				'event_type'  => $this->type,
 				'context'     => self::CONTEXT_THEME,
@@ -25,7 +23,7 @@ class Core_Audit extends Event_Abstract {
 			),
 			'activated_plugin'          => array(
 				'args'         => array( 'plugin' ),
-				'text'         => sprintf( esc_html__( "%s activated plugin: %s, version %s", cp_defender()->domain ), '{{wp_user}}', '{{plugin_name}}', '{{plugin_version}}' ),
+				'text'         => sprintf( esc_html__( "%s aktiviertes Plugin: %s, Version %s", cp_defender()->domain ), '{{wp_user}}', '{{plugin_name}}', '{{plugin_version}}' ),
 				'level'        => self::LOG_LEVEL_NOTICE,
 				'event_type'   => $this->type,
 				'action_type'  => self::ACTION_ACTIVATED,
@@ -55,7 +53,7 @@ class Core_Audit extends Event_Abstract {
 			),
 			'deleted_plugin'            => array(
 				'args'        => array( 'plugin_file', 'deleted' ),
-				'text'        => sprintf( esc_html__( "%s deleted plugin: %s", cp_defender()->domain ), '{{wp_user}}', '{{plugin_file}}' ),
+				'text'        => sprintf( esc_html__( "%s hat das Plugin %s gelöscht", cp_defender()->domain ), '{{wp_user}}', '{{plugin_file}}' ),
 				'level'       => self::LOG_LEVEL_NOTICE,
 				'action_type' => self::ACTION_DEACTIVATED,
 				'event_type'  => $this->type,
@@ -63,7 +61,7 @@ class Core_Audit extends Event_Abstract {
 			),
 			'deactivated_plugin'        => array(
 				'args'         => array( 'plugin' ),
-				'text'         => sprintf( esc_html__( "%s deactivated plugin: %s, version %s", cp_defender()->domain ), '{{wp_user}}', '{{plugin_name}}', '{{plugin_version}}' ),
+				'text'         => sprintf( esc_html__( "%s deaktiviertes Plugin: %s, Version %s", cp_defender()->domain ), '{{wp_user}}', '{{plugin_name}}', '{{plugin_version}}' ),
 				'level'        => self::LOG_LEVEL_NOTICE,
 				'action_type'  => self::ACTION_DEACTIVATED,
 				'event_type'   => $this->type,
@@ -109,14 +107,14 @@ class Core_Audit extends Event_Abstract {
 				'action_type' => 'file_added',
 				'event_type'  => $this->type,
 				'context'     => self::CONTEXT_CORE,
-				'text'        => sprintf( esc_html__( 'A new file added, path %s', cp_defender()->domain ), '{{file}}' )
+				'text'        => sprintf( esc_html__( 'Eine neue Datei wurde hinzugefügt, Pfad %s', cp_defender()->domain ), '{{file}}' )
 			),
 			'wd_checksum_file_modified' => array(
 				'args'        => array( 'file' ),
 				'action_type' => 'file_modified',
 				'event_type'  => $this->type,
 				'context'     => self::CONTEXT_CORE,
-				'text'        => sprintf( esc_html__( 'A file has been modified, path %s', cp_defender()->domain ), '{{file}}' )
+				'text'        => sprintf( esc_html__( 'Eine Datei wurde geändert, Pfad %s', cp_defender()->domain ), '{{file}}' )
 			)
 		);
 	}
@@ -128,7 +126,7 @@ class Core_Audit extends Event_Abstract {
 		$file   = $args[1]['file'];
 
 		return array(
-			sprintf( esc_html__( '%s updated file %s of %s %s', cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $file, $type, $object ),
+			sprintf( esc_html__( '%s hat die Datei %s von %s %s aktualisiert', cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $file, $type, $object ),
 			$type == 'plugin' ? self::CONTEXT_PLUGIN : self::CONTEXT_THEME
 		);
 	}
@@ -140,7 +138,7 @@ class Core_Audit extends Event_Abstract {
 			$updates = array_shift( $updates );
 			if ( is_object( $updates ) && property_exists( $updates, 'version' ) ) {
 				return array(
-					sprintf( esc_html__( "%s updated WordPress to %s", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $updates->version ),
+					sprintf( esc_html__( "%s hat WordPress auf %s aktualisiert", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $updates->version ),
 					self::CONTEXT_CORE
 				);
 			}
@@ -155,12 +153,12 @@ class Core_Audit extends Event_Abstract {
 			foreach ( $options['themes'] as $t ) {
 				$theme = wp_get_theme( $t );
 				if ( is_object( $theme ) ) {
-					$texts[] = sprintf( esc_html__( "%s to %s", cp_defender()->domain ), $theme->Name, $theme->get( 'Version' ) );
+					$texts[] = sprintf( esc_html__( "%s auf %s", cp_defender()->domain ), $theme->Name, $theme->get( 'Version' ) );
 				}
 			}
 			if ( count( $texts ) ) {
 				return array(
-					sprintf( esc_html__( "%s updated themes: %s", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), implode( ', ', $texts ) ),
+					sprintf( esc_html__( "%s hat Themes aktualisiert: %s", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), implode( ', ', $texts ) ),
 					self::CONTEXT_THEME
 				);
 			} else {
@@ -171,12 +169,12 @@ class Core_Audit extends Event_Abstract {
 			foreach ( $options['plugins'] as $t ) {
 				$plugin = get_plugin_data( WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $t );
 				if ( is_array( $plugin ) && isset( $plugin['Name'] ) && ! empty( $plugin['Name'] ) ) {
-					$texts[] = sprintf( esc_html__( "%s to %s", cp_defender()->domain ), $plugin['Name'], $plugin['Version'] );
+					$texts[] = sprintf( esc_html__( "%s auf %s", cp_defender()->domain ), $plugin['Name'], $plugin['Version'] );
 				}
 			}
 			if ( count( $texts ) ) {
 				return array(
-					sprintf( esc_html__( "%s updated plugins: %s", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), implode( ', ', $texts ) ),
+					sprintf( esc_html__( "%s hat Plugins aktualisiert: %s", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), implode( ', ', $texts ) ),
 					self::CONTEXT_PLUGIN
 				);
 			} else {
@@ -193,7 +191,7 @@ class Core_Audit extends Event_Abstract {
 				$version = $theme->get( 'Version' );
 
 				return array(
-					sprintf( esc_html__( "%s updated theme: %s, version %s", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $name, $version ),
+					sprintf( esc_html__( "%s hat das Theme aktualisiert: %s, Version %s", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $name, $version ),
 					self::CONTEXT_THEME
 				);
 			} else {
@@ -207,7 +205,7 @@ class Core_Audit extends Event_Abstract {
 				$version = $data['Version'];
 
 				return array(
-					sprintf( esc_html__( "%s updated plugin: %s, version %s", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $name, $version ),
+					sprintf( esc_html__( "%s hat das Plugin aktualisiert: %s, Version %s", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $name, $version ),
 					self::CONTEXT_PLUGIN
 				);
 			} else {
@@ -239,13 +237,13 @@ class Core_Audit extends Event_Abstract {
 
 		if ( isset( $upgrader->skin->api->preview_url ) ) {
 			return array(
-				sprintf( esc_html__( "%s installed theme: %s, version %s", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $name, $version ),
+				sprintf( esc_html__( "%s hat das Theme installiert: %s, Version %s", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $name, $version ),
 				self::CONTEXT_THEME,
 				self::ACTION_INSTALLED
 			);
 		} else {
 			return array(
-				sprintf( esc_html__( "%s installed plugin: %s, version %s", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $name, $version ),
+				sprintf( esc_html__( "%s hat das Plugin installiert: %s, Version %s", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $name, $version ),
 				self::CONTEXT_PLUGIN,
 				self::ACTION_INSTALLED
 			);
@@ -275,15 +273,15 @@ class Core_Audit extends Event_Abstract {
 
 	public function dictionary() {
 		return array(
-			self::ACTION_DEACTIVATED => esc_html__( "deactivated", cp_defender()->domain ),
-			self::ACTION_UPGRADED    => esc_html__( "upgraded", cp_defender()->domain ),
-			self::ACTION_ACTIVATED   => esc_html__( "activated", cp_defender()->domain ),
-			self::ACTION_INSTALLED   => esc_html__( "installed", cp_defender()->domain ),
-			self::CONTEXT_THEME      => esc_html__( "theme", cp_defender()->domain ),
-			self::CONTEXT_PLUGIN     => esc_html__( "plugin", cp_defender()->domain ),
+			self::ACTION_DEACTIVATED => esc_html__( "deaktiviert", cp_defender()->domain ),
+			self::ACTION_UPGRADED    => esc_html__( "aktualisiert", cp_defender()->domain ),
+			self::ACTION_ACTIVATED   => esc_html__( "aktiviert", cp_defender()->domain ),
+			self::ACTION_INSTALLED   => esc_html__( "installiert", cp_defender()->domain ),
+			self::CONTEXT_THEME      => esc_html__( "Theme", cp_defender()->domain ),
+			self::CONTEXT_PLUGIN     => esc_html__( "Plugin", cp_defender()->domain ),
 			self::CONTEXT_CORE       => esc_html__( "WordPress", cp_defender()->domain ),
-			'file_added'             => esc_html__( "File Added", cp_defender()->domain ),
-			'file_modified'          => esc_html__( "File Modified", cp_defender()->domain )
+			'file_added'             => esc_html__( "Datei hinzugefügt", cp_defender()->domain ),
+			'file_modified'          => esc_html__( "Datei geändert", cp_defender()->domain )
 		);
 	}
 

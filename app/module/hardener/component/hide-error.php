@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 namespace CP_Defender\Module\Hardener\Component;
 
 use Hammer\Helper\WP_Helper;
@@ -30,7 +28,7 @@ class Hide_Error extends Rule {
 	}
 
 	public function getTitle() {
-		return __( "Hide error reporting", cp_defender()->domain );
+		return __( "Fehlerberichterstattung ausblenden", cp_defender()->domain );
 	}
 
 	function revert() {

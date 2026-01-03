@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Hardener\Component;
 
@@ -25,7 +23,7 @@ class Disable_Trackback extends Rule {
 	}
 
 	public function getTitle() {
-		return __( "Disable trackbacks and pingbacks", cp_defender()->domain );
+		return __( "Trackbacks und Pingbacks deaktivieren", cp_defender()->domain );
 	}
 
 	function addHooks() {

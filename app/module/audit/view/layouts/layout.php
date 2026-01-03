@@ -2,7 +2,7 @@
     <div id="cp-defender" class="cp-defender">
         <div class="auditing">
             <h2 class="title">
-				<?php _e( "AUDIT LOGGING", cp_defender()->domain ) ?>
+				<?php _e( "AUDIT-PROTOKOLL", cp_defender()->domain ) ?>
             </h2>
             <div class="dev-box summary-box">
                 <div class="box-content">
@@ -17,7 +17,7 @@
                                     </form>
                                     -
                                 </h5>
-                                <span class="sub"><?php _e( "Events logged in the past 7 days", cp_defender()->domain ) ?></span>
+                                <span class="sub"><?php _e( "Ereignisse, die in den letzten 7 Tagen protokolliert wurden", cp_defender()->domain ) ?></span>
                             </div>
                         </div>
                         <div class="column is-5">
@@ -25,7 +25,7 @@
                                 <ul class="dev-list bold">
                                     <li>
                                         <div>
-                                            <span class="list-label"><?php _e( "Reports", cp_defender()->domain ) ?></span>
+                                            <span class="list-label"><?php _e( "Berichte", cp_defender()->domain ) ?></span>
                                             <span class="list-detail">
                                             <?php
                                             $settings = \CP_Defender\Module\Audit\Model\Settings::instance();
@@ -36,10 +36,10 @@
                                                 <p class="sub defender-audit-schedule">
                                                     <?php
                                                     if ( $settings->frequency == 1 ) {
-	                                                    printf( __( "at %s", cp_defender()->domain ),
+	                                                    printf( __( "um %s", cp_defender()->domain ),
 		                                                    date( 'h:i A', strtotime( $settings->time ) ) );
                                                     } else {
-	                                                    printf( __( "%s at %s", cp_defender()->domain ),
+	                                                    printf( __( "%s um %s", cp_defender()->domain ),
 		                                                    ucfirst( $settings->day ),
 		                                                    date( 'h:i A', strtotime( $settings->time ) ) );
                                                     } ?>
@@ -64,25 +64,25 @@
                     <ul class="inner-nav is-hidden-mobile">
                         <li>
                             <a class="<?php echo \Hammer\Helper\HTTP_Helper::retrieve_get( 'view', false ) == false ? 'active' : null ?>"
-                               href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging' ) ?>"><?php _e( "Event Logs", cp_defender()->domain ) ?></a>
+                               href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging' ) ?>"><?php _e( "Ereignisprotokolle", cp_defender()->domain ) ?></a>
                         </li>
                         <li>
                             <a class="<?php echo $controller->isView( 'settings' ) ? 'active' : null ?>"
-                               href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging', array( 'view' => 'settings' ) ) ?>"><?php _e( "Settings", cp_defender()->domain ) ?></a>
+                               href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging', array( 'view' => 'settings' ) ) ?>"><?php _e( "Einstellungen", cp_defender()->domain ) ?></a>
                         </li>
                         <li>
                             <a class="<?php echo $controller->isView( 'report' ) ? 'active' : null ?>"
-                               href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging', array( 'view' => 'report' ) ) ?>"><?php _e( "Reports", cp_defender()->domain ) ?></a>
+                               href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging', array( 'view' => 'report' ) ) ?>"><?php _e( "Berichte", cp_defender()->domain ) ?></a>
                         </li>
                     </ul>
                     <div class="is-hidden-tablet mline">
                         <select class="mobile-nav">
                             <option <?php selected( '', \Hammer\Helper\HTTP_Helper::retrieve_get( 'view' ) ) ?>
-                                    value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging' ) ?>"><?php _e( "Event Logs", cp_defender()->domain ) ?></option>
+                                    value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging' ) ?>"><?php _e( "Ereignisprotokolle", cp_defender()->domain ) ?></option>
                             <option <?php selected( 'settings', \Hammer\Helper\HTTP_Helper::retrieve_get( 'view' ) ) ?>
-                                    value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging', array( 'view' => 'settings' ) ) ?>"><?php _e( "Settings", cp_defender()->domain ) ?></option>
+                                    value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging', array( 'view' => 'settings' ) ) ?>"><?php _e( "Einstellungen", cp_defender()->domain ) ?></option>
                             <option <?php selected( 'report', \Hammer\Helper\HTTP_Helper::retrieve_get( 'view' ) ) ?>
-                                    value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging', array( 'view' => 'report' ) ) ?>"><?php _e( "Reports", cp_defender()->domain ) ?></option>
+                                    value="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging', array( 'view' => 'report' ) ) ?>"><?php _e( "Berichte", cp_defender()->domain ) ?></option>
                         </select>
                     </div>
                 </div>

@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Hardener\Component;
 
@@ -48,13 +46,13 @@ class Prevent_PHP_Service extends Rule_Service implements IRule_Service {
 	 * @return bool|\WP_Error
 	 */
 	public function process() {
-		return new \WP_Error( Error_Code::INVALID, __( "Process is not possible on your current server", cp_defender()->domain ) );
+		return new \WP_Error( Error_Code::INVALID, __( "Dieser Vorgang ist auf Deinem aktuellen Server nicht möglich.", cp_defender()->domain ) );
 	}
 
 	/**
 	 * @return bool|\WP_Error
 	 */
 	public function revert() {
-		return new \WP_Error( Error_Code::INVALID, __( "Revert is not possible on your current server", cp_defender()->domain ) );
+		return new \WP_Error( Error_Code::INVALID, __( "Das Zurücksetzen ist auf Deinem aktuellen Server nicht möglich.", cp_defender()->domain ) );
 	}
 }

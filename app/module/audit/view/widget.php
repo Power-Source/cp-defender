@@ -5,18 +5,18 @@
     </div>
     <div class="box-content">
         <div class="line end">
-			<?php printf( __( "There have been <strong>%d events</strong> logged in the past 24 hours.", cp_defender()->domain ), $eventDay ) ?>
+			<?php printf( __( "In den letzten 24 Stunden wurden <strong>%d Ereignisse</strong> protokolliert.", cp_defender()->domain ), $eventDay ) ?>
         </div>
         <ul class="dev-list bold end">
             <li>
                 <div>
-                    <span class="list-label"><?php _e( "Last event logged", cp_defender()->domain ) ?></span>
+                    <span class="list-label"><?php _e( "Letztes protokolliertes Ereignis", cp_defender()->domain ) ?></span>
                     <span class="list-detail"><?php echo $lastEvent ?></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="list-label"><?php _e( "Events logged this month", cp_defender()->domain ) ?></span>
+                    <span class="list-label"><?php _e( "In diesem Monat protokollierte Ereignisse", cp_defender()->domain ) ?></span>
                     <span class="list-detail"><?php echo $eventMonth ?></span>
                 </div>
             </li>
@@ -29,9 +29,9 @@
             <div class="col-two-third tr">
                 <p class="status-text"><?php
 					if ( \CP_Defender\Module\Audit\Model\Settings::instance()->notification ) {
-						_e( "Audit log reports are enabled", cp_defender()->domain );
+						_e( "Audit-Protokollberichte sind aktiviert", cp_defender()->domain );
 					} else {
-						_e( "Audit log reports are disabled", cp_defender()->domain );
+						_e( "Audit-Protokollberichte sind deaktiviert", cp_defender()->domain );
 					}
 					?></p>
             </div>

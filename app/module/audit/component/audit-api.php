@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Audit\Component;
 
@@ -64,11 +62,11 @@ class Audit_API extends Component {
 	 */
 	public static function dictionary() {
 		return array(
-			self::ACTION_TRASHED  => esc_html__( "trashed", cp_defender()->domain ),
-			self::ACTION_UPDATED  => esc_html__( "updated", cp_defender()->domain ),
-			self::ACTION_DELETED  => esc_html__( "deleted", cp_defender()->domain ),
-			self::ACTION_ADDED    => esc_html__( "created", cp_defender()->domain ),
-			self::ACTION_RESTORED => esc_html__( "restored", cp_defender()->domain ),
+			self::ACTION_TRASHED  => esc_html__( "zerstört", cp_defender()->domain ),
+			self::ACTION_UPDATED  => esc_html__( "aktualisiert", cp_defender()->domain ),
+			self::ACTION_DELETED  => esc_html__( "gelöscht", cp_defender()->domain ),
+			self::ACTION_ADDED    => esc_html__( "erstellt", cp_defender()->domain ),
+			self::ACTION_RESTORED => esc_html__( "wiederhergestellt", cp_defender()->domain ),
 		);
 	}
 
@@ -111,13 +109,13 @@ class Audit_API extends Component {
 			$since = 0;
 		}
 		$chunks = array(
-			array( 60 * 60 * 24 * 365, esc_html__( "year" ) ),
-			array( 60 * 60 * 24 * 30, esc_html__( "month" ) ),
-			array( 60 * 60 * 24 * 7, esc_html__( "week" ) ),
-			array( 60 * 60 * 24, esc_html__( 'day' ) ),
-			array( 60 * 60, esc_html__( "hour" ) ),
-			array( 60, esc_html__( "minute" ) ),
-			array( 1, esc_html__( "second" ) )
+			array( 60 * 60 * 24 * 365, esc_html__( "Jahr" ) ),
+			array( 60 * 60 * 24 * 30, esc_html__( "Monat" ) ),
+			array( 60 * 60 * 24 * 7, esc_html__( "Woche" ) ),
+			array( 60 * 60 * 24, esc_html__( 'Tag' ) ),
+			array( 60 * 60, esc_html__( "Stunde" ) ),
+			array( 60, esc_html__( "Minute" ) ),
+			array( 1, esc_html__( "Sekunde" ) )
 		);
 
 		for ( $i = 0, $j = count( $chunks ); $i < $j; $i ++ ) {

@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 namespace Hammer\WP;
 
 class Component extends \Hammer\Base\Controller {

@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Hardener\Component;
 
@@ -21,7 +19,7 @@ class Disable_File_Editor extends Rule {
 	}
 
 	public function getTitle() {
-		return __( "Disable the file editor", cp_defender()->domain );
+		return __( "Deaktiviere den Dateieditor.", cp_defender()->domain );
 	}
 
 	function addHooks() {
@@ -88,10 +86,10 @@ class Disable_File_Editor extends Rule {
 	function current_screen() {
 		$current_screen = get_current_screen();
 		if( $current_screen->id == 'theme-editor-network' || $current_screen->id == 'theme-editor' ){
-			wp_die('<p>'.__('Sorry, you are not allowed to edit templates for this site.').'</p>');
+			wp_die('<p>'.__('Entschuldigung, du darfst die Themes für diese Seite nicht bearbeiten.').'</p>');
 		}
 		if( $current_screen->id == 'plugin-editor-network' || $current_screen->id == 'plugin-editor' ){
-			wp_die('<p>'.__('Sorry, you are not allowed to edit plugins for this site.').'</p>');
+			wp_die('<p>'.__('Entschuldigung, du darfst die Plugins für diese Seite nicht bearbeiten.').'</p>');
 		}
 	}
 

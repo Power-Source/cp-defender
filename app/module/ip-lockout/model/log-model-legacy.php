@@ -1,8 +1,6 @@
 <?php
 
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\IP_Lockout\Model;
 
@@ -100,7 +98,7 @@ class Log_Model_Legacy extends Model {
 	 * @return string
 	 */
 	public function get_date() {
-		return \CP_Defender\Behavior\Utils::instance()->formatDateTime( date( 'Y-m-d H:i:s', $this->date ) );
+		return \CP_Defender\Behavior\Utils::instance()->formatDateTime( date( 'd.m.Y H:i:s', $this->date ) );
 	}
 
 	/**

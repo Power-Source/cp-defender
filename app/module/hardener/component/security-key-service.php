@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Hardener\Component;
 
@@ -45,7 +43,7 @@ class Security_Key_Service extends Rule_Service implements IRule_Service {
 		//check if can write
 		if ( ! is_writeable( $config_path ) ) {
 			return new \WP_Error( Error_Code::NOT_WRITEABLE,
-				sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $config_path ) );
+				sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $config_path ) );
 		}
 
 		return $this->generateSalt( $config_path );
@@ -114,7 +112,7 @@ class Security_Key_Service extends Rule_Service implements IRule_Service {
 		//now check the missing
 		if ( count( $missing ) ) {
 			//for any reason we missing a security key, this mean wp-config altered by 3rd party, halt
-			return new \WP_Error( Error_Code::UNKNOWN_WPCONFIG, __( "Defender can't recognize your wp-config.php, please revert it to original state for further process.", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::UNKNOWN_WPCONFIG, __( "PS Security kann deine wp-config.php nicht erkennen, bitte setze sie für die weitere Verarbeitung in den Originalzustand zurück.", cp_defender()->domain ) );
 		}
 
 		//we already check for perm above, no need to check again

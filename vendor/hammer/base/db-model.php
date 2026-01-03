@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace Hammer\Base;
 class DB_Model extends Model {

@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Advanced_Tools\Controller;
 
@@ -55,10 +53,10 @@ class Main extends Controller {
 				 */
 			} else {
 				if ( $isJetpackSSO ) {
-					cp_defender()->global['compatibility'][] = __( "You enabled Jetpack WordPress.com login, so Defender will disable the two factors login for avoiding conflict", cp_defender()->domain );
+					cp_defender()->global['compatibility'][] = __( "Du hast die Jetpack-Anmeldung für WordPress.com aktiviert. Defender deaktiviert daher die Zwei-Faktor-Authentifizierung, um Konflikte zu vermeiden.", cp_defender()->domain );
 				}
 				if ( $isTML ) {
-					cp_defender()->global['compatibility'][] = __( "You enabled the plugin Theme My Login, so Defender will disable the two factors login for avoiding conflict", cp_defender()->domain );
+					cp_defender()->global['compatibility'][] = __( "Du hast das Plugin Theme My Login aktiviert. Defender deaktiviert daher die Zwei-Faktor-Authentifizierung, um Konflikte zu vermeiden.", cp_defender()->domain );
 				}
 			}
 			$this->add_filter( 'ms_shortcode_ajax_login', 'm2NoAjax' );
@@ -155,7 +153,7 @@ class Main extends Controller {
 		if ( empty( $res ) ) {
 			//no user
 			wp_send_json_error( array(
-				'message' => __( "Your token is invalid", cp_defender()->domain )
+				'message' => __( "Dein Token ist ungültig.", cp_defender()->domain )
 			) );
 		}
 
@@ -165,9 +163,9 @@ class Main extends Controller {
 		//send email
 		$backupEmail = Auth_API::getBackupEmail( $user->ID );
 		//send
-		wp_mail( $backupEmail, 'Your OTP code', $code );
+		wp_mail( $backupEmail, 'Dein OTP-Code', $code );
 		wp_send_json_success( array(
-			'message' => __( "Your code has been sent to your email.", cp_defender()->domain )
+			'message' => __( "Dein Code wurde an deine E-Mail gesendet.", cp_defender()->domain )
 		) );
 	}
 
@@ -211,7 +209,7 @@ class Main extends Controller {
 		$otp = trim( $otp );
 		if ( strlen( $otp ) == 0 ) {
 			wp_send_json_error( array(
-				'message' => __( "Please input a valid OTP code", cp_defender()->domain )
+				'message' => __( "Bitte gib einen gültigen OTP-Code ein", cp_defender()->domain )
 			) );
 		}
 
@@ -225,7 +223,7 @@ class Main extends Controller {
 		} else {
 			//now need to check if the current user have backup otp
 			wp_send_json_error( array(
-				'message' => __( "Your OTP code is incorrect. Please try again.", cp_defender()->domain )
+				'message' => __( "Dein OTP-Code ist falsch. Bitte versuche es erneut.", cp_defender()->domain )
 			) );
 		}
 	}
@@ -286,7 +284,7 @@ class Main extends Controller {
 		if ( ( $otp = HTTP_Helper::retrieve_post( 'otp', null ) ) != null ) {
 			$params = array();
 			if ( ! wp_verify_nonce( HTTP_Helper::retrieve_post( '_wpnonce' ), 'DefOtpCheck' ) ) {
-				$params['error'] = new \WP_Error( 'security_fail', __( "Some error happen", cp_defender()->domain ) );
+				$params['error'] = new \WP_Error( 'security_fail', __( "Ein Fehler ist aufgetreten", cp_defender()->domain ) );
 			}
 
 			$login_token = HTTP_Helper::retrieve_post( 'login_token' );
@@ -323,7 +321,7 @@ class Main extends Controller {
 						wp_redirect( $redirect );
 						exit;
 					} else {
-						$params['error'] = new \WP_Error( 'opt_fail', __( "Whoops, the passcode you entered was incorrect or expired.", cp_defender()->domain ) );
+						$params['error'] = new \WP_Error( 'opt_fail', __( "Hoppla, der eingegebene Passcode war falsch oder abgelaufen.", cp_defender()->domain ) );
 						$this->showOTPScreen( $user, $params );
 					}
 				}
@@ -394,7 +392,7 @@ return;
 }
 
 		$cap = is_multisite() ? 'manage_network_options' : 'manage_options';
-		add_submenu_page( 'cp-defender', esc_html__( "Advanced Tools", cp_defender()->domain ), esc_html__( "Advanced Tools", cp_defender()->domain ), $cap, $this->slug, array(
+		add_submenu_page( 'cp-defender', esc_html__( "Advanced Tools", cp_defender()->domain ), esc_html__( "Erweiterte Werkzeuge", cp_defender()->domain ), $cap, $this->slug, array(
 			&$this,
 			'actionIndex'
 		) );
@@ -459,7 +457,7 @@ return;
 		$setting->save();
 
 		$res           = array(
-			'message' => __( "Your settings have been updated.", cp_defender()->domain )
+			'message' => __( "Deine Einstellungen wurden aktualisiert.", cp_defender()->domain )
 		);
 		$res['reload'] = 1;
 

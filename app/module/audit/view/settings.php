@@ -1,20 +1,20 @@
 <div class="dev-box">
     <div class="box-title">
-        <h3><?php _e( "Settings", cp_defender()->domain ) ?></h3>
+        <h3><?php _e( "Einstellungen", cp_defender()->domain ) ?></h3>
     </div>
     <div class="box-content">
         <form method="post" id="settings-frm" class="audit-frm">
             <div class="columns">
                 <div class="column is-one-third">
                     <label for="login_protection_login_attempt">
-						<?php esc_html_e( "Deactivate", cp_defender()->domain ) ?>
+						<?php esc_html_e( "Deaktivieren", cp_defender()->domain ) ?>
                     </label>
                     <span class="sub">
-					<?php esc_html_e( "If you no longer want to use this feature you can turn it off at any time.", cp_defender()->domain ) ?>
+					<?php esc_html_e( "Wenn du diese Funktion nicht mehr verwenden möchtest, kannst du sie jederzeit deaktivieren.", cp_defender()->domain ) ?>
 				</span>
                 </div>
                 <div class="column">
-				<span tooltip="<?php esc_attr_e( "Deactivate Audit Logging", cp_defender()->domain ) ?>"
+				<span tooltip="<?php esc_attr_e( "Audit-Protokollierung deaktivieren", cp_defender()->domain ) ?>"
                       class="toggle">
                         <input type="hidden" name="enabled" value="0"/>
                         <input type="checkbox" checked="checked" name="enabled" value="1"
@@ -27,7 +27,7 @@
 			<?php wp_nonce_field( 'saveAuditSettings' ) ?>
             <input type="hidden" name="action" value="saveAuditSettings"/>
             <button type="submit" class="button button-primary float-r">
-				<?php esc_html_e( "UPDATE SETTINGS", cp_defender()->domain ) ?>
+				<?php esc_html_e( "EINSTELLUNGEN AKTUALISIEREN", cp_defender()->domain ) ?>
             </button>
             <div class="clear"></div>
         </form>

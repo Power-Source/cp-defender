@@ -35,7 +35,7 @@ class Login_Duration extends Rule {
 	 * @return string
 	 */
 	public function getTitle() {
-		return __( "Manage Login Duration", cp_defender()->domain );
+		return __( "Anmeldedauer verwalten", cp_defender()->domain );
 	}
 
     /**
@@ -91,7 +91,7 @@ class Login_Duration extends Rule {
 			}
 		} else {
 			wp_send_json_error( array(
-				'message' => __( 'Duration can only be a number and greater than 0', cp_defender()->domain )
+				'message' => __( 'Dauer kann nur eine Zahl sein und größer als 0 sein', cp_defender()->domain )
 			) );
 		}
 	}
@@ -192,7 +192,7 @@ class Login_Duration extends Rule {
 			$logout_msg = strip_tags( $login_msg );
 			if ( $logout_msg == 'session_expired' ) {
 				$duration = $this->getService()->getDuration( false );
-				$msg = sprintf( __( 'Your session has expired because it has been over %d days since your last login. Please log back in to continue.', cp_defender()->domain ), $duration );
+				$msg = sprintf( __( 'Deine Sitzung ist abgelaufen, da seit deiner letzten Anmeldung mehr als %d Tage vergangen sind. Bitte melde dich erneut an, um fortzufahren.', cp_defender()->domain ), $duration );
 				$msg = htmlspecialchars( $msg, ENT_QUOTES, 'UTF-8' );
            	 	$message .= '<p class="login message">'. $msg . '</p>';
 			}

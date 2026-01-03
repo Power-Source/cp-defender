@@ -1,7 +1,7 @@
 <div class="dev-box">
     <div class="box-title">
         <h3 class="def-issues-title">
-			<?php _e( "Two-Factor Authentication", cp_defender()->domain ) ?>
+			<?php _e( "Zwei-Faktor-Authentifizierung", cp_defender()->domain ) ?>
         </h3>
     </div>
     <div class="box-content issues-box-content">
@@ -11,7 +11,7 @@
 			$enabledRoles = $settings->userRoles;
 
 			?>
-            <p class="<?php echo $class ?>"><?php _e( "Configure your two-factor authentication settings. Our recommendations are enabled by default.", cp_defender()->domain ) ?></p>
+            <p class="<?php echo $class ?>"><?php _e( "Konfiguriere deine Einstellungen zur Zwei-Faktor-Authentifizierung. Unsere Empfehlungen sind standardmäßig aktiviert.", cp_defender()->domain ) ?></p>
 			<?php if ( isset( cp_defender()->global['compatibility'] ) ): ?>
                 <div class="well well-error with-cap mline">
                     <i class="def-icon icon-warning icon-yellow "></i>
@@ -24,7 +24,7 @@
                 <div class="well well-green with-cap">
                     <i class="def-icon icon-tick"></i>
 					<?php
-					printf( __( "<strong>Two-factor authentication is now active.</strong> User roles with this feature enabled must visit their <a href='%s'>Profile page</a> to complete setup and sync their account with the Authenticator app.", cp_defender()->domain ),
+					printf( __( "<strong>Zwei-Faktor-Authentifizierung ist jetzt aktiv.</strong> Benutzerrollen mit aktivierter Funktion müssen ihre <a href='%s'>Profilseite</a> besuchen, um die Einrichtung abzuschließen und ihr Konto mit der Authenticator-App zu synchronisieren.", cp_defender()->domain ),
 						admin_url( 'profile.php' ) );
 					?>
                 </div>
@@ -32,22 +32,22 @@
                 <div class="well well-yellow with-cap">
                     <i class="def-icon icon-warning"></i>
 					<?php
-					_e( "<strong>Two-factor authentication is currently inactive.</strong> Configure and save your settings to complete setup.", cp_defender()->domain )
+					_e( "<strong>Zwei-Faktor-Authentifizierung ist derzeit inaktiv.</strong> Konfiguriere und speichere deine Einstellungen, um die Einrichtung abzuschließen.", cp_defender()->domain )
 					?>
                 </div>
 			<?php endif; ?>
             <div class="columns">
                 <div class="column is-one-third">
-                    <label><?php _e( "User Roles", cp_defender()->domain ) ?></label>
+                    <label><?php _e( "Benutzerrollen", cp_defender()->domain ) ?></label>
                     <span class="sub">
-                        <?php _e( "Choose the user roles you want to enable two-factor authentication for. Users with those roles will then be required to use the Google Authenticator app to login.", cp_defender()->domain ) ?>
+                        <?php _e( "Wähle die Benutzerrollen aus, für die du die Zwei-Faktor-Authentifizierung aktivieren möchtest. Benutzer mit diesen Rollen müssen dann die Google Authenticator-App zur Anmeldung verwenden.", cp_defender()->domain ) ?>
                     </span>
                 </div>
                 <div class="column">
                     <ul class="dev-list marginless">
                         <li class="list-header">
                             <div>
-                                <span class="list-label"><?php _e( "User role", cp_defender()->domain ) ?></span>
+                                <span class="list-label"><?php _e( "Benutzerrolle", cp_defender()->domain ) ?></span>
                             </div>
                         </li>
 						<?php
@@ -79,9 +79,9 @@
             </div>
             <div class="columns">
                 <div class="column is-one-third">
-                    <label><?php _e( "Lost Phone", cp_defender()->domain ) ?></label>
+                    <label><?php _e( "Telefon verloren", cp_defender()->domain ) ?></label>
                     <span class="sub">
-                        <?php _e( "If a user is unable to access their phone, you can allow an option to send the one time password to their registered email.", cp_defender()->domain ) ?>
+                        <?php _e( "Wenn ein Benutzer keinen Zugriff auf sein Telefon hat, kannst du eine Option aktivieren, um das Einmalpasswort an seine registrierte E-Mail-Adresse zu senden.", cp_defender()->domain ) ?>
                     </span>
                 </div>
                 <div class="column">
@@ -91,14 +91,14 @@
                                class="toggle-checkbox" id="toggle_lost_phone"/>
                         <label class="toggle-label" for="toggle_lost_phone"></label>
                     </span>&nbsp;
-                    <span><?php _e( "Enable lost phone option", cp_defender()->domain ) ?></span>
+                    <span><?php _e( "Verlorenes Telefon aktivieren", cp_defender()->domain ) ?></span>
                 </div>
             </div>
             <div class="columns">
                 <div class="column is-one-third">
-                    <label><?php _e( "App Download", cp_defender()->domain ) ?></label>
+                    <label><?php _e( "App-Download", cp_defender()->domain ) ?></label>
                     <span class="sub">
-                        <?php _e( "Need the app? Here’s links to the official Google Authenticator apps.", cp_defender()->domain ) ?>
+                        <?php _e( "Benötigst du die App? Hier sind Links zu den offiziellen Google Authenticator-Apps.", cp_defender()->domain ) ?>
                     </span>
                 </div>
                 <div class="column">
@@ -112,25 +112,25 @@
             </div>
             <div class="columns">
                 <div class="column is-one-third">
-                    <label><?php _e( "Active Users", cp_defender()->domain ) ?></label>
+                    <label><?php _e( "Aktive Benutzer", cp_defender()->domain ) ?></label>
                     <span class="sub">
-                        <?php _e( "Here’s a quick link to see which of your users have enabled two-factor verification.", cp_defender()->domain ) ?>
+                        <?php _e( "Hier ist ein schneller Link, um zu sehen, welche deiner Benutzer die Zwei-Faktor-Authentifizierung aktiviert haben.", cp_defender()->domain ) ?>
                     </span>
                 </div>
                 <div class="column">
-					<?php printf( __( "<a href=\"%s\">View users</a> who have enabled this feature.", cp_defender()->domain ), network_admin_url( 'users.php' ) ) ?>
+					<?php printf( __( "<a href=\"%s\">Benutzer anzeigen</a>, die diese Funktion aktiviert haben.", cp_defender()->domain ), network_admin_url( 'users.php' ) ) ?>
                 </div>
             </div>
             <div class="columns mline">
                 <div class="column is-one-third">
-                    <label><?php _e( "Deactivate", cp_defender()->domain ) ?></label>
+                    <label><?php _e( "Deaktivieren", cp_defender()->domain ) ?></label>
                     <span class="sub">
-                        <?php _e( "Disable two-factor authentication on your website.", cp_defender()->domain ) ?>
+                        <?php _e( "Deaktiviere die Zwei-Faktor-Authentifizierung auf deiner Webseite.", cp_defender()->domain ) ?>
                     </span>
                 </div>
                 <div class="column">
                     <button type="button" class="button button-secondary deactivate-2factor">
-						<?php _e( "Deactivate", cp_defender()->domain ) ?>
+						<?php _e( "Deaktivieren", cp_defender()->domain ) ?>
                     </button>
                 </div>
             </div>
@@ -138,7 +138,7 @@
             <input type="hidden" name="action" value="saveAdvancedSettings"/>
 			<?php wp_nonce_field( 'saveAdvancedSettings' ) ?>
             <button type="submit" class="button button-primary float-r">
-				<?php _e( "SAVE SETTINGS", cp_defender()->domain ) ?>
+				<?php _e( "EINSTELLUNGEN SPEICHERN", cp_defender()->domain ) ?>
             </button>
             <div class="clear"></div>
         </form>

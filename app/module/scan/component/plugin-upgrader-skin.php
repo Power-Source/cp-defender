@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Scan\Component;
 if ( ! class_exists( '\Plugin_Upgrader_Skin' ) ) {

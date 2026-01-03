@@ -1,10 +1,10 @@
 <div class="dev-box">
     <div class="box-title">
-        <h3><?php _e( "EVENT LOGS", cp_defender()->domain ) ?></h3>
+        <h3><?php _e( "EREIGNISPROTOKOLLE", cp_defender()->domain ) ?></h3>
         <button type="button" class="button button-secondary button-small audit-csv"><?php _e( "Export CSV", cp_defender()->domain ) ?></button>
     </div>
     <div class="box-content">
-        <p class="mline"><?php _e( "Here are your latest event logs showing what’s been happening behind the scenes.", cp_defender()->domain ) ?></p>
+        <p class="mline"><?php _e( "Hier findest du deine neuesten Ereignisprotokolle, die zeigen, was im Hintergrund passiert ist.", cp_defender()->domain ) ?></p>
         <div class="well well-white audit-filter mline">
             <form method="post">
                 <strong>
@@ -35,7 +35,7 @@
             <div class="clear"></div>
         </div>
         <div id="audit-table-container">
-			<?php _e( "Loading events...", cp_defender()->domain ) ?>
+			<?php _e( "Lade Ereignisse...", cp_defender()->domain ) ?>
         </div>
     </div>
 </div>

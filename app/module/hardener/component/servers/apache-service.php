@@ -64,11 +64,11 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 		if ( ! is_file( $htPath ) ) {
 			if ( ! file_put_contents( $htPath, '', LOCK_EX ) ) {
 				return new \WP_Error( Error_Code::NOT_WRITEABLE,
-					sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $htPath ) );
+					sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $htPath ) );
 			}
 		} elseif ( ! is_writeable( $htPath ) ) {
 			return new \WP_Error( Error_Code::NOT_WRITEABLE,
-				sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $htPath ) );
+				sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $htPath ) );
 		}
 		$htConfig 	= file( $htPath );
 		$deny 		= $this->generateHtAccessRule( false );
@@ -108,11 +108,11 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 		if ( ! file_exists( $htPath ) ) {
 			if ( ! file_put_contents( $htPath, '', LOCK_EX ) ) {
 				return new \WP_Error( Error_Code::NOT_WRITEABLE,
-					sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $htPath ) );
+					sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $htPath ) );
 			}
 		} elseif ( ! is_writeable( $htPath ) ) {
 			return new \WP_Error( Error_Code::NOT_WRITEABLE,
-				sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $htPath ) );
+				sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $htPath ) );
 		}
 		$htConfig 	= file( $htPath );
 		$deny 		= $this->generateHtAccessRule( false );
@@ -166,11 +166,11 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 			if ( ! file_exists( $htPath ) ) {
 				if ( ! file_put_contents( $htPath, '', LOCK_EX ) ) {
 					return new \WP_Error( Error_Code::NOT_WRITEABLE,
-						sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $htPath ) );
+						sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $htPath ) );
 				}
 			} elseif ( ! is_writeable( $htPath ) ) {
 				return new \WP_Error( Error_Code::NOT_WRITEABLE,
-					sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $htPath ) );
+					sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $htPath ) );
 			}
 			$htConfig 	= file( $htPath );
 			$deny 		= $this->generateHtAccessRule( false );
@@ -216,7 +216,7 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 		$htPath = WP_CONTENT_DIR . '/' . '.htaccess';
 		if ( ! is_writeable( $htPath ) ) {
 			return new \WP_Error( Error_Code::NOT_WRITEABLE,
-				sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $htPath ) );
+				sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $htPath ) );
 		}
 		$htConfig 	= file_get_contents( $htPath );
 		$deny 		= $this->generateHtAccessRule( false );
@@ -247,7 +247,7 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 		$htPath = ABSPATH . WPINC . '/' . '.htaccess';
 		if ( ! is_writeable( $htPath ) ) {
 			return new \WP_Error( Error_Code::NOT_WRITEABLE,
-				sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $htPath ) );
+				sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $htPath ) );
 		}
 		$htConfig 	= file_get_contents( $htPath );
 		$deny 		= $this->generateHtAccessRule( false );
@@ -281,7 +281,7 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 			$htPath = ABSPATH . UPLOADS . '/' . '.htaccess';
 			if ( ! is_writeable( $htPath ) ) {
 				return new \WP_Error( Error_Code::NOT_WRITEABLE,
-					sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $htPath ) );
+					sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $htPath ) );
 			}
 			$htConfig 	= file_get_contents( $htPath );
 			$deny 		= $this->generateHtAccessRule( false );

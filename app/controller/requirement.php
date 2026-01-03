@@ -1,8 +1,6 @@
 <?php
 
-/**
- * Author: Hoang Ngo
- */
+
 class WD_Requirement {
 	protected $slug = 'cp-defender';
 

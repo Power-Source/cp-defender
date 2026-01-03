@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Scan\Component;
 
@@ -61,7 +59,7 @@ class Result_Table extends \WP_List_Table {
 	 * @return mixed
 	 */
 	public function column_col_ignore_date( Result_Item $item ) {
-		//$time = get_date_from_gmt( $item->dateIgnored, 'Y-m-d H:i:s' );
+		//$time = get_date_from_gmt( $item->dateIgnored, 'd.m.Y H:i:s' );
 		return $item->formatDateTime( $item->dateIgnored );
 	}
 
@@ -72,7 +70,7 @@ class Result_Table extends \WP_List_Table {
 	 */
 	public function column_col_fixed_date( Result_Item $item ) {
 		//convert to local
-		//$time = get_date_from_gmt( $item->dateFixed, 'Y-m-d H:i:s' );
+		//$time = get_date_from_gmt( $item->dateFixed, 'd.m.Y H:i:s' );
 
 		return $item->formatDateTime( $item->dateFixed );
 	}

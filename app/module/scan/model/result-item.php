@@ -89,7 +89,7 @@ class Result_Item extends Model {
 	 */
 	public function ignore() {
 		$this->status      = self::STATUS_IGNORED;
-		$this->dateIgnored = date( 'Y-m-d H:i:s' );
+		$this->dateIgnored = date( 'd.m.Y H:i:s' );
 		$this->save();
 
 		//upadte to global ignore cache
@@ -101,7 +101,7 @@ class Result_Item extends Model {
 	 */
 	public function markAsResolved() {
 		$this->status    = self::STATUS_FIXED;
-		$this->dateFixed = date( 'Y-m-d H:i:s' );
+		$this->dateFixed = date( 'd.m.Y H:i:s' );
 		$this->save();
 	}
 

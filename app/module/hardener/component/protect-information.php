@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Hardener\Component;
 
@@ -25,7 +23,7 @@ class Protect_Information extends Rule {
 	}
 
 	public function getTitle() {
-		return __( "Prevent Information Disclosure", cp_defender()->domain );
+		return __( "Verhinderung der Offenlegung von Informationen", cp_defender()->domain );
 	}
 
 	function revert() {

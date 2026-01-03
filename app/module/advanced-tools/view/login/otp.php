@@ -95,8 +95,13 @@ $separator = is_rtl() ? ' &rsaquo; ' : ' &lsaquo; ';
 		$login_header_url   = network_home_url();
 		$login_header_title = get_network()->site_name;
 	} else {
-		$login_header_url   = __( 'https://wordpress.org/' );
-		$login_header_title = __( 'Powered by WordPress' );
+		if ( function_exists( 'classicpress_version' ) ) {
+			$login_header_url   = __( 'https://www.classicpress.net/' );
+			$login_header_title = __( 'ClassicPress The CMS for Creators' );
+		} else {
+			$login_header_url   = __( 'https://wordpress.org/' );
+			$login_header_title = __( 'Powered by WordPress' );
+		}
 	}
 
 	/**
@@ -221,10 +226,10 @@ do_action( 'login_header' );
 	?>
     <form method="post"
           action="<?php echo esc_url( add_query_arg( 'action', 'defenderVerifyOTP', site_url( 'wp-login.php', 'login_post' ) ) ); ?>">
-        <p><?php _e( "Open the Google Authenticator app and enter the 6 digit passcode.", cp_defender()->domain ) ?></p>
+        <p><?php _e( "Öffne die Google Authenticator App und gib den 6-stelligen Passcode ein.", cp_defender()->domain ) ?></p>
         <input type="text" value="" name="otp">
         <button class="button button-primary float-r"
-                type="submit"><?php _e( "Authenticate", cp_defender()->domain ) ?></button>
+                type="submit"><?php _e( "Authentifizieren", cp_defender()->domain ) ?></button>
         <input type="hidden" name="login_token" value="<?php echo $loginToken ?>"/>
         <input type="hidden" name="redirect_to" value="<?php echo $redirect_to ?>"/>
 		<?php wp_nonce_field( 'DefOtpCheck' ) ?>
@@ -233,7 +238,7 @@ do_action( 'login_header' );
         <p id="nav">
             <a id="lostPhone"
                href="<?php echo admin_url( 'admin-ajax.php?action=defRetrieveOTP&token=' . $loginToken . '&nonce=' . wp_create_nonce( 'defRetrieveOTP' ) ) ?>">
-				<?php _e( "Lost your device?", cp_defender()->domain ) ?></a>
+				<?php _e( "Gerät verloren?", cp_defender()->domain ) ?></a>
             <img class="def-ajaxloader" src="<?php echo cp_defender()->getPluginUrl().'app/module/advanced-tools/img/spinner.svg' ?>"/>
             <strong class="notification">
 
@@ -283,7 +288,7 @@ do_action( 'login_header' );
 	if ( ! $interim_login ): ?>
         <p id="backtoblog"><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php
 				/* translators: %s: site title */
-				printf( _x( '&larr; Back to %s', 'site' ), get_bloginfo( 'title', 'display' ) );
+				printf( _x( '&larr; Zurück zu %s', 'site' ), get_bloginfo( 'title', 'display' ) );
 				?></a></p>
 	<?php endif; ?>
 

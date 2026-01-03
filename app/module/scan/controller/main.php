@@ -11,9 +11,7 @@ use CP_Defender\Module\Scan\Model\Result_Item;
 use CP_Defender\Vendor\Email_Search;
 use CP_Defender\Behavior\Utils;
 
-/**
- * Author: Hoang Ngo
- */
+
 class Main extends \CP_Defender\Controller {
 	protected $slug = 'wdf-scan';
 	public $layout = 'layout';

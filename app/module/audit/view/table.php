@@ -4,7 +4,7 @@
 
         </div>
         <div class="nav">
-            <span><?php printf( __( "%d Results", cp_defender()->domain ), $data['total_items'] ) ?></span>
+            <span><?php printf( __( "%d Ergebnisse", cp_defender()->domain ), $data['total_items'] ) ?></span>
             <div class="button-group is-hidden-mobile">
 				<?php echo $pagination ?>
             </div>
@@ -17,9 +17,9 @@
             <table>
                 <thead>
                 <tr>
-                    <th><?php _e( "Summary", cp_defender()->domain ) ?></th>
-                    <th><?php _e( "Time", cp_defender()->domain ) ?></th>
-                    <th class="is-hidden-touch"><?php _e( "IP Address", cp_defender()->domain ) ?></th>
+                    <th><?php _e( "Zusammenfassung", cp_defender()->domain ) ?></th>
+                    <th><?php _e( "Zeit", cp_defender()->domain ) ?></th>
+                    <th class="is-hidden-touch"><?php _e( "IP-Adresse", cp_defender()->domain ) ?></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -46,16 +46,16 @@
                         <td colspan="4">
                             <div class="dev-box">
                                 <div class="box-content">
-                                    <strong><?php _e( "Description", cp_defender()->domain ) ?></strong>
+                                    <strong><?php _e( "Beschreibung", cp_defender()->domain ) ?></strong>
                                     <p class="mline"><?php echo $row['msg'] ?></p>
                                     <table class="log-detail is-hidden-touch">
                                         <thead>
                                         <tr>
-                                            <th><?php _e( "Context", cp_defender()->domain ) ?></th>
-                                            <th><?php _e( "Type", cp_defender()->domain ) ?></th>
-                                            <th><?php _e( "IP address", cp_defender()->domain ) ?></th>
-                                            <th><?php _e( "User", cp_defender()->domain ) ?></th>
-                                            <th><?php _e( "Date / Time", cp_defender()->domain ) ?></th>
+                                            <th><?php _e( "Kontext", cp_defender()->domain ) ?></th>
+                                            <th><?php _e( "Typ", cp_defender()->domain ) ?></th>
+                                            <th><?php _e( "IP-Adresse", cp_defender()->domain ) ?></th>
+                                            <th><?php _e( "Benutzer", cp_defender()->domain ) ?></th>
+                                            <th><?php _e( "Datum / Uhrzeit", cp_defender()->domain ) ?></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -92,7 +92,7 @@
                                             </td>
                                             <td>
 												<?php
-												echo $controller->formatDateTime( date( 'Y-m-d H:i:s', $timestamp ) );
+												echo $controller->formatDateTime( date( 'd.m.Y H:i:s', $timestamp ) );
 												?>
                                             </td>
                                         </tr>
@@ -101,7 +101,7 @@
                                     <ul class="dev-list is-hidden-desktop">
                                         <li>
                                             <div class="list-label">
-                                                <strong><?php _e( "Context", cp_defender()->domain ) ?></strong>
+                                                <strong><?php _e( "Kontext", cp_defender()->domain ) ?></strong>
                                             </div>
                                             <div class="list-detail">
                                                 <a class="afilter"
@@ -112,7 +112,7 @@
                                         </li>
                                         <li>
                                             <div class="list-label">
-                                                <strong><?php _e( "Type", cp_defender()->domain ) ?></strong>
+                                                <strong><?php _e( "Typ", cp_defender()->domain ) ?></strong>
                                             </div>
                                             <div class="list-detail">
                                                 <a class="afilter"
@@ -123,7 +123,7 @@
                                         </li>
                                         <li>
                                             <div class="list-label">
-                                                <strong><?php _e( "IP address", cp_defender()->domain ) ?></strong>
+                                                <strong><?php _e( "IP-Adresse", cp_defender()->domain ) ?></strong>
                                             </div>
                                             <div class="list-detail">
                                                 <a class="afilter"
@@ -134,7 +134,7 @@
                                         </li>
                                         <li>
                                             <div class="list-label">
-                                                <strong><?php _e( "User", cp_defender()->domain ) ?></strong>
+                                                <strong><?php _e( "Benutzer", cp_defender()->domain ) ?></strong>
                                             </div>
                                             <div class="list-detail">
                                                 <a class="afilter"
@@ -151,11 +151,11 @@
                                         </li>
                                         <li>
                                             <div class="list-label">
-                                                <strong><?php _e( "Date / Time", cp_defender()->domain ) ?></strong>
+                                                <strong><?php _e( "Datum / Uhrzeit", cp_defender()->domain ) ?></strong>
                                             </div>
                                             <div class="list-detail">
 	                                            <?php
-	                                            echo $controller->formatDateTime( date( 'Y-m-d H:i:s', $timestamp ) );
+	                                            echo $controller->formatDateTime( date( 'd.m.Y H:i:s', $timestamp ) );
 	                                            ?>
                                             </div>
                                         </li>
@@ -165,7 +165,7 @@
                                         <div class="well">
                                             <div class="columns">
                                                 <div class="column is-10">
-                                                    <p><?php _e( "You can ban this IP address from being able to access your site, just be sure it’s not a legitimate operation of a plugin or service that needs access.", cp_defender()->domain ) ?></p>
+                                                    <p><?php _e( "Du kannst diese IP-Adresse sperren, damit sie nicht mehr auf deine Seite zugreifen kann. Stelle nur sicher, dass es sich nicht um eine legitime Operation eines Plugins oder Dienstes handelt, der Zugriff benötigt.", cp_defender()->domain ) ?></p>
                                                 </div>
                                                 <div class="column is-2 tc">
                                                     <form method="post" class="audit-frm banIP">
@@ -175,7 +175,7 @@
                                                                value="<?php echo $row['ip'] ?>"/>
 														<?php wp_nonce_field( 'lockoutIPAction', 'nonce' ) ?>
                                                         <button type="submit" class="button">
-															<?php _e( "Ban Ip", cp_defender()->domain ) ?></button>
+															<?php _e( "IP sperren", cp_defender()->domain ) ?></button>
                                                     </form>
                                                 </div>
                                             </div>

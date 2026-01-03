@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Hardener\Component;
 
@@ -43,7 +41,7 @@ class Protect_Information_Service extends Rule_Service implements IRule_Service 
 		}
 		if ( ! is_writeable( $htPath ) ) {
 			return new \WP_Error( Error_Code::NOT_WRITEABLE,
-				sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $htPath ) );
+				sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $htPath ) );
 		}
 		$htConfig       = file( $htPath );
 		$rules    		= $this->apache_rule();
@@ -66,7 +64,7 @@ class Protect_Information_Service extends Rule_Service implements IRule_Service 
 			$htPath = ABSPATH . '.htaccess';
 			if ( ! is_writeable( $htPath ) ) {
 				return new \WP_Error( Error_Code::NOT_WRITEABLE,
-					sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $htPath ) );
+					sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $htPath ) );
 			}
 			$htConfig = file_get_contents( $htPath );
 			$rules    = $this->apache_rule();
@@ -83,7 +81,7 @@ class Protect_Information_Service extends Rule_Service implements IRule_Service 
 			return true;
 		} else {
 			//Other servers we cant revert
-			return new \WP_Error( Error_Code::INVALID, __( "Revert is not possible on your current server", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::INVALID, __( "Das Zurücksetzen ist auf Deinem aktuellen Server nicht möglich.", cp_defender()->domain ) );
 		}
 	}
 

@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 namespace CP_Defender\Module\Hardener\Component;
 
 use CP_Defender\Component\Error_Code;
@@ -87,19 +85,19 @@ class Change_Admin_Service extends Rule_Service implements IRule_Service {
 			$username = $this->username;
 		}
 		if ( strlen( $username ) == 0 ) {
-			return new \WP_Error( Error_Code::VALIDATE, __( "The username can't be empty!", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::VALIDATE, __( "Der Benutzername darf nicht leer sein!", cp_defender()->domain ) );
 		}
 		if ( strtolower( $username ) == 'admin' ) {
-			return new \WP_Error( Error_Code::VALIDATE, __( "You can't use admin as a username again!", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::VALIDATE, __( "Du kannst admin nicht erneut als Benutzernamen verwenden!", cp_defender()->domain ) );
 		}
 
 		if ( ! validate_username( $username ) ) {
-			return new \WP_Error( Error_Code::VALIDATE, __( "The username is invalid!", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::VALIDATE, __( "Der Benutzername ist ungültig!", cp_defender()->domain ) );
 		}
 
 		//now check if the username unique
 		if ( username_exists( $username ) ) {
-			return new \WP_Error( Error_Code::VALIDATE, __( "The username already exists!", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::VALIDATE, __( "Der Benutzername existiert bereits!", cp_defender()->domain ) );
 		}
 
 		return true;

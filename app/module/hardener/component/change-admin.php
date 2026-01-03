@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Hardener\Component;
 
@@ -33,7 +31,7 @@ class Change_Admin extends Rule {
 	 * @return string
 	 */
 	public function getTitle() {
-		return __( "Change default admin user account", cp_defender()->domain );
+		return __( "Standard-Administratorkonto ändern", cp_defender()->domain );
 	}
 
 	/**
@@ -53,7 +51,7 @@ class Change_Admin extends Rule {
 		} else {
 			Settings::instance()->addToResolved( self::$slug );
 			wp_send_json_success( array(
-				'message' => sprintf( __( "Your admin name has changed. You will need to <a href='" . wp_login_url() . "'><strong>%s</strong></a>.<br/>This will auto reload after <span class='hardener-timer'>10</span> seconds.", cp_defender()->domain ), "re-login" ),
+				'message' => sprintf( __( "Dein Administratorname hat sich geändert. Du musst dich <a href='" . wp_login_url() . "'><strong>%s</strong></a>.<br/>Dies wird nach <span class='hardener-timer'>10</span> Sekunden automatisch neu geladen.", cp_defender()->domain ), "neu anmelden" ),
 				'reload'  => 10
 			) );
 		}

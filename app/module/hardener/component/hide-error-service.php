@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Hardener\Component;
 
@@ -58,7 +56,7 @@ class Hide_Error_Service extends Rule_Service implements IRule_Service {
 		//check if can write
 		if ( ! is_writeable( $config_path ) ) {
 			return new \WP_Error( Error_Code::NOT_WRITEABLE,
-				sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $config_path ) );
+				sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $config_path ) );
 		}
 		$config = file( $config_path );
 		if ( ( $info = $this->findWPDebugLine( $config ) ) === - 1 ) {
@@ -67,7 +65,7 @@ class Hide_Error_Service extends Rule_Service implements IRule_Service {
 				//nowhere, find the hook line, hook after $prefix
 				$hookline = $this->findDefaultHookLine( $config );
 				if ( $hookline === false ) {
-					return new \WP_Error( Error_Code::UNKNOWN_WPCONFIG, __( "Defender can't recognize your wp-config.php, please revert it to original state for further process.", cp_defender()->domain ) );
+					return new \WP_Error( Error_Code::UNKNOWN_WPCONFIG, __( "PS Security kann deine wp-config.php nicht erkennen, bitte setze sie für den weiteren Prozess auf den Originalzustand zurück.", cp_defender()->domain ) );
 				}
 				$config = Array_Helper::injectLine( $config, $hookline + 1, PHP_EOL . "define( 'WP_DEBUG', false );" . PHP_EOL );
 				file_put_contents( $config_path, implode( null, $config ), LOCK_EX );
@@ -75,7 +73,7 @@ class Hide_Error_Service extends Rule_Service implements IRule_Service {
 				return true;
 			} else {
 				//already somewhere
-				return new \WP_Error( Error_Code::UNKNOWN_WPCONFIG, __( "Defender can't recognize your wp-config.php, please revert it to original state for further process.", cp_defender()->domain ) );
+				return new \WP_Error( Error_Code::UNKNOWN_WPCONFIG, __( "PS Security kann deine wp-config.php nicht erkennen, bitte setze sie für den weiteren Prozess auf den Originalzustand zurück.", cp_defender()->domain ) );
 			}
 		}
 
@@ -100,7 +98,7 @@ class Hide_Error_Service extends Rule_Service implements IRule_Service {
 		} elseif ( $value == 0 ) {
 			//debug already off
 			//this is a rare case, debug is off, but error still showing up
-			return new \WP_Error( 0, __( "WP_DEBUG get override somewhere, please check with your host provider", cp_defender()->domain ) );
+			return new \WP_Error( 0, __( "WP_DEBUG wird irgendwo überschrieben, bitte kontaktiere deinen Hosting-Anbieter", cp_defender()->domain ) );
 		}
 	}
 

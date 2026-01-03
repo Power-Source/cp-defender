@@ -1,8 +1,6 @@
 <?php
 
-/**
- * Author: Hoang Ngo
- */
+
 class WD_Main_Activator {
 	public $cp_defender;
 

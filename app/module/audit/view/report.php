@@ -1,14 +1,14 @@
 <div class="dev-box">
     <div class="box-title">
-        <h3><?php _e( "NOTIFICATIONS", cp_defender()->domain ) ?></h3>
+        <h3><?php _e( "BENACHRICHTIGUNGEN", cp_defender()->domain ) ?></h3>
     </div>
     <div class="box-content">
         <form method="post" class="audit-frm audit-settings">
             <div class="columns">
                 <div class="column is-one-third">
-                    <strong><?php _e( "Audit report", cp_defender()->domain ) ?></strong>
+                    <strong><?php _e( "Audit Bericht", cp_defender()->domain ) ?></strong>
                     <span class="sub">
-                        <?php _e( "Defender can automatically send an email report summarising your website events so that you can keep track of logs without having to check back here.", cp_defender()->domain ) ?>
+                        <?php _e( "PS Security kann automatisch einen E-Mail-Bericht versenden, der die Ereignisse auf deiner Webseite zusammenfasst, sodass du die Protokolle im Blick behalten kannst, ohne hier erneut nachsehen zu müssen.", cp_defender()->domain ) ?>
                     </span>
                 </div>
                 <div class="column">
@@ -18,21 +18,21 @@
                                id="chk1" <?php checked( 1, $setting->notification ) ?>/>
                         <label class="toggle-label" for="chk1"></label>
                     </span>
-                    <label><?php _e( "Run regular reports", cp_defender()->domain ) ?></label>
+                    <label><?php _e( "Regelmäßige Berichte ausführen", cp_defender()->domain ) ?></label>
                     <div class="clear mline"></div>
                     <div class="well well-white schedule-box">
-                        <strong><?php _e( "Schedule", cp_defender()->domain ) ?></strong>
-                        <label><?php _e( "Frequency", cp_defender()->domain ) ?></label>
+                        <strong><?php _e( "Zeitplan", cp_defender()->domain ) ?></strong>
+                        <label><?php _e( "Häufigkeit", cp_defender()->domain ) ?></label>
                         <select name="frequency">
                             <option <?php selected( 1, $setting->frequency ) ?>
-                                    value="1"><?php _e( "Daily", cp_defender()->domain ) ?></option>
+                                    value="1"><?php _e( "Täglich", cp_defender()->domain ) ?></option>
                             <option <?php selected( 7, $setting->frequency ) ?>
-                                    value="7"><?php _e( "Weekly", cp_defender()->domain ) ?></option>
+                                    value="7"><?php _e( "Wöchentlich", cp_defender()->domain ) ?></option>
                             <option <?php selected( 30, $setting->frequency ) ?>
-                                    value="30"><?php _e( "Monthly", cp_defender()->domain ) ?></option>
+                                    value="30"><?php _e( "Monatlich", cp_defender()->domain ) ?></option>
                         </select>
                         <div class="days-container">
-                            <label><?php _e( "Day of the week", cp_defender()->domain ) ?></label>
+                            <label><?php _e( "Tag der Woche", cp_defender()->domain ) ?></label>
                             <select name="day">
 								<?php foreach ( \CP_Defender\Behavior\Utils::instance()->getDaysOfWeek() as $day ): ?>
                                     <option <?php selected( $day, $setting->day ) ?>
@@ -40,7 +40,7 @@
 								<?php endforeach; ?>
                             </select>
                         </div>
-                        <label><?php _e( "Time of day", cp_defender()->domain ) ?></label>
+                        <label><?php _e( "Uhrzeit", cp_defender()->domain ) ?></label>
                         <select name="time">
 							<?php foreach ( \CP_Defender\Behavior\Utils::instance()->getTimes() as $time ): ?>
                                 <option <?php selected( $time, $setting->time ) ?>
@@ -52,9 +52,9 @@
             </div>
             <div class="columns">
                 <div class="column is-one-third">
-                    <strong><?php _e( "Email Recipients", cp_defender()->domain ) ?></strong>
+                    <strong><?php _e( "E-Mail-Empfänger", cp_defender()->domain ) ?></strong>
                     <span class="sub">
-                        <?php _e( "Choose which of your website’s users will receive scan report results to their email inboxes.", cp_defender()->domain ) ?>
+                        <?php _e( "Wähle aus, welche Benutzer deiner Webseite die Scan-Berichtsergebnisse in ihrem E-Mail-Posteingang erhalten sollen.", cp_defender()->domain ) ?>
                     </span>
                 </div>
                 <div class="column">
@@ -64,7 +64,7 @@
             <div class="clear line"></div>
             <input type="hidden" name="action" value="saveAuditSettings"/>
 			<?php wp_nonce_field( 'saveAuditSettings' ) ?>
-            <button class="button float-r"><?php _e( "Update Settings", cp_defender()->domain ) ?></button>
+            <button class="button float-r"><?php _e( "Einstellungen aktualisieren", cp_defender()->domain ) ?></button>
             <div class="clear"></div>
         </form>
     </div>

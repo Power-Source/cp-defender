@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Hardener\Component;
 
@@ -29,7 +27,7 @@ class Disable_File_Editor_Service extends Rule_Service implements IRule_Service 
 		$config_path = $this->retrieveWPConfigPath();
 		if ( ! is_writeable( $config_path ) ) {
 			return new \WP_Error( Error_Code::NOT_WRITEABLE,
-				sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $config_path ) );
+				sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $config_path ) );
 		}
 		$config = file( $config_path );
 		$line   = $this->findLine( $config );
@@ -37,7 +35,7 @@ class Disable_File_Editor_Service extends Rule_Service implements IRule_Service 
 			//no defined, we just need to inject
 			$hook_line = $this->findDefaultHookLine( $config );
 			if ( $hook_line === false ) {
-				return new \WP_Error( Error_Code::UNKNOWN_WPCONFIG, __( "Defender can't recognize your wp-config.php, please revert it to original state for further process.", cp_defender()->domain ) );
+				return new \WP_Error( Error_Code::UNKNOWN_WPCONFIG, __( "PS Security kann deine wp-config.php nicht erkennen, bitte setze sie für den weiteren Prozess auf den Originalzustand zurück.", cp_defender()->domain ) );
 			}
 			$config = Array_Helper::injectLine( $config, $hook_line + 1, PHP_EOL . "define( 'DISALLOW_FILE_EDIT', true );" . PHP_EOL );
 
@@ -63,7 +61,7 @@ class Disable_File_Editor_Service extends Rule_Service implements IRule_Service 
 		$config_path = $this->retrieveWPConfigPath();
 		if ( ! is_writeable( $config_path ) ) {
 			return new \WP_Error( Error_Code::NOT_WRITEABLE,
-				sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $config_path ) );
+				sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $config_path ) );
 		}
 		$config = file( $config_path );
 		$line   = $this->findLine( $config );

@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Hardener\Component;
 
@@ -37,7 +35,7 @@ class Security_Key extends Rule {
 	 * @return string
 	 */
 	function getTitle() {
-		return __( "Update old security keys", cp_defender()->domain );
+		return __( "Alte Sicherheitsschlüssel aktualisieren", cp_defender()->domain );
 	}
 
 	function check() {
@@ -79,7 +77,7 @@ class Security_Key extends Rule {
 		} else {
 			Settings::instance()->addToResolved( self::$slug );
 			wp_send_json_success( array(
-				'message' => sprintf( __( 'All key salts have been regenerated. You will now need to <a href="%s"><strong>re-login</strong></a>.<br/>This will auto reload after <span class="hardener-timer">10</span> seconds.', cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-hardener' ) ),
+				'message' => sprintf( __( 'Alle Schlüssel-Salts wurden neu generiert. Du musst dich jetzt <a href="%s"><strong>erneut anmelden</strong></a>.<br/>Die Seite wird automatisch nach <span class="hardener-timer">10</span> Sekunden neu geladen.', cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-hardener' ) ),
 				'reload'  => 10
 			) );
 		}

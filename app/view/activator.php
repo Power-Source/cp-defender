@@ -1,16 +1,16 @@
 <dialog id="activator">
     <div class="activate-picker">
         <div class="line end">
-			<?php _e( "Welcome to Defender Pro! Let's quickly set up the most important security features, then you can fine tune each setting later. Our recommendations are turned on by default.", cp_defender()->domain ) ?>
+			<?php _e( "Willkommen bei PS Security! Wir richten schnell die wichtigsten Sicherheitsfunktionen ein, die Du später individuell anpassen kannst. Unsere Empfehlungen sind standardmäßig aktiviert.", cp_defender()->domain ) ?>
         </div>
         <form method="post">
             <input type="hidden" value="activateModule" name="action"/>
 			<?php wp_nonce_field( 'activateModule' ) ?>
             <div class="columns">
                 <div class="column is-10">
-                    <strong><?php _e( "File Scanning", cp_defender()->domain ); ?></strong>
+                    <strong><?php _e( "Dateiscannen", cp_defender()->domain ); ?></strong>
                     <p class="sub">
-						<?php _e( "Scan your website for file changes, vulnerabilities and injected code and get notified about anything suspicious.", cp_defender()->domain ) ?>
+						<?php _e( "Scanne deine Webseite nach Dateiänderungen, Schwachstellen und eingeschleustem Code und erhalte Benachrichtigungen über verdächtige Aktivitäten.", cp_defender()->domain ) ?>
                     </p>
                 </div>
                 <div class="column is-2">
@@ -25,9 +25,9 @@
             </div>
             <div class="columns">
                 <div class="column is-10">
-                    <strong><?php _e( "Audit Logging", cp_defender()->domain ) ?></strong>
+                    <strong><?php _e( "Audit-Protokollierung", cp_defender()->domain ) ?></strong>
                     <p class="sub">
-						<?php _e( "Track and log events when changes are made to your website, giving you full visibility over what's going on behind the scenes.", cp_defender()->domain ) ?>
+						<?php _e( "Verfolge und protokolliere Ereignisse, wenn Änderungen an deiner Webseite vorgenommen werden, und erhalte vollständige Transparenz darüber, was hinter den Kulissen passiert.", cp_defender()->domain ) ?>
                     </p>
                 </div>
                 <div class="column is-2">
@@ -41,9 +41,9 @@
             </div>
             <div class="columns">
                 <div class="column is-10">
-                    <strong><?php _e( "IP Lockouts", cp_defender()->domain ) ?></strong>
+                    <strong><?php _e( "IP-Sperren", cp_defender()->domain ) ?></strong>
                     <p class="sub">
-						<?php _e( "Protect your login area and give Defender the nod to automatically lockout any suspicious behavior.", cp_defender()->domain ) ?>
+						<?php _e( "Schütze deinen Login-Bereich und erlaube PS Security, automatisch verdächtiges Verhalten zu sperren.", cp_defender()->domain ) ?>
                     </p>
                 </div>
                 <div class="column is-2">
@@ -57,18 +57,18 @@
             <div class="columns last">
                 <div class="column is-9">
                     <p class="sub">
-						<?php _e( "These services will be configured with recommended settings. You can change these at any time.", cp_defender()->domain ) ?>
+						<?php _e( "Diese Dienste werden mit empfohlenen Einstellungen konfiguriert. Du kannst diese jederzeit ändern.", cp_defender()->domain ) ?>
                     </p>
                 </div>
                 <div class="column is-3 tr">
-                    <button type="submit" class="button"><?php _e( "Get Started", cp_defender()->domain ) ?></button>
+                    <button type="submit" class="button"><?php _e( "Loslegen", cp_defender()->domain ) ?></button>
                 </div>
             </div>
         </form>
     </div>
     <div class="activate-progress wd-hide">
         <div class="line">
-	        <?php _e( "Just a moment while Defender activates those services for you...", cp_defender()->domain ) ?>
+	        <?php _e( "Einen Moment bitte, während PS Security diese Dienste für dich aktiviert...", cp_defender()->domain ) ?>
         </div>
         <div class="well mline">
             <div class="scan-progress">

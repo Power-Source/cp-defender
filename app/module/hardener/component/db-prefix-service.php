@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Hardener\Component;
 
@@ -29,12 +27,12 @@ class DB_Prefix_Service extends Rule_Service implements IRule_Service {
 		$config_path = $this->retrieveWPConfigPath();
 		if ( ! is_writeable( $config_path ) ) {
 			return new \WP_Error( Error_Code::NOT_WRITEABLE,
-				sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $config_path ) );
+				sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $config_path ) );
 		}
 
 		$hook_line = $this->findDefaultHookLine( file( $config_path ) );
 		if ( $hook_line === false ) {
-			return new \WP_Error( Error_Code::UNKNOWN_WPCONFIG, __( "Your wp-config.php was modified by a 3rd party, this will cause conflict with Defender. Please revert it to original for updating your database prefix", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::UNKNOWN_WPCONFIG, __( "Deine wp-config.php wurde von einer Drittpartei modifiziert, dies wird zu Konflikten mit PS Security führen. Bitte setze sie auf das Original zurück, um dein Datenbankpräfix zu aktualisieren", cp_defender()->domain ) );
 		}
 
 		if ( ! \CP_Defender\Behavior\Utils::instance()->isActivatedSingle() ) {
@@ -44,7 +42,7 @@ class DB_Prefix_Service extends Rule_Service implements IRule_Service {
 			) );
 
 			if ( $sites >= 100 ) {
-				return new \WP_Error( Error_Code::VALIDATE, __( "Unfortunately it's not safe to do this via a plugin for larger WordPress Multisite installs. You can ignore this step, or follow a tutorial online on how to use a scalable tool like WP-CLI.", cp_defender()->domain ) );
+				return new \WP_Error( Error_Code::VALIDATE, __( "Leider ist es bei größeren WordPress-Multisite-Installationen nicht sicher, dies über ein Plugin zu tun. Du kannst diesen Schritt ignorieren oder online ein Tutorial befolgen, wie du ein skalierbares Tool wie WP-CLI verwendest.", cp_defender()->domain ) );
 			}
 		}
 		if ( is_wp_error( $is_valid = $this->validatePrefix() ) ) {
@@ -92,7 +90,7 @@ class DB_Prefix_Service extends Rule_Service implements IRule_Service {
 		if ( ! file_put_contents( $config_path, implode( null, $config ), LOCK_EX ) ) {
 			//should not happen
 			return new \WP_Error( Error_Code::NOT_WRITEABLE,
-				sprintf( __( "The file %s is not writeable", cp_defender()->domain ), $config_path ) );
+				sprintf( __( "Die Datei %s ist nicht beschreibbar", cp_defender()->domain ), $config_path ) );
 		}
 
 		return true;
@@ -184,19 +182,19 @@ class DB_Prefix_Service extends Rule_Service implements IRule_Service {
 
 		global $wpdb;
 		if ( $new_prefix == $wpdb->prefix ) {
-			return new \WP_Error( Error_Code::VALIDATE, __( "You are currently using this prefix.", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::VALIDATE, __( "Du verwendest derzeit dieses Präfix.", cp_defender()->domain ) );
 		}
 
 		if ( strlen( $new_prefix ) == 0 ) {
-			return new \WP_Error( Error_Code::VALIDATE, __( "Your prefix can't be empty!", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::VALIDATE, __( "Dein Präfix darf nicht leer sein!", cp_defender()->domain ) );
 		}
 
 		if ( preg_match( '|[^a-z0-9_]|i', $new_prefix ) ) {
-			return new \WP_Error( Error_Code::VALIDATE, __( "Table prefix can only contain numbers, letters, and underscores.", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::VALIDATE, __( "Das Tabellenpräfix darf nur Zahlen, Buchstaben und Unterstriche enthalten.", cp_defender()->domain ) );
 		}
 
 		if ( count( $tables = $this->getTables( $new_prefix ) ) ) {
-			return new \WP_Error( Error_Code::VALIDATE, __( "This prefix is already in use. Please choose a different prefix.", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::VALIDATE, __( "Dieses Präfix ist bereits in Verwendung. Bitte wähle ein anderes Präfix.", cp_defender()->domain ) );
 		}
 
 		$this->new_prefix = $new_prefix;

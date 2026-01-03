@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\IP_Lockout\Controller;
 
@@ -86,7 +84,7 @@ class Main extends Controller {
 
 		if ( count( $lockouts ) == 0 ) {
 			$data = array(
-				'lastLockout'          => __( "Never", cp_defender()->domain ),
+				'lastLockout'          => __( "Keine", cp_defender()->domain ),
 				'lockoutToday'         => 0,
 				'lockoutThisMonth'     => 0,
 				'loginLockoutThisWeek' => 0,
@@ -108,7 +106,7 @@ class Main extends Controller {
 		foreach ( $lockouts as $k => $log ) {
 			//the other as DESC, so first will be last lockout
 			if ( $k == 0 ) {
-				$lastLockout = $this->formatDateTime( date( 'Y-m-d H:i:s', $log->date ) );
+				$lastLockout = $this->formatDateTime( date( 'd.m.Y H:i:s', $log->date ) );
 			}
 
 			if ( $log->date > $todayMidnight ) {

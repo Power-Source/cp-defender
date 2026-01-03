@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Audit\Component;
 
@@ -19,7 +17,7 @@ class Users_Audit extends Event_Abstract {
 		return array(
 			'wp_login_failed'       => array(
 				'args'        => array( 'username' ),
-				'text'        => sprintf( esc_html__( "User login fail. Username: %s", cp_defender()->domain ), '{{username}}' ),
+				'text'        => sprintf( esc_html__( "Benutzeranmeldung fehlgeschlagen. Benutzername: %s", cp_defender()->domain ), '{{username}}' ),
 				'level'       => self::LOG_LEVEL_FATAL,
 				'event_type'  => $this->type,
 				'context'     => self::CONTEXT_SESSION,
@@ -27,7 +25,7 @@ class Users_Audit extends Event_Abstract {
 			),
 			'wp_login'              => array(
 				'args'        => array( 'userlogin', 'user' ),
-				'text'        => sprintf( esc_html__( "User login success: %s", cp_defender()->domain ), '{{userlogin}}' ),
+				'text'        => sprintf( esc_html__( "Benutzeranmeldung erfolgreich: %s", cp_defender()->domain ), '{{userlogin}}' ),
 				'level'       => self::LOG_LEVEL_INFO,
 				'event_type'  => $this->type,
 				'context'     => self::CONTEXT_SESSION,
@@ -35,7 +33,7 @@ class Users_Audit extends Event_Abstract {
 			),
 			'wp_logout'             => array(
 				'args'        => array(),
-				'text'        => sprintf( esc_html__( "User logout success: %s", cp_defender()->domain ), '{{username}}' ),
+				'text'        => sprintf( esc_html__( "Benutzer-Logout erfolgreich: %s", cp_defender()->domain ), '{{username}}' ),
 				'level'       => self::LOG_LEVEL_INFO,
 				'event_type'  => $this->type,
 				'action_type' => self::ACTION_LOGOUT,
@@ -47,8 +45,8 @@ class Users_Audit extends Event_Abstract {
 			),
 			'user_register'         => array(
 				'args'         => array( 'user_id' ),
-				'text'         => is_admin() ? sprintf( esc_html__( "%s added a new user: Username: %s, Role: %s", cp_defender()->domain ), '{{wp_user}}', '{{username}}', '{{user_role}}' )
-					: sprintf( esc_html__( "A new user registered: Username: %s, Role: %s", cp_defender()->domain ), '{{username}}', '{{user_role}}' ),
+				'text'         => is_admin() ? sprintf( esc_html__( "%s fügte einen neuen Benutzer hinzu: Benutzername: %s, Rolle: %s", cp_defender()->domain ), '{{wp_user}}', '{{username}}', '{{user_role}}' )
+					: sprintf( esc_html__( "Ein neuer Benutzer hat sich registriert: Benutzername: %s, Rolle: %s", cp_defender()->domain ), '{{username}}', '{{user_role}}' ),
 				'level'        => self::LOG_LEVEL_INFO,
 				'event_type'   => $this->type,
 				'context'      => self::CONTEXT_USERS,
@@ -72,7 +70,7 @@ class Users_Audit extends Event_Abstract {
 			),
 			'delete_user'           => array(
 				'args'         => array( 'user_id' ),
-				'text'         => sprintf( esc_html__( "%s deleted a user: ID: %s, username: %s", cp_defender()->domain ), '{{wp_user}}', '{{user_id}}', '{{username}}' ),
+				'text'         => sprintf( esc_html__( "%s löschte einen Benutzer: ID: %s, Benutzername: %s", cp_defender()->domain ), '{{wp_user}}', '{{user_id}}', '{{username}}' ),
 				'level'        => self::LOG_LEVEL_INFO,
 				'context'      => self::CONTEXT_USERS,
 				'action_type'  => Audit_API::ACTION_DELETED,
@@ -90,7 +88,7 @@ class Users_Audit extends Event_Abstract {
 			),
 			'remove_user_from_blog' => array(
 				'args'         => array( 'user_id', 'blog_id' ),
-				'text'         => sprintf( esc_html__( "%s removed a user: ID: %s, username: %s from blog %s", cp_defender()->domain ), '{{wp_user}}', '{{user_id}}', '{{username}}', '{{blog_id}}' ),
+				'text'         => sprintf( esc_html__( "%s entfernte einen Benutzer: ID: %s, Benutzername: %s vom Blog %s", cp_defender()->domain ), '{{wp_user}}', '{{user_id}}', '{{username}}', '{{blog_id}}' ),
 				'level'        => self::LOG_LEVEL_INFO,
 				'context'      => self::CONTEXT_USERS,
 				'action_type'  => Audit_API::ACTION_DELETED,
@@ -108,7 +106,7 @@ class Users_Audit extends Event_Abstract {
 			),
 			'wpmu_delete_user'      => array(
 				'args'         => array( 'user_id' ),
-				'text'         => sprintf( esc_html__( "%s deleted a user: ID: %s, username: %s", cp_defender()->domain ), '{{wp_user}}', '{{user_id}}', '{{username}}' ),
+				'text'         => sprintf( esc_html__( "%s löschte einen Benutzer: ID: %s, Benutzername: %s", cp_defender()->domain ), '{{wp_user}}', '{{user_id}}', '{{username}}' ),
 				'level'        => self::LOG_LEVEL_INFO,
 				'context'      => self::CONTEXT_USERS,
 				'action_type'  => Audit_API::ACTION_DELETED,
@@ -134,7 +132,7 @@ class Users_Audit extends Event_Abstract {
 			),
 			'retrieve_password'     => array(
 				'args'        => array( 'username' ),
-				'text'        => sprintf( esc_html__( "Password requested to reset for user: %s", cp_defender()->domain ), '{{username}}' ),
+				'text'        => sprintf( esc_html__( "Passwortanforderung zum Zurücksetzen für Benutzer: %s", cp_defender()->domain ), '{{username}}' ),
 				'level'       => self::LOG_LEVEL_INFO,
 				'action_type' => self::ACTION_LOST_PASS,
 				'event_type'  => $this->type,
@@ -142,7 +140,7 @@ class Users_Audit extends Event_Abstract {
 			),
 			'after_password_reset'  => array(
 				'args'        => array( 'user' ),
-				'text'        => sprintf( esc_html__( "Password reset for user: %s", cp_defender()->domain ), '{{user_login}}' ),
+				'text'        => sprintf( esc_html__( "Passwort zurückgesetzt für Benutzer: %s", cp_defender()->domain ), '{{user_login}}' ),
 				'level'       => self::LOG_LEVEL_INFO,
 				'event_type'  => $this->type,
 				'action_type' => self::ACTION_RESET_PASS,
@@ -153,7 +151,7 @@ class Users_Audit extends Event_Abstract {
 			),
 			'set_user_role'         => array(
 				'args'         => array( 'user_ID', 'new_role', 'old_role' ),
-				'text'         => sprintf( esc_html__( '%s changed user %s\'s role from %s to %s', cp_defender()->domain ), '{{wp_user}}', '{{username}}', '{{from_role}}', '{{new_role}}' ),
+				'text'         => sprintf( esc_html__( '%s änderte die Rolle des Benutzers %s von %s zu %s', cp_defender()->domain ), '{{wp_user}}', '{{username}}', '{{from_role}}', '{{new_role}}' ),
 				'level'        => self::LOG_LEVEL_INFO,
 				'action_type'  => Audit_API::ACTION_UPDATED,
 				'event_type'   => $this->type,
@@ -207,12 +205,12 @@ class Users_Audit extends Event_Abstract {
 
 		if ( get_current_user_id() == $user_id ) {
 			return array(
-				sprintf( esc_html__( "User %s updated his/her profile", cp_defender()->domain ), $current_user->user_nicename ),
+				sprintf( esc_html__( "Benutzer %s hat sein/ihr Profil aktualisiert", cp_defender()->domain ), $current_user->user_nicename ),
 				Audit_API::ACTION_UPDATED
 			);
 		} else {
 			return array(
-				sprintf( esc_html__( "%s updated user %s's profile information", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $current_user->user_nicename ),
+				sprintf( esc_html__( "%s hat die Profilinformationen des Benutzers %s aktualisiert", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $current_user->user_nicename ),
 				Audit_API::ACTION_UPDATED
 			);
 		}
@@ -220,11 +218,11 @@ class Users_Audit extends Event_Abstract {
 
 	public function dictionary() {
 		return array(
-			self::ACTION_LOST_PASS  => esc_html__( "lost password", cp_defender()->domain ),
-			self::ACTION_REGISTERED => esc_html__( "registered", cp_defender()->domain ),
-			self::ACTION_LOGIN      => esc_html__( "login", cp_defender()->domain ),
-			self::ACTION_LOGOUT     => esc_html__( "logout", cp_defender()->domain ),
-			self::ACTION_RESET_PASS => esc_html__( "password reset", cp_defender()->domain ),
+			self::ACTION_LOST_PASS  => esc_html__( "Passwort verloren", cp_defender()->domain ),
+			self::ACTION_REGISTERED => esc_html__( "registriert", cp_defender()->domain ),
+			self::ACTION_LOGIN      => esc_html__( "angemeldet", cp_defender()->domain ),
+			self::ACTION_LOGOUT     => esc_html__( "abgemeldet", cp_defender()->domain ),
+			self::ACTION_RESET_PASS => esc_html__( "Passwort zurückgesetzt", cp_defender()->domain ),
 		);
 	}
 

@@ -1,4 +1,1 @@
 <?php
-/**
- * Author: Hoang Ngo
- */

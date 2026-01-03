@@ -1,7 +1,5 @@
 <?php
-/**
- * Author: Hoang Ngo
- */
+
 
 namespace CP_Defender\Module\Audit\Component;
 
@@ -84,25 +82,25 @@ class Post_Audit extends Event_Abstract {
 				),
 				'text'         => array(
 					array(
-						sprintf( esc_html__( "%s published %s \"%s\"", cp_defender()->domain ), '{{wp_user}}', '{{post_type_label}}', '{{post_title}}' ),
+						sprintf( esc_html__( "%s veröffentlichte %s \"%s\"", cp_defender()->domain ), '{{wp_user}}', '{{post_type_label}}', '{{post_title}}' ),
 						'{{new_status}}',
 						'publish',
 						'=='
 					),
 					array(
-						sprintf( esc_html__( "%s pending %s \"%s\"", cp_defender()->domain ), '{{wp_user}}', '{{post_type_label}}', '{{post_title}}' ),
+						sprintf( esc_html__( "%s ausstehend %s \"%s\"", cp_defender()->domain ), '{{wp_user}}', '{{post_type_label}}', '{{post_title}}' ),
 						'{{new_status}}',
 						'pending',
 						'=='
 					),
 					array(
-						sprintf( esc_html__( "%s drafted %s \"%s\"", cp_defender()->domain ), '{{wp_user}}', '{{post_type_label}}', '{{post_title}}' ),
+						sprintf( esc_html__( "%s erstellte Entwurf %s \"%s\"", cp_defender()->domain ), '{{wp_user}}', '{{post_type_label}}', '{{post_title}}' ),
 						'{{new_status}}',
 						'draft',
 						'=='
 					),
 					array(
-						sprintf( esc_html__( "%s changed %s \"%s\" status from %s to %s", cp_defender()->domain ), '{{wp_user}}', '{{post_type_label}}', '{{post_title}}', '{{old_status}}', '{{new_status}}' ),
+						sprintf( esc_html__( "%s änderte den Status von %s \"%s\" von %s auf %s", cp_defender()->domain ), '{{wp_user}}', '{{post_type_label}}', '{{post_title}}', '{{old_status}}', '{{new_status}}' ),
 						'{{new_status}}',
 						'{{new_status}}',
 						'=='
@@ -127,7 +125,7 @@ class Post_Audit extends Event_Abstract {
 				'level'        => self::LOG_LEVEL_INFO,
 				'event_type'   => 'content',
 				'action_type'  => Audit_API::ACTION_DELETED,
-				'text'         => sprintf( esc_html__( "%s deleted %s \"%s\"", cp_defender()->domain ), '{{wp_user}}', '{{post_type_label}}', '{{post_title}}' ),
+				'text'         => sprintf( esc_html__( "%s löschte %s \"%s\"", cp_defender()->domain ), '{{wp_user}}', '{{post_type_label}}', '{{post_title}}' ),
 				'program_args' => array(
 					'post'            => array(
 						'callable' => 'get_post',
@@ -170,7 +168,7 @@ class Post_Audit extends Event_Abstract {
 				'level'        => self::LOG_LEVEL_INFO,
 				'action_type'  => Audit_API::ACTION_RESTORED,
 				'event_type'   => 'content',
-				'text'         => sprintf( esc_html__( "%s untrashed %s \"%s\"", cp_defender()->domain ), '{{wp_user}}', '{{post_type_label}}', '{{post_title}}' ),
+				'text'         => sprintf( esc_html__( "%s stellte %s \"%s\" wieder her", cp_defender()->domain ), '{{wp_user}}', '{{post_type_label}}', '{{post_title}}' ),
 				'program_args' => array(
 					'post'            => array(
 						'callable' => 'get_post',
@@ -200,7 +198,7 @@ class Post_Audit extends Event_Abstract {
 				'level'        => self::LOG_LEVEL_INFO,
 				'action_type'  => Audit_API::ACTION_TRASHED,
 				'event_type'   => 'content',
-				'text'         => sprintf( esc_html__( "%s trashed %s \"%s\"", cp_defender()->domain ), '{{wp_user}}', '{{post_type_label}}', '{{post_title}}' ),
+				'text'         => sprintf( esc_html__( "%s verschob %s \"%s\" in den Papierkorb", cp_defender()->domain ), '{{wp_user}}', '{{post_type_label}}', '{{post_title}}' ),
 				'program_args' => array(
 					'post'            => array(
 						'callable' => 'get_post',
@@ -279,7 +277,7 @@ class Post_Audit extends Event_Abstract {
 				unset( $post_before['post_status'] );
 				if ( serialize( $post_before ) != serialize( $post_after ) ) {
 					return array(
-						sprintf( esc_html__( "%s updated %s \"%s\"", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $post_type->labels->singular_name, $post_after['post_title'] ),
+						sprintf( esc_html__( "%s aktualisierte %s \"%s\"", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $post_type->labels->singular_name, $post_after['post_title'] ),
 						$post_type->labels->singular_name
 					);
 				}
@@ -287,7 +285,7 @@ class Post_Audit extends Event_Abstract {
 		} else {
 			if ( is_null( $post_before ) ) {
 				return array(
-					sprintf( esc_html__( "%s added new %s \"%s\"", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $post_type->labels->singular_name, $post->post_title ),
+					sprintf( esc_html__( "%s erstellte neuen %s \"%s\"", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $post_type->labels->singular_name, $post->post_title ),
 					$post_type->labels->singular_name
 				);
 			}
