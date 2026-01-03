@@ -54,25 +54,6 @@
                 </span>
                 </div>
             </div>
-			<?php $blStats = $controller->pullBlackListStatus( false, false );
-			if ( ! is_wp_error( $blStats ) ):?>
-                <div class="columns">
-                    <div class="column is-10">
-                        <strong><?php _e( "Blacklist Monitor", cp_defender()->domain ) ?></strong>
-                        <p class="sub">
-							<?php _e( "Automatically check if you’re on Google’s blacklist every 6 hours. If something’s wrong, we’ll let you know via email.", cp_defender()->domain ) ?>
-                        </p>
-                    </div>
-                    <div class="column is-2">
-                    <span class="toggle float-r">
-                    <input type="checkbox" checked
-                           name="activator[]" class="toggle-checkbox" id="activate_blacklist"
-                           value="activate_blacklist"/>
-                    <label class="toggle-label" for="activate_blacklist"></label>
-                </span>
-                    </div>
-                </div>
-			<?php endif; ?>
             <div class="columns last">
                 <div class="column is-9">
                     <p class="sub">

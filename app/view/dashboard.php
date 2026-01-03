@@ -74,10 +74,9 @@
             </div>
             <div class="row is_multiline">
                 <div class="col-half">
-					<?php echo $controller->renderHardenerWidget() ?>
-					<?php $controller->renderBlacklistWidget() ?>
-					<?php $controller->renderAuditWidget() ?>
-					<?php $controller->renderATWidget() ?>
+                    <?php echo $controller->renderHardenerWidget() ?>
+                    <?php $controller->renderAuditWidget() ?>
+                    <?php $controller->renderATWidget() ?>
                 </div>
                 <div class="col-half">
 					<?php $controller->renderScanWidget() ?>

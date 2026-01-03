@@ -27,8 +27,6 @@ class Dashboard extends Controller {
 			$this->add_action( 'defender_enqueue_assets', 'scripts', 11 );
 		}
 
-		$this->add_ajax_action( 'blacklistWidgetStatus', 'blacklistWidgetStatus' );
-		$this->add_ajax_action( 'toggleBlacklistWidget', 'toggleBlacklistWidget' );
 		$this->add_ajax_action( 'activateModule', 'activateModule' );
 		$this->add_ajax_action( 'skipActivator', 'skipActivator' );
 		$this->add_action( 'defenderSubmitStats', 'defenderSubmitStats' );
@@ -260,38 +258,6 @@ class Dashboard extends Controller {
 		$this->render( 'dashboard' );
 	}
 
-	public function blacklistWidgetStatus() {
-		if ( ! $this->checkPermission() ) {
-			return;
-		}
-
-		if ( ! wp_verify_nonce( HTTP_Helper::retrieve_post( '_wpnonce' ), 'blacklistWidgetStatus' ) ) {
-			return;
-		}
-
-		if ( $this->hasMethod( 'pullBlacklistStatus' ) ) {
-			$this->pullBlacklistStatus();
-		}
-
-		exit;
-	}
-
-	public function toggleBlacklistWidget() {
-		if ( ! $this->checkPermission() ) {
-			return;
-		}
-
-		if ( ! wp_verify_nonce( HTTP_Helper::retrieve_post( '_wpnonce' ), 'toggleBlacklistWidget' ) ) {
-			return;
-		}
-
-		if ( $this->hasMethod( 'toggleStatus' ) ) {
-			$this->toggleStatus();
-		}
-
-		exit;
-	}
-
 	/**
 	 * @param bool $detail
 	 *
@@ -330,9 +296,9 @@ class Dashboard extends Controller {
 			return;
 		}
 		
-		$menu_title = esc_html__( "Defender", cp_defender()->domain );
+		$menu_title = esc_html__( "PS Security", cp_defender()->domain );
 		//$menu_title = sprintf( $menu_title, $indicator );
-		add_menu_page( esc_html__( "Defender", cp_defender()->domain ), $menu_title, $cap, 'cp-defender', array(
+		add_menu_page( esc_html__( "PS Security", cp_defender()->domain ), $menu_title, $cap, 'cp-defender', array(
 			&$this,
 			'actionIndex'
 		), $this->get_menu_icon() );
@@ -364,11 +330,10 @@ class Dashboard extends Controller {
 		\WDEV_Plugin_Ui::load( cp_defender()->getPluginUrl() . 'shared-ui/' );
 		wp_enqueue_script( 'defender' );
 		$data = array(
-			'activator_title'    => __( "QUICK SETUP", cp_defender()->domain ) . '<form method="post" class="skip-activator float-r"><input type="hidden" name="action" value="skipActivator"/>' . wp_nonce_field( 'skipActivator', '_wpnonce', true, false ) . '<button type="submit" class="button button-small button-secondary">' . __( "Skip", cp_defender()->domain ) . '</button></form>',
-			'activate_scan'      => __( "Activating File Scanning...", cp_defender()->domain ),
-			'activate_audit'     => __( "Activating Audit Module...", cp_defender()->domain ),
-			'activate_lockout'   => __( "Activating IP Lockouts Module...", cp_defender()->domain ),
-			'activate_blacklist' => __( "Activating Blacklist Monitoring...", cp_defender()->domain )
+			'activator_title'  => __( "QUICK SETUP", cp_defender()->domain ) . '<form method="post" class="skip-activator float-r"><input type="hidden" name="action" value="skipActivator"/>' . wp_nonce_field( 'skipActivator', '_wpnonce', true, false ) . '<button type="submit" class="button button-small button-secondary">' . __( "Skip", cp_defender()->domain ) . '</button></form>',
+			'activate_scan'    => __( "Activating File Scanning...", cp_defender()->domain ),
+			'activate_audit'   => __( "Activating Audit Module...", cp_defender()->domain ),
+			'activate_lockout' => __( "Activating IP Lockouts Module...", cp_defender()->domain )
 		);
 		wp_enqueue_style( 'defender' );
 		wp_localize_script( 'defender', 'dashboard', $data );
@@ -385,7 +350,6 @@ class Dashboard extends Controller {
 			'scan'      => '\CP_Defender\Module\Scan\Behavior\Scan',
 			'lockout'   => '\CP_Defender\Module\IP_Lockout\Behavior\Widget',
 			'audit'     => '\CP_Defender\Module\Audit\Behavior\Audit',
-			'blacklist' => '\CP_Defender\Behavior\Blacklist',
 			'report'    => '\CP_Defender\Behavior\Report',
 			'at'        => '\CP_Defender\Module\Advanced_Tools\Behavior\AT_Widget'
 		);

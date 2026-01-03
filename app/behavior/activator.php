@@ -51,10 +51,6 @@ class Activator extends Behavior {
 						$activated[] = $item;
 						$settings->save();
 						break;
-					case 'activate_blacklist':
-						$this->owner->toggleStatus( - 1, false );
-						$activated[] = $item;
-						break;
 					case 'activate_lockout':
 						$settings                   = \CP_Defender\Module\IP_Lockout\Model\Settings::instance();
 						$settings->detect_404       = 1;
