@@ -238,7 +238,7 @@ class Core_Result extends Behavior {
 					$content = mb_convert_encoding( $content, 'UTF-8', 'ASCII' );
 				}
 
-				$entities = htmlentities( $content, null, 'UTF-8', false );
+				$entities = htmlentities( $content, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false );
 
 				return '<pre><code class="html">' . $entities . '</code></pre>';
 			} elseif ( $raw['type'] == 'modified' ) {

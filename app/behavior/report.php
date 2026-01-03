@@ -178,7 +178,7 @@ class Report extends Behavior {
 		}
 
 		$toolstip = sprintf( __( "Scan reports are active scheduled to send %s", cp_defender()->domain ),
-			$settings->frequency == 1 ? $this->frequencyToText( $settings->frequency ) . '/' . strftime( '%I:%M %p', strtotime( $settings->time ) ) : $this->frequencyToText( $settings->frequency ) . '/' . $settings->day . '/' . strftime( '%I:%M %p', strtotime( $settings->time ) ) );
+			$settings->frequency == 1 ? $this->frequencyToText( $settings->frequency ) . '/' . $this->formatTime( $settings->time ) : $this->frequencyToText( $settings->frequency ) . '/' . $settings->day . '/' . $this->formatTime( $settings->time ) );
 		$toolstip = strlen( $toolstip ) ? ' tooltip="' . esc_attr( $toolstip ) . '" ' : null;
 
 		return $toolstip;
@@ -192,7 +192,7 @@ class Report extends Behavior {
 		}
 
 		$toolstip = sprintf( __( "Audit reports are active scheduled to send %s", cp_defender()->domain ),
-			$settings->frequency == 1 ? $this->frequencyToText( $settings->frequency ) . '/' . strftime( '%I:%M %p', strtotime( $settings->time ) ) : $this->frequencyToText( $settings->frequency ) . '/' . $settings->day . '/' . strftime( '%I:%M %p', strtotime( $settings->time ) ) );
+			$settings->frequency == 1 ? $this->frequencyToText( $settings->frequency ) . '/' . $this->formatTime( $settings->time ) : $this->frequencyToText( $settings->frequency ) . '/' . $settings->day . '/' . $this->formatTime( $settings->time ) );
 		$toolstip = strlen( $toolstip ) ? ' tooltip="' . esc_attr( $toolstip ) . '" ' : null;
 
 		return $toolstip;
@@ -206,7 +206,7 @@ class Report extends Behavior {
 		}
 
 		$toolstip = sprintf( __( "Lockout reports are active scheduled to send %s", cp_defender()->domain ),
-			$settings->report_frequency == 1 ? $this->frequencyToText( $settings->report_frequency ) . '/' . strftime( '%I:%M %p', strtotime( $settings->report_time ) ) : $this->frequencyToText( $settings->report_frequency ) . '/' . $settings->report_day . '/' . strftime( '%I:%M %p', strtotime( $settings->report_time ) ) );
+			$settings->report_frequency == 1 ? $this->frequencyToText( $settings->report_frequency ) . '/' . $this->formatTime( $settings->report_time ) : $this->frequencyToText( $settings->report_frequency ) . '/' . $settings->report_day . '/' . $this->formatTime( $settings->report_time ) );
 		$toolstip = strlen( $toolstip ) ? ' tooltip="' . esc_attr( $toolstip ) . '" ' : null;
 
 		return $toolstip;
@@ -232,5 +232,17 @@ class Report extends Behavior {
 		}
 
 		return $text;
+	}
+
+	/**
+	 * Format time using WordPress localization; avoids deprecated strftime().
+	 */
+	private function formatTime( $time ) {
+		$timestamp = strtotime( $time );
+		if ( $timestamp === false ) {
+			return $time;
+		}
+
+		return date_i18n( 'g:i A', $timestamp );
 	}
 }
