@@ -1,9 +1,9 @@
-=== PS Security ===
+=== PS Security Suite ===
 Contributors: PSource
 Tags: updates, security, multisite, anti-spam, malware-scan
 Requires at least: 5.0
-Tested up to: 6.4 
-ClassicPress 1.6.0
+Tested up to: 6.4.0 
+ClassicPress 2.6.0
 Requires PHP: 7.4
 Stable tag: 1.0.2
 License: GPLv2 or later
@@ -77,13 +77,6 @@ Ja! Unter "Patterns" kannst du beliebig viele eigene Regex-Patterns erstellen un
 = Werden die Daten von Anti-Splog migriert? =
 
 Ja, wenn du vorher das Anti-Splog Plugin von WPMUDEV verwendet hast, werden die Daten automatisch migriert.
-
-== Screenshots ==
-
-1. Dashboard-Übersicht
-2. Anti-Spam Moderation Interface
-3. Pattern Management
-4. Statistiken und Reports
 
 == Changelog ==
 

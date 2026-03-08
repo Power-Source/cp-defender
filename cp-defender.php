@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: PS Security
+ * Plugin Name: PS Security Suite
  * Plugin URI: https://power-source.github.io/cp-defender/
  * Version:     1.0.2
  * Description: Erhalte regelmäßige Sicherheitsüberprüfungen, Schwachstellenberichte, Sicherheitsempfehlungen und individuelle Sicherheitsmaßnahmen für Deine Webseite – mit nur wenigen Klicks. PS Security ist Dein Analyst und Sicherheitsexperte, der rund um die Uhr für Dich da ist.
