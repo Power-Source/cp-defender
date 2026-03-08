@@ -2,7 +2,7 @@
 /**
  * Plugin Name: PS Security
  * Plugin URI: https://power-source.github.io/cp-defender/
- * Version:     1.1.0
+ * Version:     1.0.2
  * Description: Erhalte regelmäßige Sicherheitsüberprüfungen, Schwachstellenberichte, Sicherheitsempfehlungen und individuelle Sicherheitsmaßnahmen für Deine Webseite – mit nur wenigen Klicks. PS Security ist Dein Analyst und Sicherheitsexperte, der rund um die Uhr für Dich da ist.
  * Author:      PSOURCE
  * Author URI:  https://github.com/Power-Source
@@ -21,43 +21,6 @@ if ( ! defined( 'CP_DEFENDER_VERSION' ) ) {
 if ( ! defined( 'CP_DEFENDER_PATH' ) ) {
 	define( 'CP_DEFENDER_PATH', plugin_dir_path( __FILE__ ) );
 }
-
-// PS Update Manager - Hinweis wenn nicht installiert
-add_action( 'admin_notices', function() {
-    // Prüfe ob Update Manager aktiv ist
-    if ( ! function_exists( 'ps_register_product' ) && current_user_can( 'install_plugins' ) ) {
-        $screen = get_current_screen();
-        if ( $screen && in_array( $screen->id, array( 'plugins', 'plugins-network' ) ) ) {
-            // Prüfe ob bereits installiert aber inaktiv
-            $plugin_file = 'ps-update-manager/ps-update-manager.php';
-            $all_plugins = get_plugins();
-            $is_installed = isset( $all_plugins[ $plugin_file ] );
-            
-            echo '<div class="notice notice-warning is-dismissible"><p>';
-            echo '<strong>PSOURCE MANAGER:</strong> ';
-            
-            if ( $is_installed ) {
-                // Installiert aber inaktiv - Aktivierungs-Link
-                $activate_url = wp_nonce_url(
-                    admin_url( 'plugins.php?action=activate&plugin=' . urlencode( $plugin_file ) ),
-                    'activate-plugin_' . $plugin_file
-                );
-                echo sprintf(
-                    __( 'Aktiviere den <a href="%s">PS Update Manager</a> für automatische Updates von GitHub.', 'psource-chat' ),
-                    esc_url( $activate_url )
-                );
-            } else {
-                // Nicht installiert - Download-Link
-                echo sprintf(
-                    __( 'Installiere den <a href="%s" target="_blank">PS Update Manager</a> für automatische Updates aller PSource Plugins & Themes.', 'psource-chat' ),
-                    'https://github.com/Power-Source/ps-update-manager/releases/latest'
-                );
-            }
-            
-            echo '</p></div>';
-        }
-    }
-});
 
 class CP_Defender {
 
@@ -98,7 +61,7 @@ class CP_Defender {
 	/**
 	 * @var string
 	 */
-	public $version = "1.5";
+	public $version = "1.0.2";
 
 	/**
 	 * @var string

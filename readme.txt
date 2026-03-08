@@ -5,7 +5,7 @@ Requires at least: 5.0
 Tested up to: 6.4 
 ClassicPress 1.6.0
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,7 +87,7 @@ Ja, wenn du vorher das Anti-Splog Plugin von WPMUDEV verwendet hast, werden die 
 
 == Changelog ==
 
-= 1.1.0 =
+= 1.0.2 =
 
 * NEU: Anti-Spam Modul für Multisite
 * NEU: Pattern Matching System mit Regex-Support
