@@ -1,0 +1,130 @@
+/* Anti-Spam Module Styles */
+
+.defender-antispam-widget ul {
+	list-style: none;
+	margin: 10px 0;
+	padding: 0;
+}
+
+.defender-antispam-widget li {
+	padding: 8px 0;
+	border-bottom: 1px solid #f0f0f1;
+}
+
+.defender-antispam-widget li:last-child {
+	border-bottom: none;
+}
+
+/* Pattern Management */
+.defender-pattern-test-results {
+	margin-top: 15px;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background: #f9f9f9;
+}
+
+.defender-pattern-match {
+	background: #fff3cd;
+	padding: 2px 6px;
+	border-radius: 3px;
+	font-family: monospace;
+}
+
+/* Moderation Table */
+.spam-blog {
+	opacity: 0.6;
+	background: #fff5f5 !important;
+}
+
+.defender-certainty-high {
+	color: #d63638;
+	font-weight: bold;
+}
+
+.defender-certainty-medium {
+	color: #dba617;
+	font-weight: bold;
+}
+
+.defender-certainty-low {
+	color: #46b450;
+}
+
+/* Human Verification */
+.defender-recaptcha-wrap,
+.defender-qa-wrap {
+	margin: 15px 0;
+	padding: 15px;
+	background: #f9f9f9;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.defender-qa-wrap input[type="text"] {
+	width: 100%;
+	max-width: 400px;
+	padding: 8px;
+	margin-top: 5px;
+}
+
+/* Stats Dashboard */
+.defender-antispam-stats {
+	background: #fff;
+	padding: 20px;
+	border: 1px solid #ccd0d4;
+	border-radius: 4px;
+	margin-bottom: 20px;
+}
+
+.defender-stat-box {
+	text-align: center;
+	padding: 20px;
+	background: #f9f9f9;
+	border-radius: 4px;
+}
+
+.defender-stat-box h3 {
+	margin: 0 0 10px;
+	font-size: 36px;
+	font-weight: bold;
+}
+
+.defender-stat-box p {
+	margin: 0;
+	color: #666;
+}
+
+/* Pattern Editor */
+.defender-pattern-editor {
+	background: #fff;
+	padding: 20px;
+	border: 1px solid #ccd0d4;
+	border-radius: 4px;
+}
+
+.defender-pattern-editor textarea,
+.defender-pattern-editor input[type="text"] {
+	font-family: 'Courier New', monospace;
+}
+
+/* IP Reputation */
+.defender-ip-blocked {
+	color: #d63638;
+	font-weight: bold;
+}
+
+.defender-ip-suspicious {
+	color: #dba617;
+}
+
+.defender-ip-clean {
+	color: #46b450;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+	.defender-antispam-stats > div {
+		grid-template-columns: 1fr !important;
+	}
+}

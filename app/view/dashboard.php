@@ -77,6 +77,7 @@
                     <?php echo $controller->renderHardenerWidget() ?>
                     <?php $controller->renderAuditWidget() ?>
                     <?php $controller->renderATWidget() ?>
+					<?php if ( is_multisite() ) { $controller->renderAntiSpamWidget(); } ?>
                 </div>
                 <div class="col-half">
 					<?php $controller->renderScanWidget() ?>

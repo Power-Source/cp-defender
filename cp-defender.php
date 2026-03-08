@@ -2,7 +2,7 @@
 /**
  * Plugin Name: PS Security
  * Plugin URI: https://power-source.github.io/cp-defender/
- * Version:     1.0.1
+ * Version:     1.1.0
  * Description: Erhalte regelmäßige Sicherheitsüberprüfungen, Schwachstellenberichte, Sicherheitsempfehlungen und individuelle Sicherheitsmaßnahmen für Deine Webseite – mit nur wenigen Klicks. PS Security ist Dein Analyst und Sicherheitsexperte, der rund um die Uhr für Dich da ist.
  * Author:      PSOURCE
  * Author URI:  https://github.com/Power-Source
@@ -10,6 +10,17 @@
  * Text Domain: cpsec
  * Network: true
  */
+
+// Plugin-Konstanten definieren
+if ( ! defined( 'CP_DEFENDER_FILE' ) ) {
+	define( 'CP_DEFENDER_FILE', __FILE__ );
+}
+if ( ! defined( 'CP_DEFENDER_VERSION' ) ) {
+	define( 'CP_DEFENDER_VERSION', '1.1.0' );
+}
+if ( ! defined( 'CP_DEFENDER_PATH' ) ) {
+	define( 'CP_DEFENDER_PATH', plugin_dir_path( __FILE__ ) );
+}
 
 // PS Update Manager - Hinweis wenn nicht installiert
 add_action( 'admin_notices', function() {

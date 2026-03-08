@@ -21,17 +21,17 @@ class Hide_Error_Service extends Rule_Service implements IRule_Service {
 		if ( $cached === null ) {
 			//tmp turn off error log
 			$isLog = ini_get( 'log_errors' );
-			if ( $isLog == 1 ) {
-				ini_set( 'log_errors', 0 );
-			}
+			// if ( $isLog == 1 ) {
+			// 	ini_set( 'log_errors', 0 );
+			// }
 			$url      = site_url( 'wp-includes/theme-compat/embed.php', array(
 				'user-agent' => 'Defender self check'
 			) );
 			$response = wp_remote_get( $url );
 			$body     = wp_remote_retrieve_body( $response );
-			if ( $isLog == 1 ) {
-				ini_set( 'log_errors', 1 );
-			}
+			// if ( $isLog == 1 ) {
+			// 	ini_set( 'log_errors', 1 );
+			// }
 			if ( strpos( $body, ABSPATH . 'wp-includes/theme-compat/embed.php' ) !== false ||
 					WP_DEBUG == true && ( ! defined( 'WP_DEBUG_DISPLAY' ) || WP_DEBUG_DISPLAY != false )) {
 				$altCache->set( 'Hide_Error_Service', 0 );

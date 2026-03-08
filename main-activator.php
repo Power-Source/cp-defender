@@ -44,6 +44,7 @@ class WD_Main_Activator {
 			\Hammer\Base\Container::instance()->set( 'audit', new \CP_Defender\Module\Audit() );
 			\Hammer\Base\Container::instance()->set( 'lockout', new \CP_Defender\Module\IP_Lockout() );
 			\Hammer\Base\Container::instance()->set( 'advanced_tool', new \CP_Defender\Module\Advanced_Tools() );
+			\Hammer\Base\Container::instance()->set( 'anti_spam', new \CP_Defender\Module\Anti_Spam() );
 			//no need to set debug
 			new \CP_Defender\Controller\Debug();
 		}

@@ -342,14 +342,15 @@ class Dashboard extends Controller {
 	 */
 	public function behaviors() {
 		return array(
-			'utils'     => '\CP_Defender\Behavior\Utils',
-			'activator' => '\CP_Defender\Behavior\Activator',
-			'hardener'  => '\CP_Defender\Module\Hardener\Behavior\Widget',
-			'scan'      => '\CP_Defender\Module\Scan\Behavior\Scan',
-			'lockout'   => '\CP_Defender\Module\IP_Lockout\Behavior\Widget',
-			'audit'     => '\CP_Defender\Module\Audit\Behavior\Audit',
-			'report'    => '\CP_Defender\Behavior\Report',
-			'at'        => '\CP_Defender\Module\Advanced_Tools\Behavior\AT_Widget'
+			'utils'      => '\CP_Defender\Behavior\Utils',
+			'activator'  => '\CP_Defender\Behavior\Activator',
+			'hardener'   => '\CP_Defender\Module\Hardener\Behavior\Widget',
+			'scan'       => '\CP_Defender\Module\Scan\Behavior\Scan',
+			'lockout'    => '\CP_Defender\Module\IP_Lockout\Behavior\Widget',
+			'audit'      => '\CP_Defender\Module\Audit\Behavior\Audit',
+			'report'     => '\CP_Defender\Behavior\Report',
+			'at'         => '\CP_Defender\Module\Advanced_Tools\Behavior\AT_Widget',
+			'anti_spam'  => '\CP_Defender\Module\Anti_Spam\Behavior\Widget'
 		);
 	}
 }
