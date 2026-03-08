@@ -41,6 +41,11 @@ class Settings {
 		'recaptcha_secret_key'    => '',
 		'honeypot_enabled'        => true,
 		
+		// Disposable Email Protection
+		'disposable_email_check_enabled' => true,
+		'disposable_domains_auto_update' => true,
+		'disposable_domains_last_update' => 0,
+		
 		// Q&A Protection
 		'qa_questions'            => array(),
 		

@@ -3,6 +3,7 @@
 namespace CP_Defender\Module\Anti_Spam\Controller;
 
 use CP_Defender\Module\Anti_Spam\Behavior\Database;
+use CP_Defender\Module\Anti_Spam\Behavior\Disposable_Email;
 use CP_Defender\Module\Anti_Spam\Model\Settings;
 use CP_Defender\Module\Anti_Spam\Model\Pattern;
 use CP_Defender\Module\Anti_Spam\Model\Blog_Log;
@@ -25,6 +26,9 @@ class Main {
 		// Migration Check
 		add_action( 'network_admin_notices', array( $this, 'maybe_show_migration_notice' ) );
 		
+		// Disposable Email Protection initialisieren
+		Disposable_Email::init();
+		
 		// Signup Protection laden
 		new Signup_Protection();
 		
@@ -37,6 +41,7 @@ class Main {
 		// AJAX Handler
 		add_action( 'wp_ajax_defender_antispam_test_pattern', array( $this, 'ajax_test_pattern' ) );
 		add_action( 'wp_ajax_defender_antispam_toggle_blog', array( $this, 'ajax_toggle_blog' ) );
+		add_action( 'wp_ajax_defender_update_disposable_domains', array( $this, 'ajax_update_disposable_domains' ) );
 		
 		// Dashboard Widget
 		add_action( 'wp_network_dashboard_setup', array( $this, 'add_dashboard_widget' ) );
@@ -245,6 +250,32 @@ class Main {
 	 */
 	public function render_patterns_page(): void {
 		require_once __DIR__ . '/../view/patterns.php';
+	}
+	
+	/**
+	 * AJAX: Aktualisiert Disposable-Domain-Liste
+	 */
+	public function ajax_update_disposable_domains(): void {
+		check_ajax_referer( 'defender_antispam_nonce', 'nonce' );
+		
+		if ( ! is_super_admin() ) {
+			wp_send_json_error( array(
+				'message' => __( 'Du bist nicht berechtigt, diese Aktion durchzuführen.', 'cpsec' ),
+			), 403 );
+		}
+		
+		$result = Disposable_Email::update_domain_list();
+		
+		if ( $result['success'] ) {
+			wp_send_json_success( array(
+				'message' => $result['message'],
+				'count' => $result['count'],
+			) );
+		} else {
+			wp_send_json_error( array(
+				'message' => $result['message'],
+			) );
+		}
 	}
 	
 	/**

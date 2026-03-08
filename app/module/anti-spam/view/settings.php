@@ -7,6 +7,7 @@
 
 use CP_Defender\Module\Anti_Spam\Model\Settings;
 use CP_Defender\Module\Anti_Spam\Behavior\Migration;
+use CP_Defender\Module\Anti_Spam\Behavior\Disposable_Email;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -35,6 +36,10 @@ if ( isset( $_GET['migrate'] ) && check_admin_referer( 'defender_antispam_migrat
 	}
 }
 
+/**
+ * GET-basiertes Update wurde entfernt, alles läuft jetzt via AJAX
+ */
+
 // Speichere Einstellungen
 if ( isset( $_POST['defender_antispam_save'] ) && check_admin_referer( 'defender_antispam_settings' ) ) {
 	$settings = array(
@@ -52,6 +57,8 @@ if ( isset( $_POST['defender_antispam_save'] ) && check_admin_referer( 'defender
 		'recaptcha_site_key'      => sanitize_text_field( $_POST['recaptcha_site_key'] ?? '' ),
 		'recaptcha_secret_key'    => sanitize_text_field( $_POST['recaptcha_secret_key'] ?? '' ),
 		'honeypot_enabled'        => isset( $_POST['honeypot_enabled'] ),
+		'disposable_email_check_enabled' => isset( $_POST['disposable_email_check_enabled'] ),
+		'disposable_domains_auto_update' => isset( $_POST['disposable_domains_auto_update'] ),
 		'post_monitoring_enabled' => isset( $_POST['post_monitoring_enabled'] ),
 		'post_spam_certainty'     => absint( $_POST['post_spam_certainty'] ?? 90 ),
 		'notify_on_spam'          => isset( $_POST['notify_on_spam'] ),
@@ -244,6 +251,61 @@ $settings = Settings::get_all();
 			</tr>
 			
 			<tr>
+				<th colspan="2"><h2><?php _e( 'Disposable Email Protection', 'cpsec' ); ?></h2></th>
+			</tr>
+			<tr>
+				<th scope="row"><?php _e( 'Wegwerf-E-Mails blockieren', 'cpsec' ); ?></th>
+				<td>
+					<label>
+						<input type="checkbox" name="disposable_email_check_enabled" value="1" <?php checked( $settings['disposable_email_check_enabled'] ); ?> />
+						<?php _e( 'Blockiere Registrierungen mit bekannten Wegwerf-E-Mail-Adressen (z.B. 10minutemail, Guerrilla Mail, Mailinator)', 'cpsec' ); ?>
+					</label>
+					<?php
+					$info = Disposable_Email::get_list_info();
+					$last_update = $info['last_update'];
+					?>
+					<p class="description">
+						<strong><?php _e( 'Domain-Liste:', 'cpsec' ); ?></strong> 
+						<?php 
+						if ( $info['file_exists'] ) {
+							echo sprintf( 
+								__( '%s Domains | Letzte Aktualisierung: %s', 'cpsec' ),
+								number_format_i18n( $info['count'] ),
+								$last_update > 0 ? wp_date( 'j. F Y, H:i', $last_update ) : __( 'Nie', 'cpsec' )
+							);
+						} else {
+							echo '<span style="color:#d63638;">' . __( 'Keine Domain-Liste gefunden', 'cpsec' ) . '</span>';
+						}
+						?>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php _e( 'Automatische Updates', 'cpsec' ); ?></th>
+				<td>
+					<label>
+						<input type="checkbox" name="disposable_domains_auto_update" value="1" <?php checked( $settings['disposable_domains_auto_update'] ); ?> />
+						<?php _e( 'Domain-Liste wöchentlich automatisch aktualisieren (via WP-Cron)', 'cpsec' ); ?>
+					</label>
+					<p class="description">
+						<?php _e( 'Hält die Liste mit neuen Wegwerf-Domains auf dem aktuellen Stand.', 'cpsec' ); ?>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php _e( 'Manuelle Aktualisierung', 'cpsec' ); ?></th>
+				<td>
+					<button type="button" id="btn-update-disposable-domains" class="button button-secondary">
+						<?php _e( 'Domain-Liste jetzt aktualisieren', 'cpsec' ); ?>
+					</button>
+					<p class="description">
+						<?php _e( 'Lädt die neueste Liste von GitHub herunter. Quelle: disposable-email-domains/disposable-email-domains', 'cpsec' ); ?>
+					</p>
+					<div id="disposable-update-result" style="margin-top: 10px; display: none;"></div>
+				</td>
+			</tr>
+			
+			<tr>
 				<th colspan="2"><h2><?php _e( 'Weitere Optionen', 'cpsec' ); ?></h2></th>
 			</tr>
 			<tr>
@@ -284,5 +346,52 @@ jQuery(document).ready(function($) {
 	});
 
 	toggleVerificationSettings();
+
+	// Disposable Domain List Update
+	$('#btn-update-disposable-domains').on('click', function(e) {
+		e.preventDefault();
+		var $btn = $(this);
+		var $result = $('#disposable-update-result');
+		
+		$btn.prop('disabled', true);
+		$btn.text('<?php _e( 'Wird aktualisiert...', 'cpsec' ); ?>');
+		$result.hide();
+		
+		$.ajax({
+			url: defenderAntiSpam.ajaxUrl,
+			type: 'POST',
+			data: {
+				action: 'defender_update_disposable_domains',
+				nonce: defenderAntiSpam.nonce
+			},
+			dataType: 'json',
+			success: function(response) {
+				if (response.success) {
+					$result.html(
+						'<div class="notice notice-success" style="padding: 12px; margin: 0;">' +
+						'<p><strong>' + response.data.message + '</strong></p>' +
+						'</div>'
+					).show();
+				} else {
+					$result.html(
+						'<div class="notice notice-error" style="padding: 12px; margin: 0;">' +
+						'<p><strong><?php _e( 'Update fehlgeschlagen:', 'cpsec' ); ?></strong> ' + response.data.message + '</p>' +
+						'</div>'
+					).show();
+				}
+			},
+			error: function() {
+				$result.html(
+					'<div class="notice notice-error" style="padding: 12px; margin: 0;">' +
+					'<p><strong><?php _e( 'Fehler:', 'cpsec' ); ?></strong> <?php _e( 'AJAX-Request fehlgeschlagen', 'cpsec' ); ?></p>' +
+					'</div>'
+				).show();
+			},
+			complete: function() {
+				$btn.prop('disabled', false);
+				$btn.text('<?php _e( 'Domain-Liste jetzt aktualisieren', 'cpsec' ); ?>');
+			}
+		});
+	});
 });
 </script>
