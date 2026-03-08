@@ -11,6 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 global $wpdb;
+$tracking_table = $wpdb->base_prefix . 'defender_antispam_blogs';
+$tracking_table_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $tracking_table ) ) === $tracking_table;
 
 // Bulk-Aktionen
 if ( isset( $_POST['bulk_action'] ) && check_admin_referer( 'defender_antispam_moderation' ) ) {
@@ -35,12 +37,14 @@ if ( isset( $_POST['bulk_action'] ) && check_admin_referer( 'defender_antispam_m
 				$count++;
 				break;
 			case 'ignore':
-				$wpdb->update(
-					$wpdb->base_prefix . 'defender_antispam_blogs',
-					array( 'is_ignored' => 1 ),
-					array( 'blog_id' => $blog_id )
-				);
-				$count++;
+				if ( $tracking_table_exists ) {
+					$wpdb->update(
+						$tracking_table,
+						array( 'is_ignored' => 1 ),
+						array( 'blog_id' => $blog_id )
+					);
+					$count++;
+				}
 				break;
 		}
 	}
@@ -55,8 +59,6 @@ $status_filter = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status']
 $per_page = 20;
 $paged = isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
 $offset = ( $paged - 1 ) * $per_page;
-
-$table = $wpdb->base_prefix . 'defender_antispam_blogs';
 
 // Query erstellen
 $where = array();
@@ -81,33 +83,42 @@ switch ( $status_filter ) {
 
 $where_sql = implode( ' AND ', $where );
 
-$total = $wpdb->get_var( "SELECT COUNT(*) FROM {$table} a {$join} WHERE {$where_sql}" );
-$total_pages = ceil( $total / $per_page );
+$total = 0;
+$total_pages = 0;
+$results = array();
 
-$results = $wpdb->get_results( 
-	$wpdb->prepare(
-		"SELECT a.*, b.domain, b.path, b.registered, b.spam, b.deleted 
-		FROM {$table} a 
-		{$join}
-		WHERE {$where_sql}
-		ORDER BY a.certainty DESC, a.signup_date DESC
-		LIMIT %d OFFSET %d",
-		$per_page,
-		$offset
-	)
-);
+if ( $tracking_table_exists ) {
+	$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$tracking_table} a {$join} WHERE {$where_sql}" );
+	$total_pages = (int) ceil( $total / $per_page );
+
+	$results = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT a.*, b.domain, b.path, b.registered, b.spam, b.deleted 
+			FROM {$tracking_table} a 
+			{$join}
+			WHERE {$where_sql}
+			ORDER BY a.certainty DESC, a.signup_date DESC
+			LIMIT %d OFFSET %d",
+			$per_page,
+			$offset
+		)
+	);
+}
 
 // Statistiken
 $stats = array(
 	'total' => get_blog_count(),
 	'spam' => $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->blogs} WHERE spam = 1" ),
-	'suspicious' => $wpdb->get_var( "SELECT COUNT(*) FROM {$table} a INNER JOIN {$wpdb->blogs} b ON a.blog_id = b.blog_id WHERE a.certainty > 50 AND a.is_ignored = 0 AND b.spam = 0" ),
-	'ignored' => $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE is_ignored = 1" ),
+	'suspicious' => $tracking_table_exists ? (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$tracking_table} a INNER JOIN {$wpdb->blogs} b ON a.blog_id = b.blog_id WHERE a.certainty > 50 AND a.is_ignored = 0 AND b.spam = 0" ) : 0,
+	'ignored' => $tracking_table_exists ? (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$tracking_table} WHERE is_ignored = 1" ) : 0,
 );
 ?>
 
 <div class="wrap">
 	<h1><?php _e( '🛡️ Anti-Spam Moderation', 'cpsec' ); ?></h1>
+	<?php if ( ! $tracking_table_exists ) : ?>
+		<div class="notice notice-warning"><p><?php _e( 'Anti-Spam Tracking-Tabelle ist noch nicht verfügbar. Daten werden angezeigt, sobald das Modul initialisiert wurde.', 'cpsec' ); ?></p></div>
+	<?php endif; ?>
 	
 	<div class="defender-antispam-stats" style="background: #fff; padding: 15px; border: 1px solid #ccd0d4; margin-bottom: 20px;">
 		<h3 style="margin-top: 0;"><?php _e( 'Übersicht', 'cpsec' ); ?></h3>

@@ -12,10 +12,26 @@ namespace CP_Defender\Module\Anti_Spam\Model;
 class Blog_Log {
 	
 	/**
+	 * Prüft ob die Tracking-Tabelle existiert
+	 */
+	private static function table_exists(): bool {
+		global $wpdb;
+
+		$table = $wpdb->base_prefix . 'defender_antispam_blogs';
+		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+
+		return $exists === $table;
+	}
+	
+	/**
 	 * Holt Log-Daten für einen Blog
 	 */
 	public static function get( int $blog_id ): ?array {
 		global $wpdb;
+
+		if ( ! self::table_exists() ) {
+			return null;
+		}
 		
 		$table = $wpdb->base_prefix . 'defender_antispam_blogs';
 		
@@ -35,6 +51,10 @@ class Blog_Log {
 	 */
 	public static function update( int $blog_id, array $data ): bool {
 		global $wpdb;
+
+		if ( ! self::table_exists() ) {
+			return false;
+		}
 		
 		$table = $wpdb->base_prefix . 'defender_antispam_blogs';
 		$existing = self::get( $blog_id );
@@ -87,6 +107,10 @@ class Blog_Log {
 	 */
 	public static function get_suspicious( int $limit = 100, int $offset = 0 ): array {
 		global $wpdb;
+
+		if ( ! self::table_exists() ) {
+			return array();
+		}
 		
 		$table = $wpdb->base_prefix . 'defender_antispam_blogs';
 		
@@ -114,6 +138,10 @@ class Blog_Log {
 	 */
 	public static function get_spam_blogs( int $limit = 100, int $offset = 0 ): array {
 		global $wpdb;
+
+		if ( ! self::table_exists() ) {
+			return array();
+		}
 		
 		$table = $wpdb->base_prefix . 'defender_antispam_blogs';
 		
@@ -139,19 +167,28 @@ class Blog_Log {
 	 */
 	public static function get_counts(): array {
 		global $wpdb;
+
+		$counts = array(
+			'total'      => (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->blogs}" ),
+			'spam'       => (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->blogs} WHERE spam = 1" ),
+			'suspicious' => 0,
+			'ignored'    => 0,
+		);
+
+		if ( ! self::table_exists() ) {
+			return $counts;
+		}
 		
 		$table = $wpdb->base_prefix . 'defender_antispam_blogs';
-		
-		return array(
-			'total' => (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->blogs}" ),
-			'spam' => (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->blogs} WHERE spam = 1" ),
-			'suspicious' => (int) $wpdb->get_var( 
+
+		$counts['suspicious'] = (int) $wpdb->get_var(
 				"SELECT COUNT(*) FROM {$table} a 
 				INNER JOIN {$wpdb->blogs} b ON a.blog_id = b.blog_id 
 				WHERE a.certainty > 50 AND a.is_ignored = 0 AND b.spam = 0"
-			),
-			'ignored' => (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE is_ignored = 1" ),
 		);
+		$counts['ignored'] = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE is_ignored = 1" );
+
+		return $counts;
 	}
 	
 	/**
@@ -159,6 +196,10 @@ class Blog_Log {
 	 */
 	public static function cleanup( int $days = 180 ): int {
 		global $wpdb;
+
+		if ( ! self::table_exists() ) {
+			return 0;
+		}
 		
 		$table = $wpdb->base_prefix . 'defender_antispam_blogs';
 		$date = date( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );

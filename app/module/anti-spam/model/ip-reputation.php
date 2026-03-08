@@ -12,10 +12,38 @@ namespace CP_Defender\Module\Anti_Spam\Model;
 class IP_Reputation {
 	
 	/**
+	 * Prüft ob die IP-Reputation-Tabelle existiert
+	 */
+	private static function ip_table_exists(): bool {
+		global $wpdb;
+
+		$table = $wpdb->base_prefix . 'defender_antispam_ips';
+		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+
+		return $exists === $table;
+	}
+
+	/**
+	 * Prüft ob die Blog-Tracking-Tabelle existiert
+	 */
+	private static function blog_table_exists(): bool {
+		global $wpdb;
+
+		$table = $wpdb->base_prefix . 'defender_antispam_blogs';
+		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+
+		return $exists === $table;
+	}
+	
+	/**
 	 * Holt Reputation-Daten für eine IP
 	 */
 	public static function get( string $ip ): ?array {
 		global $wpdb;
+
+		if ( ! self::ip_table_exists() ) {
+			return null;
+		}
 		
 		$table = $wpdb->base_prefix . 'defender_antispam_ips';
 		
@@ -35,6 +63,10 @@ class IP_Reputation {
 	 */
 	public static function update( string $ip, array $data ): bool {
 		global $wpdb;
+
+		if ( ! self::ip_table_exists() ) {
+			return false;
+		}
 		
 		$table = $wpdb->base_prefix . 'defender_antispam_ips';
 		$existing = self::get( $ip );
@@ -64,6 +96,10 @@ class IP_Reputation {
 	 */
 	public static function increment_spam_count( string $ip ): int {
 		global $wpdb;
+
+		if ( ! self::ip_table_exists() ) {
+			return 0;
+		}
 		
 		$table = $wpdb->base_prefix . 'defender_antispam_ips';
 		$current = self::get( $ip );
@@ -104,6 +140,10 @@ class IP_Reputation {
 	 */
 	public static function increment_signup_count( string $ip ): int {
 		global $wpdb;
+
+		if ( ! self::ip_table_exists() ) {
+			return 0;
+		}
 		
 		$table = $wpdb->base_prefix . 'defender_antispam_ips';
 		$current = self::get( $ip );
@@ -175,20 +215,26 @@ class IP_Reputation {
 	 */
 	public static function get_recent_signup_count( string $ip, int $hours = 24 ): int {
 		global $wpdb;
-		
+
 		$table = $wpdb->base_prefix . 'defender_antispam_blogs';
 		$since = date( 'Y-m-d H:i:s', strtotime( "-{$hours} hours" ) );
-		
-		$count = $wpdb->get_var( 
-			$wpdb->prepare(
-				"SELECT COUNT(*) FROM {$table} WHERE last_ip = %s AND signup_date >= %s",
-				$ip,
-				$since
-			)
-		);
+
+		$count = 0;
+		if ( self::blog_table_exists() ) {
+			$count = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$table} WHERE last_ip = %s AND signup_date >= %s",
+					$ip,
+					$since
+				)
+			);
+		}
 		
 		// Zusätzlich aus registration_log prüfen (WP Core)
-		if ( $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->registration_log}'" ) ) {
+		$registration_log_exists = $wpdb->get_var(
+			$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->registration_log )
+		);
+		if ( $registration_log_exists === $wpdb->registration_log ) {
 			$reg_count = $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT COUNT(*) FROM {$wpdb->registration_log} WHERE IP = %s AND date_registered >= %s",
@@ -208,6 +254,10 @@ class IP_Reputation {
 	 */
 	public static function get_blocked_ips( int $limit = 100, int $offset = 0 ): array {
 		global $wpdb;
+
+		if ( ! self::ip_table_exists() ) {
+			return array();
+		}
 		
 		$table = $wpdb->base_prefix . 'defender_antispam_ips';
 		
@@ -228,6 +278,10 @@ class IP_Reputation {
 	 */
 	public static function get_top_spammers( int $limit = 10 ): array {
 		global $wpdb;
+
+		if ( ! self::ip_table_exists() ) {
+			return array();
+		}
 		
 		$table = $wpdb->base_prefix . 'defender_antispam_ips';
 		
@@ -247,6 +301,10 @@ class IP_Reputation {
 	 */
 	public static function cleanup( int $days = 90 ): int {
 		global $wpdb;
+
+		if ( ! self::ip_table_exists() ) {
+			return 0;
+		}
 		
 		$table = $wpdb->base_prefix . 'defender_antispam_ips';
 		$date = date( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );

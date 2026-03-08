@@ -46,9 +46,12 @@ if ( isset( $_POST['defender_antispam_save'] ) && check_admin_referer( 'defender
 		'auto_spam_enabled'       => isset( $_POST['auto_spam_enabled'] ),
 		'auto_spam_certainty'     => absint( $_POST['auto_spam_certainty'] ?? 80 ),
 		'patterns_enabled'        => isset( $_POST['patterns_enabled'] ),
-		'human_verification'      => sanitize_text_field( $_POST['human_verification'] ?? 'none' ),
+		'human_verification'      => sanitize_text_field( $_POST['human_verification'] ?? 'turnstile' ),
+		'turnstile_site_key'      => sanitize_text_field( $_POST['turnstile_site_key'] ?? '' ),
+		'turnstile_secret_key'    => sanitize_text_field( $_POST['turnstile_secret_key'] ?? '' ),
 		'recaptcha_site_key'      => sanitize_text_field( $_POST['recaptcha_site_key'] ?? '' ),
 		'recaptcha_secret_key'    => sanitize_text_field( $_POST['recaptcha_secret_key'] ?? '' ),
+		'honeypot_enabled'        => isset( $_POST['honeypot_enabled'] ),
 		'post_monitoring_enabled' => isset( $_POST['post_monitoring_enabled'] ),
 		'post_spam_certainty'     => absint( $_POST['post_spam_certainty'] ?? 90 ),
 		'notify_on_spam'          => isset( $_POST['notify_on_spam'] ),
@@ -178,9 +181,24 @@ $settings = Settings::get_all();
 				<td>
 					<select name="human_verification" id="human_verification">
 						<option value="none" <?php selected( $settings['human_verification'], 'none' ); ?>><?php _e( 'Keine', 'cpsec' ); ?></option>
-						<option value="recaptcha" <?php selected( $settings['human_verification'], 'recaptcha' ); ?>>reCAPTCHA</option>
+						<option value="turnstile" <?php selected( $settings['human_verification'], 'turnstile' ); ?>>Cloudflare Turnstile</option>
+						<option value="recaptcha" <?php selected( $settings['human_verification'], 'recaptcha' ); ?>>reCAPTCHA (Legacy)</option>
 						<option value="questions" <?php selected( $settings['human_verification'], 'questions' ); ?>><?php _e( 'Sicherheitsfragen', 'cpsec' ); ?></option>
 					</select>
+					<p class="description"><?php _e( 'Empfohlen: Cloudflare Turnstile. reCAPTCHA bleibt als Legacy-Option verfügbar.', 'cpsec' ); ?></p>
+				</td>
+			</tr>
+			<tr class="turnstile-settings" style="display: <?php echo $settings['human_verification'] === 'turnstile' ? 'table-row' : 'none'; ?>;">
+				<th scope="row">Turnstile Site Key</th>
+				<td>
+					<input type="text" name="turnstile_site_key" value="<?php echo esc_attr( $settings['turnstile_site_key'] ); ?>" class="regular-text" />
+					<p class="description"><a href="https://dash.cloudflare.com/?to=/:account/turnstile" target="_blank"><?php _e( 'Turnstile Keys in Cloudflare erstellen', 'cpsec' ); ?></a></p>
+				</td>
+			</tr>
+			<tr class="turnstile-settings" style="display: <?php echo $settings['human_verification'] === 'turnstile' ? 'table-row' : 'none'; ?>;">
+				<th scope="row">Turnstile Secret Key</th>
+				<td>
+					<input type="text" name="turnstile_secret_key" value="<?php echo esc_attr( $settings['turnstile_secret_key'] ); ?>" class="regular-text" />
 				</td>
 			</tr>
 			<tr class="recaptcha-settings" style="display: <?php echo $settings['human_verification'] === 'recaptcha' ? 'table-row' : 'none'; ?>;">
@@ -215,6 +233,15 @@ $settings = Settings::get_all();
 					<textarea name="qa_answers" rows="5" class="large-text"><?php echo esc_textarea( trim( $answers_text ) ); ?></textarea>
 				</td>
 			</tr>
+			<tr>
+				<th scope="row"><?php _e( 'Honeypot aktivieren', 'cpsec' ); ?></th>
+				<td>
+					<label>
+						<input type="checkbox" name="honeypot_enabled" value="1" <?php checked( $settings['honeypot_enabled'] ); ?> />
+						<?php _e( 'Verstecktes Feld im Signup-Formular. Wenn ausgefüllt, wird die Registrierung als Bot blockiert.', 'cpsec' ); ?>
+					</label>
+				</td>
+			</tr>
 			
 			<tr>
 				<th colspan="2"><h2><?php _e( 'Weitere Optionen', 'cpsec' ); ?></h2></th>
@@ -245,10 +272,17 @@ $settings = Settings::get_all();
 
 <script>
 jQuery(document).ready(function($) {
-	$('#human_verification').on('change', function() {
-		var val = $(this).val();
+	function toggleVerificationSettings() {
+		var val = $('#human_verification').val();
+		$('.turnstile-settings').toggle(val === 'turnstile');
 		$('.recaptcha-settings').toggle(val === 'recaptcha');
 		$('.qa-settings').toggle(val === 'questions');
+	}
+
+	$('#human_verification').on('change', function() {
+		toggleVerificationSettings();
 	});
+
+	toggleVerificationSettings();
 });
 </script>

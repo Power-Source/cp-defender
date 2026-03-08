@@ -34,9 +34,12 @@ class Settings {
 		'patterns_enabled'        => true,
 		
 		// Human Verification
-		'human_verification'      => 'none',   // none, recaptcha, questions
+		'human_verification'      => 'turnstile', // none, turnstile, recaptcha, questions
+		'turnstile_site_key'      => '',
+		'turnstile_secret_key'    => '',
 		'recaptcha_site_key'      => '',
 		'recaptcha_secret_key'    => '',
+		'honeypot_enabled'        => true,
 		
 		// Q&A Protection
 		'qa_questions'            => array(),
@@ -117,6 +120,7 @@ class Settings {
 				case 'rate_limit_enabled':
 				case 'auto_spam_enabled':
 				case 'patterns_enabled':
+				case 'honeypot_enabled':
 				case 'dynamic_signup_enabled':
 				case 'post_monitoring_enabled':
 				case 'notify_on_spam':
@@ -134,11 +138,13 @@ class Settings {
 					break;
 					
 				case 'human_verification':
-					$sanitized[ $key ] = in_array( $value, array( 'none', 'recaptcha', 'questions' ) ) 
+					$sanitized[ $key ] = in_array( $value, array( 'none', 'turnstile', 'recaptcha', 'questions' ) )
 						? $value 
 						: 'none';
 					break;
 					
+				case 'turnstile_site_key':
+				case 'turnstile_secret_key':
 				case 'recaptcha_site_key':
 				case 'recaptcha_secret_key':
 				case 'dynamic_signup_slug':

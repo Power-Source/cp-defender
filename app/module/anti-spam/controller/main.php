@@ -5,6 +5,7 @@ namespace CP_Defender\Module\Anti_Spam\Controller;
 use CP_Defender\Module\Anti_Spam\Behavior\Database;
 use CP_Defender\Module\Anti_Spam\Model\Settings;
 use CP_Defender\Module\Anti_Spam\Model\Pattern;
+use CP_Defender\Module\Anti_Spam\Model\Blog_Log;
 
 /**
  * Haupt-Controller für Anti-Spam Modul
@@ -215,13 +216,10 @@ class Main {
 	 * Rendert Dashboard Widget
 	 */
 	public function render_dashboard_widget(): void {
-		global $wpdb;
-		
-		$table = $wpdb->base_prefix . 'defender_antispam_blogs';
-		
-		$total_blogs = get_blog_count();
-		$spam_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->blogs} WHERE spam = 1" );
-		$suspicious_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE certainty > 50 AND is_ignored = 0" );
+		$counts = Blog_Log::get_counts();
+		$total_blogs = $counts['total'];
+		$spam_count = $counts['spam'];
+		$suspicious_count = $counts['suspicious'];
 		$patterns_count = count( Pattern::get_all() );
 		
 		echo '<div class="defender-antispam-widget">';

@@ -63,6 +63,9 @@ class Signup_Protection {
 		$verification_type = Settings::get( 'human_verification' );
 		
 		switch ( $verification_type ) {
+			case 'turnstile':
+				$this->render_turnstile( $errors );
+				break;
 			case 'recaptcha':
 				$this->render_recaptcha( $errors );
 				break;
@@ -70,6 +73,30 @@ class Signup_Protection {
 				$this->render_qa( $errors );
 				break;
 		}
+
+		$this->render_honeypot();
+	}
+
+	/**
+	 * Rendert Cloudflare Turnstile
+	 */
+	private function render_turnstile( $errors ): void {
+		$site_key = Settings::get( 'turnstile_site_key' );
+
+		if ( empty( $site_key ) ) {
+			return;
+		}
+
+		echo '<div class="defender-turnstile-wrap">';
+		echo '<label>' . __( 'Sicherheitsüberprüfung:', 'cpsec' ) . '</label>';
+
+		if ( $errors && $errors->get_error_message( 'turnstile' ) ) {
+			echo '<p class="error">' . esc_html( $errors->get_error_message( 'turnstile' ) ) . '</p>';
+		}
+
+		echo '<div class="cf-turnstile" data-sitekey="' . esc_attr( $site_key ) . '"></div>';
+		echo '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>';
+		echo '</div>';
 	}
 	
 	/**
@@ -127,11 +154,28 @@ class Signup_Protection {
 		echo '<input type="hidden" name="defender_qa_hash" value="' . esc_attr( $question_hash ) . '" />';
 		echo '</div>';
 	}
+
+	/**
+	 * Rendert Honeypot-Feld (unsichtbar für normale User)
+	 */
+	private function render_honeypot(): void {
+		if ( ! Settings::get( 'honeypot_enabled' ) ) {
+			return;
+		}
+
+		echo '<div class="defender-hp-wrap" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" aria-hidden="true">';
+		echo '<label for="defender_company">Company</label>';
+		echo '<input type="text" id="defender_company" name="defender_company" value="" tabindex="-1" autocomplete="off" />';
+		echo '</div>';
+	}
 	
 	/**
 	 * Validiert Blog-Signup
 	 */
 	public function validate_blog_signup( array $result ): array {
+		// Honeypot prüfen
+		$result = $this->check_honeypot( $result );
+
 		// Rate Limiting prüfen
 		$result = $this->check_rate_limit( $result );
 		
@@ -151,6 +195,9 @@ class Signup_Protection {
 	 * Validiert User-Signup
 	 */
 	public function validate_user_signup( array $result ): array {
+		// Honeypot prüfen
+		$result = $this->check_honeypot( $result );
+
 		// Rate Limiting prüfen
 		$result = $this->check_rate_limit( $result );
 		
@@ -186,6 +233,30 @@ class Signup_Protection {
 		
 		if ( ! isset( $bp->signup->errors ) ) {
 			$bp->signup->errors = array();
+		}
+
+		if ( $this->is_honeypot_triggered() ) {
+			$bp->signup->errors['defender_honeypot'] = __( 'Die Registrierung konnte nicht verarbeitet werden. Bitte versuche es erneut.', 'cpsec' );
+			return;
+		}
+
+		$verification_type = Settings::get( 'human_verification' );
+		switch ( $verification_type ) {
+			case 'turnstile':
+				if ( empty( $_POST['cf-turnstile-response'] ) || ! $this->verify_turnstile( wp_unslash( $_POST['cf-turnstile-response'] ) ) ) {
+					$bp->signup->errors['turnstile'] = __( 'Turnstile-Verifizierung fehlgeschlagen. Bitte versuche es erneut.', 'cpsec' );
+				}
+				break;
+			case 'recaptcha':
+				if ( empty( $_POST['g-recaptcha-response'] ) || ! $this->verify_recaptcha( wp_unslash( $_POST['g-recaptcha-response'] ) ) ) {
+					$bp->signup->errors['recaptcha'] = __( 'reCAPTCHA-Verifizierung fehlgeschlagen. Bitte versuche es erneut.', 'cpsec' );
+				}
+				break;
+			case 'questions':
+				if ( empty( $_POST['defender_qa_answer'] ) || empty( $_POST['defender_qa_hash'] ) || ! $this->verify_qa( wp_unslash( $_POST['defender_qa_answer'] ), wp_unslash( $_POST['defender_qa_hash'] ) ) ) {
+					$bp->signup->errors['qa_verification'] = __( 'Die Antwort ist nicht korrekt. Bitte versuche es erneut.', 'cpsec' );
+				}
+				break;
 		}
 		
 		// Rate Limiting
@@ -290,11 +361,21 @@ class Signup_Protection {
 		$verification_type = Settings::get( 'human_verification' );
 		
 		switch ( $verification_type ) {
+			case 'turnstile':
+				if ( empty( $_POST['cf-turnstile-response'] ) ) {
+					$result['errors']->add( 'turnstile', __( 'Bitte bestätige, dass du kein Roboter bist.', 'cpsec' ) );
+				} else {
+					if ( ! $this->verify_turnstile( wp_unslash( $_POST['cf-turnstile-response'] ) ) ) {
+						$result['errors']->add( 'turnstile', __( 'Turnstile-Verifizierung fehlgeschlagen. Bitte versuche es erneut.', 'cpsec' ) );
+					}
+				}
+				break;
+
 			case 'recaptcha':
 				if ( empty( $_POST['g-recaptcha-response'] ) ) {
 					$result['errors']->add( 'recaptcha', __( 'Bitte bestätige, dass du kein Roboter bist.', 'cpsec' ) );
 				} else {
-					if ( ! $this->verify_recaptcha( $_POST['g-recaptcha-response'] ) ) {
+					if ( ! $this->verify_recaptcha( wp_unslash( $_POST['g-recaptcha-response'] ) ) ) {
 						$result['errors']->add( 'recaptcha', __( 'reCAPTCHA-Verifizierung fehlgeschlagen. Bitte versuche es erneut.', 'cpsec' ) );
 					}
 				}
@@ -319,9 +400,10 @@ class Signup_Protection {
 	 */
 	private function verify_recaptcha( string $response ): bool {
 		$secret = Settings::get( 'recaptcha_secret_key' );
+		$site_key = Settings::get( 'recaptcha_site_key' );
 		
-		if ( empty( $secret ) ) {
-			return true; // Skip wenn nicht konfiguriert
+		if ( empty( $secret ) || empty( $site_key ) ) {
+			return false;
 		}
 		
 		$verify_url = 'https://www.google.com/recaptcha/api/siteverify';
@@ -340,6 +422,63 @@ class Signup_Protection {
 		$body = json_decode( wp_remote_retrieve_body( $response ), true );
 		
 		return ! empty( $body['success'] );
+	}
+
+	/**
+	 * Verifiziert Cloudflare Turnstile
+	 */
+	private function verify_turnstile( string $response ): bool {
+		$secret = Settings::get( 'turnstile_secret_key' );
+		$site_key = Settings::get( 'turnstile_site_key' );
+
+		if ( empty( $secret ) || empty( $site_key ) ) {
+			return false;
+		}
+
+		$verify_url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+		$http_response = wp_remote_post( $verify_url, array(
+			'body' => array(
+				'secret'   => $secret,
+				'response' => $response,
+				'remoteip' => $this->get_user_ip(),
+			),
+		) );
+
+		if ( is_wp_error( $http_response ) ) {
+			return false;
+		}
+
+		$body = json_decode( wp_remote_retrieve_body( $http_response ), true );
+
+		return ! empty( $body['success'] );
+	}
+
+	/**
+	 * Prüft Honeypot-Feld und blockiert Bots
+	 */
+	private function check_honeypot( array $result ): array {
+		if ( ! Settings::get( 'honeypot_enabled' ) ) {
+			return $result;
+		}
+
+		if ( $this->is_honeypot_triggered() ) {
+			$result['errors']->add( 'defender_honeypot', __( 'Die Registrierung konnte nicht verarbeitet werden. Bitte versuche es erneut.', 'cpsec' ) );
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Ermittelt, ob das Honeypot-Feld ausgefüllt wurde
+	 */
+	private function is_honeypot_triggered(): bool {
+		if ( ! isset( $_POST['defender_company'] ) ) {
+			return false;
+		}
+
+		$value = trim( (string) wp_unslash( $_POST['defender_company'] ) );
+
+		return $value !== '';
 	}
 	
 	/**
