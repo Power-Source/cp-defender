@@ -12,13 +12,34 @@
                         </button>
                     </div>
                     <p class="description">
-						<?php _e( "Verwende die Google Authenticator App, um dich mit einem separaten Passcode anzumelden.", cp_defender()->domain ) ?>
+						<?php _e( "Wähle eine der vom Netzwerk erlaubten Methoden für den zweiten Faktor.", cp_defender()->domain ) ?>
                     </p>
                 </div>
                 <div id="def2qr">
                     <button type="button" id="hide2AuthActivator"
                             class="button"><?php _e( "Abbrechen", cp_defender()->domain ) ?></button>
-                    <p><?php _e( "Verwende die Google Authenticator App, um dich mit einem separaten Passcode anzumelden.", cp_defender()->domain ) ?></p>
+                    <p><?php _e( "Wähle zuerst deine bevorzugte Methode.", cp_defender()->domain ) ?></p>
+					<?php if ( empty( $allowAppAuth ) && empty( $allowEmailAuth ) ): ?>
+                        <p class="error"><?php _e( "Der Administrator hat aktuell keine Zwei-Faktor-Methode freigegeben.", cp_defender()->domain ) ?></p>
+					<?php endif; ?>
+                    <p>
+						<?php if ( ! empty( $allowAppAuth ) ): ?>
+                            <label>
+                                <input type="radio" name="def_auth_method" value="app" <?php checked( ! isset( $authMethod ) || $authMethod !== 'email' || empty( $allowEmailAuth ) ); ?>/>
+								<?php _e( "Authenticator-App", cp_defender()->domain ) ?>
+                            </label>
+						<?php endif; ?>
+						<?php if ( ! empty( $allowEmailAuth ) ): ?>
+                            &nbsp;&nbsp;
+                            <label>
+                                <input type="radio" name="def_auth_method" value="email" <?php checked( ( isset( $authMethod ) && $authMethod === 'email' ) || empty( $allowAppAuth ) ); ?>/>
+								<?php _e( "E-Mail-Code", cp_defender()->domain ) ?>
+                            </label>
+						<?php endif; ?>
+                    </p>
+                    <?php if ( ! empty( $allowAppAuth ) ): ?>
+                    <div id="def2qr-app">
+                        <p><?php _e( "Verwende die Google Authenticator App, um dich mit einem separaten Passcode anzumelden.", cp_defender()->domain ) ?></p>
                     <div class="card">
                         <p>
                             <strong><?php _e( "1. Installiere die Verifizierungs-App", cp_defender()->domain ) ?></strong>
@@ -55,6 +76,19 @@
                             <input type="hidden" id="defNonce" value="<?php echo wp_create_nonce( 'defVerifyOTP' ) ?>"/>
                         </div>
                     </div>
+                    </div>
+                    <?php endif; ?>
+                    <?php if ( ! empty( $allowEmailAuth ) ): ?>
+                    <div id="def2qr-email" class="card">
+                        <p><strong><?php _e( "E-Mail-Code aktivieren", cp_defender()->domain ) ?></strong></p>
+                        <p><?php _e( "Bei jeder Anmeldung wird ein 6-stelliger Code an deine E-Mail-Adresse gesendet.", cp_defender()->domain ) ?></p>
+                        <p class="error"></p>
+                        <button type="button" class="button button-primary" id="enableEmailOTP">
+							<?php _e( "E-Mail-Verifizierung aktivieren", cp_defender()->domain ) ?>
+                        </button>
+                        <input type="hidden" id="defEnableEmailNonce" value="<?php echo wp_create_nonce( 'defEnableEmailOTP' ) ?>"/>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </td>
         </tr>
@@ -64,14 +98,41 @@
 <script type="text/javascript">
     jQuery(function ($) {
         $('#def2qr').hide();
+        <?php if ( ! empty( $allowEmailAuth ) ): ?>
+        $('#def2qr-email').hide();
+        <?php endif; ?>
+
+        var toggleMethodSetup = function () {
+            var method = $('input[name="def_auth_method"]:checked').val();
+            if (method === 'email') {
+                <?php if ( ! empty( $allowAppAuth ) ): ?>
+                $('#def2qr-app').hide();
+                <?php endif; ?>
+                <?php if ( ! empty( $allowEmailAuth ) ): ?>
+                $('#def2qr-email').show();
+                <?php endif; ?>
+            } else {
+                <?php if ( ! empty( $allowEmailAuth ) ): ?>
+                $('#def2qr-email').hide();
+                <?php endif; ?>
+                <?php if ( ! empty( $allowAppAuth ) ): ?>
+                $('#def2qr-app').show();
+                <?php endif; ?>
+            }
+        };
+
         $('body').on('click', '#show2AuthActivator', function () {
             $('#def2').hide();
             $('#def2qr').show();
+            toggleMethodSetup();
         });
         $('body').on('click', '#hide2AuthActivator', function () {
             $('#def2qr').hide();
             $('#def2').show();
-        })
+        });
+        $('body').on('change', 'input[name="def_auth_method"]', function () {
+            toggleMethodSetup();
+        });
         $('body').on('click', '#verifyOTP', function () {
             var data = {
                 action: 'defVerifyOTP',
@@ -96,6 +157,32 @@
                     }
                 }
             })
-        })
+        });
+        <?php if ( ! empty( $allowEmailAuth ) ): ?>
+        $('body').on('click', '#enableEmailOTP', function () {
+            var data = {
+                action: 'defEnableEmailOTP',
+                nonce: $('#defEnableEmailNonce').val()
+            }
+            var that = $(this);
+            var parent = that.closest('.card');
+            $.ajax({
+                type: 'POST',
+                url: ajaxurl,
+                data: data,
+                beforeSend: function () {
+                    that.attr('disabled', 'disabled');
+                },
+                success: function (data) {
+                    if (data.success == true) {
+                        location.reload();
+                    } else {
+                        that.removeAttr('disabled');
+                        parent.find('.error').text('<?php echo esc_js( __( "Aktivierung fehlgeschlagen. Bitte versuche es erneut.", cp_defender()->domain ) ) ?>');
+                    }
+                }
+            })
+        });
+        <?php endif; ?>
     })
 </script>

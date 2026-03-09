@@ -8,6 +8,9 @@ use CP_Defender\Behavior\Utils;
 use CP_Defender\Module\Advanced_Tools\Model\Auth_Settings;
 
 class Auth_API extends Component {
+	const AUTH_METHOD_APP   = 'app';
+	const AUTH_METHOD_EMAIL = 'email';
+	const EMAIL_RESEND_COOLDOWN = 300;
 	/**
 	 * @param int $length
 	 *
@@ -245,6 +248,72 @@ class Auth_API extends Component {
 	}
 
 	/**
+	 * @param int $userID
+	 *
+	 * @return string
+	 */
+	public static function getUserAuthMethod( $userID ) {
+		$method = get_user_meta( $userID, 'defenderAuthMethod', true );
+		if ( ! in_array( $method, array( self::AUTH_METHOD_APP, self::AUTH_METHOD_EMAIL ), true ) ) {
+			$method = self::AUTH_METHOD_APP;
+		}
+
+		return $method;
+	}
+
+	/**
+	 * @param string $method
+	 *
+	 * @return bool
+	 */
+	public static function isMethodAllowed( $method ) {
+		$settings = Auth_Settings::instance();
+		if ( $method === self::AUTH_METHOD_APP ) {
+			return ! empty( $settings->allowAppAuth );
+		}
+
+		if ( $method === self::AUTH_METHOD_EMAIL ) {
+			return ! empty( $settings->allowEmailAuth );
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param int $userID
+	 *
+	 * @return bool|string
+	 */
+	public static function getEffectiveUserAuthMethod( $userID ) {
+		$method = self::getUserAuthMethod( $userID );
+		if ( self::isMethodAllowed( $method ) ) {
+			return $method;
+		}
+
+		if ( self::isMethodAllowed( self::AUTH_METHOD_APP ) ) {
+			return self::AUTH_METHOD_APP;
+		}
+
+		if ( self::isMethodAllowed( self::AUTH_METHOD_EMAIL ) ) {
+			return self::AUTH_METHOD_EMAIL;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param int $userID
+	 * @param string $method
+	 */
+	public static function setUserAuthMethod( $userID, $method ) {
+		if ( ! in_array( $method, array( self::AUTH_METHOD_APP, self::AUTH_METHOD_EMAIL ), true ) ) {
+			$method = self::AUTH_METHOD_APP;
+		}
+
+		update_user_meta( $userID, 'defenderAuthMethod', $method );
+	}
+
+	/**
 	 * @param $userID
 	 *
 	 * @return bool|mixed|string
@@ -277,6 +346,99 @@ class Auth_API extends Component {
 		) );
 
 		return $code;
+	}
+
+	/**
+	 * @param int $userID
+	 *
+	 * @return string
+	 */
+	public static function createEmailCode( $userID ) {
+		$code = str_pad( (string) wp_rand( 0, 999999 ), 6, '0', STR_PAD_LEFT );
+		update_user_meta( $userID, 'defenderEmailOTP', array(
+			'code' => $code,
+			'time' => time()
+		) );
+
+		return $code;
+	}
+
+	/**
+	 * @param int $userID
+	 * @param string $userCode
+	 * @param int $ttl
+	 *
+	 * @return bool
+	 */
+	public static function verifyEmailCode( $userID, $userCode, $ttl = 300 ) {
+		if ( strlen( $userCode ) !== 6 ) {
+			return false;
+		}
+
+		$data = get_user_meta( $userID, 'defenderEmailOTP', true );
+		if ( empty( $data ) || ! is_array( $data ) || empty( $data['code'] ) || empty( $data['time'] ) ) {
+			return false;
+		}
+
+		if ( (int) $data['time'] + absint( $ttl ) < time() ) {
+			return false;
+		}
+
+		return self::hasEqual( (string) $data['code'], (string) $userCode );
+	}
+
+	/**
+	 * @param int $userID
+	 * @param int|null $cooldown
+	 *
+	 * @return int
+	 */
+	public static function getEmailResendCooldownRemaining( $userID, $cooldown = null ) {
+		if ( is_null( $cooldown ) ) {
+			$cooldown = self::EMAIL_RESEND_COOLDOWN;
+		}
+		$lastSent = (int) get_user_meta( $userID, 'defenderEmailOTPLastSent', true );
+		if ( $lastSent <= 0 ) {
+			return 0;
+		}
+
+		$remaining = ( $lastSent + absint( $cooldown ) ) - time();
+
+		return max( 0, $remaining );
+	}
+
+	/**
+	 * @param int $userID
+	 * @param bool $force
+	 *
+	 * @return bool
+	 */
+	public static function sendEmailCode( $userID, $force = false ) {
+		if ( $force && self::getEmailResendCooldownRemaining( $userID ) > 0 ) {
+			return false;
+		}
+
+		$data = get_user_meta( $userID, 'defenderEmailOTP', true );
+		if ( ! $force && ! empty( $data ) && is_array( $data ) && ! empty( $data['code'] ) && ! empty( $data['time'] ) && ( (int) $data['time'] + 300 > time() ) ) {
+			$code = (string) $data['code'];
+		} else {
+			$code = self::createEmailCode( $userID );
+		}
+
+		$email = self::getBackupEmail( $userID );
+		if ( ! $email ) {
+			return false;
+		}
+
+		$subject = __( 'Dein Anmeldecode', cp_defender()->domain );
+		$message = sprintf( __( 'Dein PS Security Code lautet: %s. Der Code ist 5 Minuten gültig.', cp_defender()->domain ), $code );
+
+		$sent = (bool) wp_mail( $email, $subject, $message );
+		if ( $sent ) {
+			update_user_meta( $userID, 'defenderEmailOTPLastSent', time() );
+		}
+
+		return $sent;
 	}
 
 	/**

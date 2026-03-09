@@ -8,17 +8,33 @@
                 <div class="def-notification">
 					<?php _e( "Zwei-Faktor-Authentifizierung ist aktiv.", cp_defender()->domain ) ?>
                 </div>
+                <p class="description">
+					<?php
+					$activeMethod = isset( $authMethod ) ? $authMethod : 'app';
+					if ( $activeMethod === 'email' ) {
+						echo esc_html__( 'Aktive Methode: E-Mail-Code', cp_defender()->domain );
+					} else {
+						echo esc_html__( 'Aktive Methode: Authenticator-App', cp_defender()->domain );
+					}
+					?>
+                </p>
                 <button type="button" class="button" id="disableOTP">
 					<?php _e( "Deaktivieren", cp_defender()->domain ) ?>
                 </button>
             </td>
         </tr>
         <tr class="user-sessions-wrap hide-if-no-js">
-            <th><?php _e( "Fallback-E-Mail-Adresse", cp_defender()->domain ) ?></th>
+            <th><?php _e( "E-Mail-Adresse", cp_defender()->domain ) ?></th>
             <td aria-live="assertive">
                 <input type="text" class="regular-text" name="def_backup_email" value="<?php echo $email ?>"/>
                 <p class="description">
-					<?php _e( "Wenn du dein Gerät verlierst, kannst du einen Ersatz-Passcode an diese E-Mail-Adresse senden.", cp_defender()->domain ) ?>
+					<?php
+					if ( isset( $authMethod ) && $authMethod === 'email' ) {
+						echo esc_html__( 'An diese Adresse werden deine Anmeldecodes gesendet.', cp_defender()->domain );
+					} else {
+						echo esc_html__( 'Wenn du dein Gerät verlierst, kannst du einen Ersatz-Passcode an diese E-Mail-Adresse senden.', cp_defender()->domain );
+					}
+					?>
                 </p>
             </td>
         </tr>

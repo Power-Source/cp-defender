@@ -10,6 +10,8 @@ class Auth_Settings extends \Hammer\WP\Settings {
 	private static $_instance;
 	public $enabled = false;
 	public $lostPhone = true;
+	public $allowAppAuth = true;
+	public $allowEmailAuth = true;
 	public $userRoles = array();
 	public $isConflict = array();
 
@@ -82,7 +84,7 @@ class Auth_Settings extends \Hammer\WP\Settings {
 				array(
 					function () use ( $that ) {
 						global $wpdb;
-						$sql = "DELETE from " . $wpdb->usermeta . " WHERE meta_key IN ('defOTPLoginToken','defenderBackupCode','defenderAuthSecret','defenderAuthOn','defenderAuthEmail')";
+						$sql = "DELETE from " . $wpdb->usermeta . " WHERE meta_key IN ('defOTPLoginToken','defenderBackupCode','defenderEmailOTP','defenderEmailOTPLastSent','defenderAuthSecret','defenderAuthOn','defenderAuthEmail','defenderAuthMethod')";
 						$wpdb->query( $sql );
 					}
 				)

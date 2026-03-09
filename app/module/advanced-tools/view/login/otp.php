@@ -223,10 +223,19 @@ do_action( 'login_header' );
 	}
 	}
 	login_header( '', '', $error );
+	$loginMethod = isset( $authMethod ) ? $authMethod : 'app';
 	?>
     <form method="post"
           action="<?php echo esc_url( add_query_arg( 'action', 'defenderVerifyOTP', site_url( 'wp-login.php', 'login_post' ) ) ); ?>">
-        <p><?php _e( "Öffne die Google Authenticator App und gib den 6-stelligen Passcode ein.", cp_defender()->domain ) ?></p>
+        <p>
+			<?php
+			if ( $loginMethod === 'email' ) {
+				_e( "Gib den 6-stelligen Code ein, den wir dir per E-Mail gesendet haben.", cp_defender()->domain );
+			} else {
+				_e( "Öffne die Google Authenticator App und gib den 6-stelligen Passcode ein.", cp_defender()->domain );
+			}
+			?>
+        </p>
         <input type="text" value="" name="otp">
         <button class="button button-primary float-r"
                 type="submit"><?php _e( "Authentifizieren", cp_defender()->domain ) ?></button>
@@ -234,21 +243,29 @@ do_action( 'login_header' );
         <input type="hidden" name="redirect_to" value="<?php echo $redirect_to ?>"/>
 		<?php wp_nonce_field( 'DefOtpCheck' ) ?>
     </form>
-	<?php if ( \CP_Defender\Module\Advanced_Tools\Model\Auth_Settings::instance()->lostPhone ): ?>
+	<?php if ( $loginMethod === 'email' ): ?>
+		<p id="nav">
+			<a class="def-otp-request"
+			   href="<?php echo admin_url( 'admin-ajax.php?action=defResendEmailOTP&token=' . $loginToken . '&nonce=' . wp_create_nonce( 'defResendEmailOTP' ) ) ?>">
+				<?php _e( "Code erneut senden", cp_defender()->domain ) ?></a>
+			<img class="def-ajaxloader" src="<?php echo cp_defender()->getPluginUrl() . 'app/module/advanced-tools/img/spinner.svg' ?>"/>
+			<strong class="notification"></strong>
+		</p>
+	<?php elseif ( \CP_Defender\Module\Advanced_Tools\Model\Auth_Settings::instance()->lostPhone ): ?>
         <p id="nav">
-            <a id="lostPhone"
+			<a class="def-otp-request"
                href="<?php echo admin_url( 'admin-ajax.php?action=defRetrieveOTP&token=' . $loginToken . '&nonce=' . wp_create_nonce( 'defRetrieveOTP' ) ) ?>">
 				<?php _e( "Gerät verloren?", cp_defender()->domain ) ?></a>
-            <img class="def-ajaxloader" src="<?php echo cp_defender()->getPluginUrl().'app/module/advanced-tools/img/spinner.svg' ?>"/>
-            <strong class="notification">
-
-            </strong>
+			<img class="def-ajaxloader" src="<?php echo cp_defender()->getPluginUrl() . 'app/module/advanced-tools/img/spinner.svg' ?>"/>
+			<strong class="notification"></strong>
         </p>
+	<?php endif; ?>
+	<?php if ( $loginMethod === 'email' || \CP_Defender\Module\Advanced_Tools\Model\Auth_Settings::instance()->lostPhone ): ?>
         <script type="text/javascript">
             jQuery(function ($) {
                 $('.def-ajaxloader').hide();
                 var isSent = false;
-                $('body').on('click', '#lostPhone', function (e) {
+				$('body').on('click', '.def-otp-request', function (e) {
                     e.preventDefault();
                     var that = $(this);
                     if (isSent == false) {

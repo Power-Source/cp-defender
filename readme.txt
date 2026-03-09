@@ -5,7 +5,7 @@ Requires at least: 5.0
 Tested up to: 6.4.0 
 ClassicPress 2.6.0
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,10 @@ Ja, wenn du vorher das Anti-Splog Plugin von WPMUDEV verwendet hast, werden die 
 * Fix: Zwei-Faktor-QR-Code in der Profil-Einrichtung wieder zuverlässig sichtbar
 * Verbesserung: Robuster QR-Fallback bei externen QR-Code-Diensten
 * Verbesserung: Manueller Secret-Key als Alternative zur QR-Einrichtung
+* NEU: Optionale Zwei-Faktor-Authentifizierung per E-Mail-Code
+* Verbesserung: Auswahl der 2FA-Methode pro Benutzerprofil (Authenticator-App oder E-Mail)
+* Verbesserung: Login-Verifikation für E-Mail-OTP mit erneuter Code-Anforderung
+* Verbesserung: Sicherheits-Cooldown von 5 Minuten für "Code erneut senden"
 
 = 1.0.2 =
 

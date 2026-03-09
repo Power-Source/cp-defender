@@ -24,7 +24,7 @@
                 <div class="well well-green with-cap">
                     <i class="def-icon icon-tick"></i>
 					<?php
-					printf( __( "<strong>Zwei-Faktor-Authentifizierung ist jetzt aktiv.</strong> Benutzerrollen mit aktivierter Funktion müssen ihre <a href='%s'>Profilseite</a> besuchen, um die Einrichtung abzuschließen und ihr Konto mit der Authenticator-App zu synchronisieren.", cp_defender()->domain ),
+                    printf( __( "<strong>Zwei-Faktor-Authentifizierung ist jetzt aktiv.</strong> Benutzerrollen mit aktivierter Funktion müssen ihre <a href='%s'>Profilseite</a> besuchen, um die Einrichtung abzuschließen und ihre bevorzugte Methode auszuwählen.", cp_defender()->domain ),
 						admin_url( 'profile.php' ) );
 					?>
                 </div>
@@ -40,7 +40,7 @@
                 <div class="column is-one-third">
                     <label><?php _e( "Benutzerrollen", cp_defender()->domain ) ?></label>
                     <span class="sub">
-                        <?php _e( "Wähle die Benutzerrollen aus, für die du die Zwei-Faktor-Authentifizierung aktivieren möchtest. Benutzer mit diesen Rollen müssen dann die Google Authenticator-App zur Anmeldung verwenden.", cp_defender()->domain ) ?>
+                        <?php _e( "Wähle die Benutzerrollen aus, für die du die Zwei-Faktor-Authentifizierung aktivieren möchtest. Benutzer mit diesen Rollen wählen im Profil eine der vom Netzwerk erlaubten Methoden.", cp_defender()->domain ) ?>
                     </span>
                 </div>
                 <div class="column">
@@ -87,11 +87,45 @@
                 <div class="column">
                     <span class="toggle">
                         <input type="hidden" name="lostPhone" value="0"/>
-                        <input type="checkbox" checked="checked" name="lostPhone" value="1"
+                        <input type="checkbox" <?php checked( ! empty( $settings->lostPhone ) ); ?> name="lostPhone" value="1"
                                class="toggle-checkbox" id="toggle_lost_phone"/>
                         <label class="toggle-label" for="toggle_lost_phone"></label>
                     </span>&nbsp;
                     <span><?php _e( "Verlorenes Telefon aktivieren", cp_defender()->domain ) ?></span>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-one-third">
+                    <label><?php _e( "App-Verifizierung", cp_defender()->domain ) ?></label>
+                    <span class="sub">
+                        <?php _e( "Erlaube Benutzern, die Authenticator-App (TOTP) als Zwei-Faktor-Methode zu verwenden.", cp_defender()->domain ) ?>
+                    </span>
+                </div>
+                <div class="column">
+                    <span class="toggle">
+                        <input type="hidden" name="allowAppAuth" value="0"/>
+                        <input type="checkbox" <?php checked( ! empty( $settings->allowAppAuth ) ); ?> name="allowAppAuth" value="1"
+                               class="toggle-checkbox" id="toggle_allow_app_auth"/>
+                        <label class="toggle-label" for="toggle_allow_app_auth"></label>
+                    </span>&nbsp;
+                    <span><?php _e( "Authenticator-App als 2FA-Methode erlauben", cp_defender()->domain ) ?></span>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-one-third">
+                    <label><?php _e( "E-Mail-Verifizierung", cp_defender()->domain ) ?></label>
+                    <span class="sub">
+                        <?php _e( "Erlaube Benutzern, die Zwei-Faktor-Authentifizierung per E-Mail-Code im Profil auszuwählen.", cp_defender()->domain ) ?>
+                    </span>
+                </div>
+                <div class="column">
+                    <span class="toggle">
+                        <input type="hidden" name="allowEmailAuth" value="0"/>
+                        <input type="checkbox" <?php checked( ! empty( $settings->allowEmailAuth ) ); ?> name="allowEmailAuth" value="1"
+                               class="toggle-checkbox" id="toggle_allow_email_auth"/>
+                        <label class="toggle-label" for="toggle_allow_email_auth"></label>
+                    </span>&nbsp;
+                    <span><?php _e( "E-Mail-Code als 2FA-Methode erlauben", cp_defender()->domain ) ?></span>
                 </div>
             </div>
             <div class="columns">

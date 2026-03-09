@@ -63,8 +63,10 @@ class Main extends Controller {
 			$this->add_action( 'show_user_profile', 'showUsers2FactorActivation' );
 			$this->add_action( 'profile_update', 'saveBackupEmail' );
 			$this->add_ajax_action( 'defVerifyOTP', 'verifyConfigOTP' );
+			$this->add_ajax_action( 'defEnableEmailOTP', 'enableEmailOTP' );
 			$this->add_ajax_action( 'defDisableOTP', 'disableOTP' );
 			$this->add_ajax_action( 'defRetrieveOTP', 'retrieveOTP', false, true );
+			$this->add_ajax_action( 'defResendEmailOTP', 'resendEmailOTP', false, true );
 			if ( \CP_Defender\Behavior\Utils::instance()->isActivatedSingle() ) {
 				$this->add_filter( 'manage_users_columns', 'alterUsersTable' );
 				$this->add_filter( 'manage_users_custom_column', 'alterUsersTableRow', 10, 3 );
@@ -178,6 +180,32 @@ class Main extends Controller {
 		}
 
 		update_user_meta( get_current_user_id(), 'defenderAuthOn', 0 );
+		delete_user_meta( get_current_user_id(), 'defenderEmailOTP' );
+		delete_user_meta( get_current_user_id(), 'defenderEmailOTPLastSent' );
+		wp_send_json_success();
+	}
+
+	/**
+	 * Enable OTP with email code method for current user
+	 */
+	public function enableEmailOTP() {
+		if ( ! wp_verify_nonce( HTTP_Helper::retrieve_post( 'nonce' ), 'defEnableEmailOTP' ) ) {
+			return;
+		}
+
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+
+		$settings = Auth_Settings::instance();
+		if ( empty( $settings->allowEmailAuth ) ) {
+			wp_send_json_error( array(
+				'message' => __( "E-Mail-Verifizierung ist vom Administrator deaktiviert.", cp_defender()->domain )
+			) );
+		}
+
+		update_user_meta( get_current_user_id(), 'defenderAuthOn', 1 );
+		Auth_API::setUserAuthMethod( get_current_user_id(), Auth_API::AUTH_METHOD_EMAIL );
 		wp_send_json_success();
 	}
 
@@ -205,6 +233,12 @@ class Main extends Controller {
 			return;
 		}
 
+		if ( ! Auth_API::isMethodAllowed( Auth_API::AUTH_METHOD_APP ) ) {
+			wp_send_json_error( array(
+				'message' => __( "App-Verifizierung ist vom Administrator deaktiviert.", cp_defender()->domain )
+			) );
+		}
+
 		$otp = HTTP_Helper::retrieve_post( 'otp' );
 		$otp = trim( $otp );
 		if ( strlen( $otp ) == 0 ) {
@@ -219,6 +253,9 @@ class Main extends Controller {
 		if ( $res ) {
 			//save it
 			update_user_meta( get_current_user_id(), 'defenderAuthOn', 1 );
+			Auth_API::setUserAuthMethod( get_current_user_id(), Auth_API::AUTH_METHOD_APP );
+			delete_user_meta( get_current_user_id(), 'defenderEmailOTP' );
+			delete_user_meta( get_current_user_id(), 'defenderEmailOTPLastSent' );
 			wp_send_json_success();
 		} else {
 			//now need to check if the current user have backup otp
@@ -241,15 +278,25 @@ class Main extends Controller {
 		$isOn = get_user_meta( $profileuser->ID, 'defenderAuthOn', true );
 		wp_enqueue_style( 'defAuth', cp_defender()->getPluginUrl() . 'app/module/advanced-tools/css/login-admin.css' );
 		$secretKey = Auth_API::createSecretForCurrentUser();
+		$authMethod = Auth_API::getUserAuthMethod( $profileuser->ID );
+		$settings = Auth_Settings::instance();
+		$allowAppAuth = ! empty( $settings->allowAppAuth );
+		$allowEmailAuth = ! empty( $settings->allowEmailAuth );
 		if ( $isOn && $isOn == 1 ) {
 			$email = Auth_API::getBackupEmail( $profileuser->ID );
 			$this->renderPartial( 'login/enabled', array(
-				'email' => $email
+				'email'      => $email,
+				'authMethod' => $authMethod,
+				'allowAppAuth' => $allowAppAuth,
+				'allowEmailAuth' => $allowEmailAuth
 			) );
 		} else {
 			//show the screen
 			$this->renderPartial( 'login/disabled', array(
-				'secretKey' => $secretKey
+				'secretKey'  => $secretKey,
+				'authMethod' => $authMethod,
+				'allowAppAuth' => $allowAppAuth,
+				'allowEmailAuth' => $allowEmailAuth
 			) );
 		}
 	}
@@ -263,6 +310,11 @@ class Main extends Controller {
 	public function maybeShowOTPLogin( $userLogin, $user ) {
 		if ( ! Auth_API::isUserEnableOTP( $user->ID ) ) {
 			//no enable, then just return
+			return;
+		}
+
+		if ( ! Auth_API::getEffectiveUserAuthMethod( $user->ID ) ) {
+			//no auth method allowed globally, skip OTP gate
 			return;
 		}
 
@@ -301,8 +353,22 @@ class Main extends Controller {
 			} else {
 				$user     = $res[0];
 				$secret   = Auth_API::getUserSecret( $user->ID );
+				$method   = Auth_API::getEffectiveUserAuthMethod( $user->ID );
+				if ( ! $method ) {
+					wp_redirect( site_url( 'wp-login.php', 'login_post' ) );
+					exit;
+				}
 				$redirect = HTTP_Helper::retrieve_post( 'redirect_to', admin_url() );
-				if ( Auth_API::compare( $secret, $otp ) ) {
+				if ( $method === Auth_API::AUTH_METHOD_EMAIL && Auth_API::verifyEmailCode( $user->ID, $otp ) ) {
+					delete_user_meta( $user->ID, 'defOTPLoginToken' );
+					delete_user_meta( $user->ID, 'defenderEmailOTP' );
+					delete_user_meta( $user->ID, 'defenderEmailOTPLastSent' );
+					wp_set_current_user( $user->ID, $user->user_login );
+					wp_set_auth_cookie( $user->ID, true );
+					$redirect = apply_filters( 'login_redirect', $redirect, isset( $_REQUEST['redirect_to'] ) ? $_REQUEST['redirect_to'] : '', $user );
+					wp_redirect( $redirect );
+					exit;
+				} elseif ( $method !== Auth_API::AUTH_METHOD_EMAIL && Auth_API::compare( $secret, $otp ) ) {
 					//sign in
 					delete_user_meta( $user->ID, 'defOTPLoginToken' );
 					wp_set_current_user( $user->ID, $user->user_login );
@@ -311,6 +377,10 @@ class Main extends Controller {
 					wp_redirect( $redirect );
 					exit;
 				} else {
+					if ( $method === Auth_API::AUTH_METHOD_EMAIL ) {
+						$params['error'] = new \WP_Error( 'otp_fail', __( "Hoppla, der eingegebene E-Mail-Code war falsch oder abgelaufen.", cp_defender()->domain ) );
+						$this->showOTPScreen( $user, $params );
+					}
 					$backupCode = get_user_meta( $user->ID, 'defenderBackupCode', true );
 					if ( $backupCode && $backupCode['code'] == $otp && strtotime( '+3 minutes', $backupCode['time'] ) > time() ) {
 						delete_user_meta( $user->ID, 'defOTPLoginToken' );
@@ -339,8 +409,16 @@ class Main extends Controller {
 		//now show the OTP screen
 		$this->add_action( 'login_enqueue_scripts', 'includeAuthStyles' );
 		wp_enqueue_script( 'jquery' );
+		$method = Auth_API::getEffectiveUserAuthMethod( $user->ID );
+		if ( ! $method ) {
+			return;
+		}
 		$params['loginToken']  = $this->createLoginToken( $user );
 		$params['redirect_to'] = HTTP_Helper::retrieve_post( 'redirect_to' );
+		$params['authMethod']  = $method;
+		if ( $method === Auth_API::AUTH_METHOD_EMAIL ) {
+			Auth_API::sendEmailCode( $user->ID );
+		}
 		if ( ! isset( $params['error'] ) ) {
 			$params['error'] = null;
 		}
@@ -372,6 +450,53 @@ class Main extends Controller {
 		update_user_meta( $user->ID, 'defOTPLoginToken', $tmp );
 
 		return $tmp;
+	}
+
+	/**
+	 * Resend email OTP code for login flow
+	 */
+	public function resendEmailOTP() {
+		if ( ! wp_verify_nonce( HTTP_Helper::retrieve_get( 'nonce' ), 'defResendEmailOTP' ) ) {
+			wp_send_json_error( array() );
+		}
+
+		$token = HTTP_Helper::retrieve_get( 'token' );
+		$query = new \WP_User_Query( array(
+			'meta_key'   => 'defOTPLoginToken',
+			'meta_value' => $token,
+		) );
+		$res   = $query->get_results();
+		if ( empty( $res ) ) {
+			wp_send_json_error( array(
+				'message' => __( "Dein Token ist ungültig.", cp_defender()->domain )
+			) );
+		}
+
+		$user = $res[0];
+		if ( ! Auth_API::isMethodAllowed( Auth_API::AUTH_METHOD_EMAIL ) || Auth_API::getEffectiveUserAuthMethod( $user->ID ) !== Auth_API::AUTH_METHOD_EMAIL ) {
+			wp_send_json_error( array(
+				'message' => __( "E-Mail-Verifizierung ist für dieses Konto nicht aktiv.", cp_defender()->domain )
+			) );
+		}
+
+		$remaining = Auth_API::getEmailResendCooldownRemaining( $user->ID );
+		if ( $remaining > 0 ) {
+			$minutes = (int) ceil( $remaining / 60 );
+			wp_send_json_error( array(
+				'message' => sprintf( __( "Bitte warte %d Minute(n), bevor du einen neuen Code anforderst.", cp_defender()->domain ), $minutes )
+			) );
+		}
+
+		$sent = Auth_API::sendEmailCode( $user->ID, true );
+		if ( ! $sent ) {
+			wp_send_json_error( array(
+				'message' => __( "Der Code konnte nicht gesendet werden. Bitte versuche es erneut.", cp_defender()->domain )
+			) );
+		}
+
+		wp_send_json_success( array(
+			'message' => __( "Ein neuer Code wurde an deine E-Mail gesendet.", cp_defender()->domain )
+		) );
 	}
 
 	/**
@@ -416,7 +541,9 @@ return;
 	public function viewAuth() {
 		$settings = Auth_Settings::instance();
 		if ( $settings->enabled == false ) {
-			$this->render( 'disabled' );
+			$this->render( 'disabled', array(
+				'settings' => $settings
+			) );
 		} else {
 			$this->render( 'main', array(
 				'settings' => $settings
@@ -454,6 +581,11 @@ return;
 		}
 		$setting = Auth_Settings::instance();
 		$setting->import( $data );
+		if ( empty( $setting->allowAppAuth ) && empty( $setting->allowEmailAuth ) ) {
+			wp_send_json_error( array(
+				'message' => __( "Mindestens eine Zwei-Faktor-Methode muss erlaubt sein (App oder E-Mail).", cp_defender()->domain )
+			) );
+		}
 		$setting->save();
 
 		$res           = array(
