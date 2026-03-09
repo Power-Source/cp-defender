@@ -24,6 +24,26 @@ class Auth_API extends Component {
 	}
 
 	/**
+	 * @param string $name
+	 * @param string $secret
+	 * @param string|null $title
+	 *
+	 * @return string
+	 */
+	public static function getOtpAuthUri( $name, $secret, $title = null ) {
+		$label = rawurlencode( $name );
+		$query = array(
+			'secret' => $secret,
+		);
+
+		if ( ! is_null( $title ) ) {
+			$query['issuer'] = $title;
+		}
+
+		return sprintf( 'otpauth://totp/%s?%s', $label, http_build_query( $query, '', '&', PHP_QUERY_RFC3986 ) );
+	}
+
+	/**
 	 * @param $name
 	 * @param $secret
 	 * @param int $width
@@ -33,12 +53,9 @@ class Auth_API extends Component {
 	 * @return string
 	 */
 	public static function generateQRCode( $name, $secret, $width = 200, $height = 200, $title = null ) {
-		$chl = urlencode( 'otpauth://totp/' . $name . '?secret=' . $secret . '' );
-		if ( ! is_null( $title ) ) {
-			$chl .= urlencode( '&issuer=' . $title );
-		}
+		$otpAuthUri = self::getOtpAuthUri( $name, $secret, $title );
 
-		return "https://chart.googleapis.com/chart?cht=qr&chs={$width}x{$height}&chl=$chl&chld=M|0";
+		return 'https://api.qrserver.com/v1/create-qr-code/?size=' . absint( $width ) . 'x' . absint( $height ) . '&data=' . rawurlencode( $otpAuthUri );
 	}
 
 	/**

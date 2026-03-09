@@ -35,8 +35,12 @@
                         <div class="line"></div>
                         <p><strong><?php _e( "2. Scanne den Barcode", cp_defender()->domain ) ?></strong></p>
                         <p><?php _e( "Öffne die Google Authenticator App, die du gerade heruntergeladen hast, tippe auf das „+“-Symbol und verwende dann die Kamera deines Telefons, um den untenstehenden Barcode zu scannen.", cp_defender()->domain ) ?></p>
+                            <?php $otpAuthUri = \CP_Defender\Module\Advanced_Tools\Component\Auth_API::getOtpAuthUri( get_site_url(), $secretKey, 'cp-defender' ); ?>
                         <img class="barcode"
-                             src="<?php echo \CP_Defender\Module\Advanced_Tools\Component\Auth_API::generateQRCode( get_site_url(), $secretKey, 149, 149, 'cp-defender' ) ?>"/>
+                                src="<?php echo \CP_Defender\Module\Advanced_Tools\Component\Auth_API::generateQRCode( get_site_url(), $secretKey, 149, 149, 'cp-defender' ) ?>"
+                                onerror="this.onerror=null;this.src='https://quickchart.io/qr?size=149&text=<?php echo rawurlencode( $otpAuthUri ) ?>';"/>
+                            <p><?php _e( "Falls der Barcode nicht angezeigt wird, richte die App manuell mit diesem Key ein:", cp_defender()->domain ) ?></p>
+                            <p><code><?php echo esc_html( $secretKey ) ?></code></p>
                         <div class="line"></div>
                         <p><strong><?php _e( "3. Gib den Passcode ein", cp_defender()->domain ) ?></strong></p>
                         <p>

@@ -80,6 +80,12 @@ Ja, wenn du vorher das Anti-Splog Plugin von WPMUDEV verwendet hast, werden die 
 
 == Changelog ==
 
+= 1.0.3 =
+
+* Fix: Zwei-Faktor-QR-Code in der Profil-Einrichtung wieder zuverlässig sichtbar
+* Verbesserung: Robuster QR-Fallback bei externen QR-Code-Diensten
+* Verbesserung: Manueller Secret-Key als Alternative zur QR-Einrichtung
+
 = 1.0.2 =
 
 * NEU: Anti-Spam Modul für Multisite
