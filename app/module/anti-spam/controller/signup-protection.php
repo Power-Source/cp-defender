@@ -174,6 +174,10 @@ class Signup_Protection {
 	 * Validiert Blog-Signup
 	 */
 	public function validate_blog_signup( array $result ): array {
+		if ( $this->should_bypass_for_admin_creation() ) {
+			return $result;
+		}
+
 		// Honeypot prüfen
 		$result = $this->check_honeypot( $result );
 
@@ -199,6 +203,10 @@ class Signup_Protection {
 	 * Validiert User-Signup
 	 */
 	public function validate_user_signup( array $result ): array {
+		if ( $this->should_bypass_for_admin_creation() ) {
+			return $result;
+		}
+
 		// Honeypot prüfen
 		$result = $this->check_honeypot( $result );
 
@@ -411,6 +419,10 @@ class Signup_Protection {
 	 * Prüft Human Verification
 	 */
 	private function check_human_verification( array $result ): array {
+		if ( $this->should_bypass_for_admin_creation() ) {
+			return $result;
+		}
+
 		$verification_type = Settings::get( 'human_verification' );
 		
 		switch ( $verification_type ) {
@@ -673,5 +685,30 @@ class Signup_Protection {
 		}
 		
 		return $ip;
+	}
+
+	/**
+	 * Bypass für vertrauenswürdige Admin-Erstellung im Dashboard.
+	 */
+	private function should_bypass_for_admin_creation(): bool {
+		if ( ! is_admin() ) {
+			return false;
+		}
+
+		if ( ! current_user_can( 'create_users' ) && ! current_user_can( 'manage_network_users' ) ) {
+			return false;
+		}
+
+		// Nur relevante Admin-Screens (User/Site-Erstellung) ausnehmen.
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		$base = $screen->base ?? '';
+
+		if ( in_array( $base, array( 'user', 'user-new', 'site-new', 'network_user-new', 'network_site-new' ), true ) ) {
+			return true;
+		}
+
+		$requested = sanitize_key( $_REQUEST['action'] ?? '' );
+
+		return in_array( $requested, array( 'createuser', 'add-user', 'addsite' ), true );
 	}
 }
