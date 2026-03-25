@@ -131,7 +131,10 @@ jQuery(function ($) {
             return;
         }
         if (data.success == true) {
-            form.closest('.dev-box').replaceWith($(data.data.html))
+            var widgetHtml = jQuery.parseHTML(data.data.html || '', document, false);
+            if (widgetHtml && widgetHtml.length) {
+                form.closest('.dev-box').replaceWith(jQuery(widgetHtml));
+            }
         } else {
             Defender.showNotification('error', data.data.message);
         }
@@ -142,7 +145,7 @@ jQuery(function ($) {
         }
         if (data.success == true) {
             if (data.data.eventWeek > 0) {
-                $('.issues-count h5').html(data.data.eventWeek);
+                $('.issues-count h5').text(data.data.eventWeek);
             }
         } else {
             Defender.showNotification('error', data.data.message);
@@ -212,11 +215,11 @@ WDAudit.formHandler = function () {
             success: function (data) {
 				if (data.data != undefined && data.data.notification != undefined){
 					if(data.data.notification == 0){
-						jq('.defender-audit-frequency').html(data.data.text);
-						jq('.defender-audit-schedule').html('');
+                            jq('.defender-audit-frequency').text(data.data.text);
+                            jq('.defender-audit-schedule').empty();
 					} else {
-						jq('.defender-audit-frequency').html(data.data.frequency);
-						jq('.defender-audit-schedule').html(data.data.schedule);
+                            jq('.defender-audit-frequency').text(data.data.frequency);
+                            jq('.defender-audit-schedule').text(data.data.schedule);
 					}
 				}
                 if (data.data != undefined && data.data.reload != undefined) {
@@ -323,13 +326,13 @@ WDAudit.ajaxPull = function (query, callback) {
         success: function (data) {
             if (data.success == 1) {
                 if (data.data.html != undefined) {
-                    var html = jq(data.data.html);
+                    var html = jq(jq.parseHTML(data.data.html, document, false));
                     if (html.find('#audit-table') > 0 && jq('#audit-table').length > 0) {
                         jq('#audit-table').replaceWith(html.filter('#audit-table').first());
                         jq('.nav').replaceWith(html.filter('.bulk-nav').first().find('.nav').first());
                         callback();
                     } else {
-                        jq('#audit-table-container').html(html);
+                        jq('#audit-table-container').empty().append(html);
                         jQuery(".wpmud select").each(function () {
                             WDP.wpmuSelect(this);
                         });
@@ -343,7 +346,7 @@ WDAudit.ajaxPull = function (query, callback) {
                         isFirst = false;
                     }
                 } else {
-                    jq('.new-event-count').html(data.data.message).removeClass('wd-hide');
+                    jq('.new-event-count').text(data.data.message).removeClass('wd-hide');
                     count = data.data.count;
                     callback();
                 }
