@@ -420,7 +420,7 @@
 												</td>
 												<td class="hero-image"
 												    style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;">
-													<a href="https://github.com/Power-Source/"
+													<a href="https://psource.eimen.net/"
 													   style="Margin: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: left; text-decoration: none;"><img
 															src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/psource-logo.png"
 															alt="Defender"
@@ -558,7 +558,7 @@
 												</th>
 												<th class="small-12 large-4 columns last logo" align="right"
 												    style="Margin: 0 auto; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0 auto; padding: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; text-align: right; width: 201.33333px;">
-													<a href="https://github.com/Power-Source" class="logo-link"
+													<a href="https://psource.eimen.net" class="logo-link"
 													   style="Margin: 0; color: #555555; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: right; text-decoration: none;">
 														<img
 															src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/psource-logo.png"
@@ -590,7 +590,7 @@
 											<tr style="padding: 0; text-align: left; vertical-align: top;">
 												<td class="social-content-inner"
 													style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; text-align: center; vertical-align: top; word-wrap: break-word;">
-													<a href="https://github.com/Power-Source" target="_blank"
+													<a href="https://psource.eimen.net" target="_blank"
 													   class="github"
 													   style="Margin: 0; color: #555555; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.3; margin: 0; margin-right: 4px; padding: 0; text-align: left; text-decoration: none;"><img
 															src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/icon-github.png"

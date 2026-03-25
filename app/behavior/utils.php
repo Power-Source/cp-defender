@@ -862,7 +862,7 @@ class Utils extends Behavior {
 	public function _submitStatsToDev() {
 		// Cloud stats submission disabled - no external analytics
 		// $data      = $this->generateStats();
-		// $end_point = "https://github.com/Power-Source/api/defender/v1/scan-results";
+		// $end_point = "https://psource.eimen.net/api/defender/v1/scan-results";
 		// $res       = $this->devCall( $end_point, $data, array( 'method' => 'POST' ) );
 	}
 
@@ -974,7 +974,7 @@ class Utils extends Behavior {
 	 * @return string
 	 */
 	public function campaignURL( $campaign ) {
-		$url = "https://github.com/Power-Source/project/cp-defender/?utm_source=defender&utm_medium=plugin&utm_campaign=" . $campaign;
+		$url = "https://psource.eimen.net/project/cp-defender/?utm_source=defender&utm_medium=plugin&utm_campaign=" . $campaign;
 
 		return $url;
 	}

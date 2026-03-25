@@ -4,6 +4,7 @@ namespace CP_Defender\Module\Anti_Spam\Controller;
 
 use CP_Defender\Module\Anti_Spam\Behavior\Database;
 use CP_Defender\Module\Anti_Spam\Behavior\Disposable_Email;
+use CP_Defender\Module\Anti_Spam\Behavior\Comment_Protection;
 use CP_Defender\Module\Anti_Spam\Model\Settings;
 use CP_Defender\Module\Anti_Spam\Model\Pattern;
 use CP_Defender\Module\Anti_Spam\Model\Blog_Log;
@@ -28,6 +29,9 @@ class Main {
 		
 		// Disposable Email Protection initialisieren
 		Disposable_Email::init();
+		
+		// Comment Protection initialisieren (Netzwerkweiter Spam-Schutz)
+		Comment_Protection::init();
 		
 		// Signup Protection laden
 		new Signup_Protection();
@@ -67,6 +71,10 @@ class Main {
 	
 	/**
 	 * Registriert Admin-Menü
+		
+				// Lade das Plugin-interne UI-Framework (WDEV)
+				\WDEV_Plugin_Ui::load( cp_defender()->getPluginUrl() . 'shared-ui/' );
+		
 	 */
 	public function register_menu(): void {
 		// Hauptseite (unter PS Security)
@@ -118,11 +126,15 @@ class Main {
 		if ( strpos( $hook, 'cp-defender-antispam' ) === false ) {
 			return;
 		}
+
+		// Gleiche UI-Grundlage wie die restlichen Defender-Module.
+		\WDEV_Plugin_Ui::load( cp_defender()->getPluginUrl() . 'shared-ui/' );
+		wp_enqueue_style( 'defender' );
 		
 		wp_enqueue_style(
 			'cp-defender-antispam',
 			plugins_url( 'assets/css/anti-spam.css', CP_DEFENDER_FILE ),
-			array(),
+			array( 'defender' ),
 			CP_DEFENDER_VERSION
 		);
 		

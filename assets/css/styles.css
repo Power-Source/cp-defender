@@ -1810,7 +1810,18 @@
       -moz-border-radius: 5px;
       border-radius: 5px;
       overflow: hidden;
-      box-shadow: 0 2px 0 #EAEAEA; }
+      box-shadow: 0 2px 0 #EAEAEA;
+      max-height: 5000px;
+      transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease;
+      opacity: 1;
+      padding-top: 30px; }
+      .cp-defender .hardener .rules .rule .rule-content.ht-sliding-up {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 0; }
       .cp-defender .hardener .rules .rule .rule-content h3 {
         font-weight: bold;
         color: #333;
@@ -1865,7 +1876,12 @@
       content: '\65';
       top: 20px; }
     .cp-defender .hardener .rules .rule.closed .rule-content {
-      display: none; }
+      display: block;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      padding: 0;
+      margin-top: 0; }
   .cp-defender .hardener .rules:not(.ignored) i.icon-warning {
     background: url("../img/wpmud-icon-warning-yellow.svg") no-repeat;
     vertical-align: sub;
@@ -2388,6 +2404,20 @@
 .cp-defender.no-close {
   max-width: none;
   margin: 0; }
+
+/* CSS3 Animations for jQuery Effects replacement */
+
+/* Textarea toggle animation */
+.hardener-instructions textarea.hardener-php-excuted-ignore {
+  max-height: 300px;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+  overflow: hidden; }
+
+.hardener-instructions textarea.hardener-php-excuted-ignore.ht-collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-bottom: 0; }
 
 
 /* 403900-1518158358-au */

@@ -9,7 +9,7 @@ use CP_Defender\Module\Scan\Component\Scan_Api;
 use CP_Defender\Module\Scan\Model\Result_Item;
 
 class Vuln_Scan extends Behavior {
-	protected $endPoint = "https://github.com/Power-Source/api/defender/v1/vulnerabilities";
+	protected $endPoint = "https://psource.eimen.net/api/defender/v1/vulnerabilities";
 	protected $model;
 
 	public function processItemInternal( $args, $current ) {

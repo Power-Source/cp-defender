@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: PS Security Suite
- * Plugin URI: https://power-source.github.io/cp-defender/
+ * Plugin URI: https://psource.eimen.net/wiki/ps-security-suite-dokumentation/
  * Version:     1.0.4
  * Description: Erhalte regelmäßige Sicherheitsüberprüfungen, Schwachstellenberichte, Sicherheitsempfehlungen und individuelle Sicherheitsmaßnahmen für Deine Webseite – mit nur wenigen Klicks. PS Security ist Dein Analyst und Sicherheitsexperte, der rund um die Uhr für Dich da ist.
  * Author:      PSOURCE
- * Author URI:  https://github.com/Power-Source
+ * Author URI:  https://psource.eimen.net
  * License:     GNU General Public License (Version 2 - GPLv2)
  * Text Domain: cpsec
  * Network: true

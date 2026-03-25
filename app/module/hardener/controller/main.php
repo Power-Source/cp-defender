@@ -195,7 +195,7 @@ return;
 		\WDEV_Plugin_Ui::load( cp_defender()->getPluginUrl() . 'shared-ui/' );
 		wp_enqueue_script( 'defender' );
 		wp_enqueue_script( 'hardener', cp_defender()->getPluginUrl() . 'app/module/hardener/js/scripts.js', array(
-			'jquery-effects-core'
+			'jquery'
 		) );
 		wp_enqueue_style( 'defender' );
 	}

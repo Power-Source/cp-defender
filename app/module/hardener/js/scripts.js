@@ -69,10 +69,15 @@ jQuery(function ($) {
     });
 
     /**
-     * Toggle text area
+     * Toggle text area with CSS transition
      */
     $(document).on('click','button.hardener-php-excuted-execption', function(){
-        $('.hardener-instructions textarea.hardener-php-excuted-ignore').toggle('fast');
+        var $textarea = $('.hardener-instructions textarea.hardener-php-excuted-ignore');
+        if ($textarea.hasClass('ht-collapsed')) {
+            $textarea.removeClass('ht-collapsed');
+        } else {
+            $textarea.addClass('ht-collapsed');
+        }
     });
 
     /**
@@ -131,8 +136,9 @@ jQuery(function ($) {
                 update_rules = false;
             }
             if ( update_rules ) {
-                form.closest('.rule').slideUp(500, function () {
-                    $(this).remove();
+                var $rule = form.closest('.rule');
+                WDHardener.slideUp($rule, function () {
+                    $rule.remove();
                     if ($('.rule').length == 0) {
                         setTimeout(function () {
                             location.reload();
@@ -225,19 +231,40 @@ WDHardener.rules = function () {
         var otherRules = jq('.rule').not(parent);
         otherRules.each(function () {
             var that = jq(this);
-            jq(this).find('.rule-content').first().slideUp(function () {
+            WDHardener.slideUp(jq(this).find('.rule-content').first(), function () {
                 that.addClass('closed');
-            })
-        })
+            });
+        });
         if (parent.hasClass('closed')) {
-            //jq(this).switchClass('closed', '', 1000, 'swing');
-            parent.find('.rule-content').first().slideDown();
+            WDHardener.slideDown(parent.find('.rule-content').first());
             parent.removeClass('closed');
         } else {
-            //jq(this).switchClass('', 'closed', 1000, 'swing');
-            parent.find('.rule-content').first().slideUp(function () {
+            WDHardener.slideUp(parent.find('.rule-content').first(), function () {
                 parent.addClass('closed');
-            })
+            });
         }
-    })
+    });
+}
+
+/**
+ * CSS3-based slideUp/slideDown animations (replaces deprecated jQuery Effects)
+ */
+WDHardener.slideUp = function(element, callback) {
+    var $el = jQuery(element);
+    $el.addClass('ht-sliding-up');
+    if (callback) {
+        $el.one('transitionend', callback);
+        // Fallback timeout in case transitionend fires late
+        setTimeout(callback, 600);
+    }
+}
+
+WDHardener.slideDown = function(element, callback) {
+    var $el = jQuery(element);
+    $el.removeClass('ht-sliding-up');
+    if (callback) {
+        $el.one('transitionend', callback);
+        // Fallback timeout in case transitionend fires late
+        setTimeout(callback, 600);
+    }
 }

@@ -11,7 +11,7 @@ namespace CP_Defender\Module\Anti_Spam\Behavior;
  */
 class Database {
 	
-	const VERSION = '1.0.0';
+	const VERSION = '1.1.0';
 	const VERSION_OPTION = 'cp_defender_antispam_db_version';
 	
 	/**
@@ -78,9 +78,27 @@ class Database {
 			KEY pattern_type (pattern_type)
 		) $charset_collate;";
 		
+		// Comment Blacklist Tabelle (NEW in 1.1.0)
+		$sql_comment_blacklist = "CREATE TABLE {$table_prefix}defender_antispam_comment_blacklist (
+			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			type varchar(20) NOT NULL,
+			value varchar(255) NOT NULL,
+			reason text,
+			certainty int(3) NOT NULL DEFAULT 0,
+			status varchar(20) NOT NULL DEFAULT 'active',
+			created_at datetime DEFAULT CURRENT_TIMESTAMP,
+			updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			PRIMARY KEY (id),
+			UNIQUE KEY type_value (type, value),
+			KEY status (status),
+			KEY type (type),
+			KEY certainty (certainty)
+		) $charset_collate;";
+		
 		dbDelta( $sql_blogs );
 		dbDelta( $sql_ips );
 		dbDelta( $sql_patterns );
+		dbDelta( $sql_comment_blacklist );
 		
 		update_site_option( self::VERSION_OPTION, self::VERSION );
 	}
@@ -96,6 +114,7 @@ class Database {
 		$wpdb->query( "DROP TABLE IF EXISTS {$table_prefix}defender_antispam_blogs" );
 		$wpdb->query( "DROP TABLE IF EXISTS {$table_prefix}defender_antispam_ips" );
 		$wpdb->query( "DROP TABLE IF EXISTS {$table_prefix}defender_antispam_pattern_stats" );
+		$wpdb->query( "DROP TABLE IF EXISTS {$table_prefix}defender_antispam_comment_blacklist" );
 		
 		delete_site_option( self::VERSION_OPTION );
 	}

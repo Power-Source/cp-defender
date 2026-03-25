@@ -74,11 +74,19 @@ Nein, das Anti-Spam-Modul ist speziell für Multisite-Installationen entwickelt.
 
 Ja! Unter "Patterns" kannst du beliebig viele eigene Regex-Patterns erstellen und live testen.
 
-= Werden die Daten von Anti-Splog migriert? =
-
-Ja, wenn du vorher das Anti-Splog Plugin von WPMUDEV verwendet hast, werden die Daten automatisch migriert.
-
 == Changelog ==
+
+= 1.0.5 =
+
+* Fix: Entfernung der veralteten jQuery Effects Core Abhängigkeit (deprecated seit CP 2.2.0)
+* Verbesserung: Accordion- und Textarea-Animationen nutzen jetzt CSS3-Transitions statt jQuery Effects
+* Verbesserung: Performance-Optimierung durch native CSS-Animationen
+* Kompatibilität: Vorbereitung für ClassicPress 3.0.0
+* Fix: Anti-Spam Settings-Seite nutzt jetzt das interne Defender UI-Framework konsistent
+* Fix: Anti-Spam Einstellungen im Network-Admin übersichtlicher strukturiert und besser lesbar
+* NEU: Netzwerkweiter Kommentar-Schutz mit zentraler Blacklist für E-Mail, IP und Domains
+* NEU: Integration der Wegwerf-E-Mail-Erkennung auch für Kommentar-Spam-Abwehr
+* Verbesserung: Automatische Übernahme verdächtiger Daten aus Spam-Blogs für Kommentar-Filterung
 
 = 1.0.4 =
 

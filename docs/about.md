@@ -6,7 +6,7 @@ title: "PSOURCE"
 <h2 align="center" style="color:#38c2bb;">📚 PSOURCE</h2>
 
 <div class="menu">
-  <a href="https://github.com/Power-Source" style="color:#38c2bb;">📝 GitHub</a>
+  <a href="https://psource.eimen.net" style="color:#38c2bb;">📝 GitHub</a>
 </div>
 
 

@@ -513,7 +513,7 @@ class Main extends \CP_Defender\Controller {
 			wp_enqueue_script( 'defender' );
 			wp_enqueue_style( 'defender' );
 			wp_enqueue_script( 'audit', cp_defender()->getPluginUrl() . 'app/module/audit/js/script.js', array(
-				'jquery-effects-core'
+				'jquery'
 			) );
 			wp_enqueue_script( 'audit-momentjs', cp_defender()->getPluginUrl() . 'app/module/audit/js/moment/moment.min.js' );
 			wp_enqueue_style( 'audit-daterangepicker', cp_defender()->getPluginUrl() . 'app/module/audit/js/daterangepicker/daterangepicker.css' );

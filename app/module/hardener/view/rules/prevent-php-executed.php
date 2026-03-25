@@ -148,7 +148,7 @@ location ~* ^$wp_content/.*\.php$ {
                             <?php esc_html_e( "Lade NGINX neu.", cp_defender()->domain ) ?>
                         </li>
                     </ol>
-                    <p><?php echo sprintf( __( "Hast du immer noch Probleme? <a target='_blank' href=\"%s\">Eröffne ein Support-Ticket</a>.", cp_defender()->domain ), 'https://github.com/Power-Source/forums/forum/support#question' ) ?></p>
+                    <p><?php echo sprintf( __( "Hast du immer noch Probleme? <a target='_blank' href=\"%s\">Eröffne ein Support-Ticket</a>.", cp_defender()->domain ), 'https://psource.eimen.net/forums/forum/support#question' ) ?></p>
                     <pre>
 ## PS Security - Prevent PHP Execution ##
                         <?php echo esc_html( $rules ); ?>

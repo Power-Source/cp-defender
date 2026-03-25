@@ -65,6 +65,15 @@ if ( isset( $_POST['defender_antispam_save'] ) && check_admin_referer( 'defender
 		'notify_email'            => sanitize_email( $_POST['notify_email'] ?? '' ),
 		'spam_user_on_blog_spam'  => isset( $_POST['spam_user_on_blog_spam'] ),
 		'show_toolbar_menu'       => isset( $_POST['show_toolbar_menu'] ),
+		'comment_protection_enabled' => isset( $_POST['comment_protection_enabled'] ),
+		'comment_block_email'        => isset( $_POST['comment_block_email'] ),
+		'comment_block_ip'           => isset( $_POST['comment_block_ip'] ),
+		'comment_block_domain'       => isset( $_POST['comment_block_domain'] ),
+		'comment_block_disposable_email' => isset( $_POST['comment_block_disposable_email'] ),
+		'comment_check_content'      => isset( $_POST['comment_check_content'] ),
+		'auto_blacklist_spam_blogs'  => isset( $_POST['auto_blacklist_spam_blogs'] ),
+		'auto_blacklist_suspicious_signups' => isset( $_POST['auto_blacklist_suspicious_signups'] ),
+		'suspicious_certainty_threshold' => absint( $_POST['suspicious_certainty_threshold'] ?? 70 ),
 	);
 	
 	// Q&A Questions verarbeiten
@@ -94,14 +103,20 @@ $settings = Settings::get_all();
 ?>
 
 <div class="wrap">
-	<h1><?php _e( '🛡️ Anti-Spam Einstellungen', 'cpsec' ); ?></h1>
-	
-	<form method="post" action="">
-		<?php wp_nonce_field( 'defender_antispam_settings' ); ?>
-		
-		<table class="form-table">
+	<div class="wpmud">
+		<div class="cp-defender cp-defender-antispam-settings">
+			<section id="header">
+				<h1 class="tl"><?php _e( 'Anti-Spam Einstellungen', 'cpsec' ); ?></h1>
+			</section>
+
+			<section class="dev-box">
+				<div class="box-content">
+					<form method="post" action="">
+						<?php wp_nonce_field( 'defender_antispam_settings' ); ?>
+						
+						<table class="form-table antispam-settings-table">
 			<tr>
-				<th colspan="2"><h2><?php _e( 'IP-Blocking', 'cpsec' ); ?></h2></th>
+				<th colspan="2" class="antispam-section"><h4 class="antispam-section-title"><?php _e( 'IP-Blocking', 'cpsec' ); ?></h4></th>
 			</tr>
 			<tr>
 				<th scope="row"><?php _e( 'IP-Blocking aktivieren', 'cpsec' ); ?></th>
@@ -121,7 +136,7 @@ $settings = Settings::get_all();
 			</tr>
 			
 			<tr>
-				<th colspan="2"><h2><?php _e( 'Rate Limiting', 'cpsec' ); ?></h2></th>
+				<th colspan="2" class="antispam-section"><h4 class="antispam-section-title"><?php _e( 'Rate Limiting', 'cpsec' ); ?></h4></th>
 			</tr>
 			<tr>
 				<th scope="row"><?php _e( 'Rate Limiting aktivieren', 'cpsec' ); ?></th>
@@ -143,7 +158,7 @@ $settings = Settings::get_all();
 			</tr>
 			
 			<tr>
-				<th colspan="2"><h2><?php _e( 'Auto-Spam', 'cpsec' ); ?></h2></th>
+				<th colspan="2" class="antispam-section"><h4 class="antispam-section-title"><?php _e( 'Auto-Spam', 'cpsec' ); ?></h4></th>
 			</tr>
 			<tr>
 				<th scope="row"><?php _e( 'Auto-Spam aktivieren', 'cpsec' ); ?></th>
@@ -163,7 +178,7 @@ $settings = Settings::get_all();
 			</tr>
 			
 			<tr>
-				<th colspan="2"><h2><?php _e( 'Pattern Matching', 'cpsec' ); ?></h2></th>
+				<th colspan="2" class="antispam-section"><h4 class="antispam-section-title"><?php _e( 'Pattern Matching', 'cpsec' ); ?></h4></th>
 			</tr>
 			<tr>
 				<th scope="row"><?php _e( 'Pattern Matching aktivieren', 'cpsec' ); ?></th>
@@ -181,7 +196,7 @@ $settings = Settings::get_all();
 			</tr>
 			
 			<tr>
-				<th colspan="2"><h2><?php _e( 'Human Verification', 'cpsec' ); ?></h2></th>
+				<th colspan="2" class="antispam-section"><h4 class="antispam-section-title"><?php _e( 'Human Verification', 'cpsec' ); ?></h4></th>
 			</tr>
 			<tr>
 				<th scope="row"><?php _e( 'Verifizierungstyp', 'cpsec' ); ?></th>
@@ -251,7 +266,7 @@ $settings = Settings::get_all();
 			</tr>
 			
 			<tr>
-				<th colspan="2"><h2><?php _e( 'Disposable Email Protection', 'cpsec' ); ?></h2></th>
+				<th colspan="2" class="antispam-section"><h4 class="antispam-section-title"><?php _e( 'Disposable Email Protection', 'cpsec' ); ?></h4></th>
 			</tr>
 			<tr>
 				<th scope="row"><?php _e( 'Wegwerf-E-Mails blockieren', 'cpsec' ); ?></th>
@@ -306,7 +321,7 @@ $settings = Settings::get_all();
 			</tr>
 			
 			<tr>
-				<th colspan="2"><h2><?php _e( 'Weitere Optionen', 'cpsec' ); ?></h2></th>
+				<th colspan="2" class="antispam-section"><h4 class="antispam-section-title"><?php _e( 'Weitere Optionen', 'cpsec' ); ?></h4></th>
 			</tr>
 			<tr>
 				<th scope="row"><?php _e( 'Benutzer mitsperren', 'cpsec' ); ?></th>
@@ -326,10 +341,72 @@ $settings = Settings::get_all();
 					</label>
 				</td>
 			</tr>
-		</table>
-		
-		<?php submit_button( __( 'Einstellungen speichern', 'cpsec' ), 'primary', 'defender_antispam_save' ); ?>
-	</form>
+
+			<tr>
+				<th colspan="2" class="antispam-section"><h4 class="antispam-section-title"><?php _e( 'Kommentar-Schutz (Netzwerkweit)', 'cpsec' ); ?></h4></th>
+			</tr>
+			<tr>
+				<th scope="row"><?php _e( 'Kommentar-Schutz aktivieren', 'cpsec' ); ?></th>
+				<td>
+					<label>
+						<input type="checkbox" name="comment_protection_enabled" value="1" <?php checked( $settings['comment_protection_enabled'] ); ?> />
+						<?php _e( 'Schütze Kommentare netzwerkweit gegen bekannte Spammer', 'cpsec' ); ?>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php _e( 'Blockierungskriterien', 'cpsec' ); ?></th>
+				<td>
+					<label style="display:block;margin-bottom:6px;">
+						<input type="checkbox" name="comment_block_email" value="1" <?php checked( $settings['comment_block_email'] ); ?> />
+						<?php _e( 'E-Mail-Adressen blockieren', 'cpsec' ); ?>
+					</label>
+					<label style="display:block;margin-bottom:6px;">
+						<input type="checkbox" name="comment_block_ip" value="1" <?php checked( $settings['comment_block_ip'] ); ?> />
+						<?php _e( 'IP-Adressen blockieren', 'cpsec' ); ?>
+					</label>
+					<label style="display:block;margin-bottom:6px;">
+						<input type="checkbox" name="comment_block_domain" value="1" <?php checked( $settings['comment_block_domain'] ); ?> />
+						<?php _e( 'Domains/URLs blockieren', 'cpsec' ); ?>
+					</label>
+					<label style="display:block;margin-bottom:6px;">
+						<input type="checkbox" name="comment_block_disposable_email" value="1" <?php checked( $settings['comment_block_disposable_email'] ); ?> />
+						<?php _e( 'Wegwerf-E-Mail-Adressen blockieren', 'cpsec' ); ?>
+					</label>
+					<label style="display:block;">
+						<input type="checkbox" name="comment_check_content" value="1" <?php checked( $settings['comment_check_content'] ); ?> />
+						<?php _e( 'Kommentarinhalt auf SPAM-Muster prüfen', 'cpsec' ); ?>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php _e( 'Automatische Blacklist-Quellen', 'cpsec' ); ?></th>
+				<td>
+					<label style="display:block;margin-bottom:6px;">
+						<input type="checkbox" name="auto_blacklist_spam_blogs" value="1" <?php checked( $settings['auto_blacklist_spam_blogs'] ); ?> />
+						<?php _e( 'Daten aus als Spam markierten Blogs übernehmen', 'cpsec' ); ?>
+					</label>
+					<label style="display:block;">
+						<input type="checkbox" name="auto_blacklist_suspicious_signups" value="1" <?php checked( $settings['auto_blacklist_suspicious_signups'] ); ?> />
+						<?php _e( 'Verdächtige Signups zur Blacklist hinzufügen', 'cpsec' ); ?>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php _e( 'Certainty-Schwellwert (Signups)', 'cpsec' ); ?></th>
+				<td>
+					<input type="number" name="suspicious_certainty_threshold" value="<?php echo esc_attr( $settings['suspicious_certainty_threshold'] ); ?>" min="0" max="100" />%
+					<p class="description"><?php _e( 'Ab diesem Wert werden verdächtige Signup-Daten automatisch übernommen.', 'cpsec' ); ?></p>
+				</td>
+			</tr>
+						</table>
+						
+						<?php submit_button( __( 'Einstellungen speichern', 'cpsec' ), 'primary', 'defender_antispam_save' ); ?>
+					</form>
+				</div>
+			</section>
+		</div>
+	</div>
 </div>
 
 <script>

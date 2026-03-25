@@ -65,6 +65,18 @@ class Settings {
 		// Moderation
 		'spam_user_on_blog_spam'  => false,
 		'show_toolbar_menu'       => true,
+		
+		// Comment Protection (NEW in 1.1.0)
+		'comment_protection_enabled' => true,
+		'comment_block_email'        => true,
+		'comment_block_ip'           => true,
+		'comment_block_domain'       => true,
+		'comment_block_disposable_email' => true,
+		'comment_check_content'      => false,
+		'comment_block_patterns'     => array(),
+		'auto_blacklist_spam_blogs'  => true,
+		'auto_blacklist_suspicious_signups' => false,
+		'suspicious_certainty_threshold' => 70,
 	);
 	
 	/**
