@@ -2,10 +2,10 @@
 Contributors: PSource
 Tags: updates, security, multisite, anti-spam, malware-scan
 Requires at least: 5.0
-Tested up to: 6.4.0 
-ClassicPress 2.6.0
+Tested up to: 6.2.9 
+ClassicPress 2.7.0
 Requires PHP: 7.4
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
