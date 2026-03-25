@@ -105,7 +105,7 @@ jQuery(function ($) {
             },
             success: function (data) {
                 if (data.success == 1) {
-                    that.closest('td').html(data.data.message);
+                    that.closest('td').text(data.data.message);
                 }
             }
         })
@@ -244,7 +244,8 @@ WDIP.ajaxPull = function (query, callback) {
             jq('.lockout-logs-container').prepend(overlay);
         },
         success: function (data) {
-            jq('.lockout-logs-container').html(data.data.html);
+            var lockoutHtml = jq.parseHTML(data.data.html || '', document, false);
+            jq('.lockout-logs-container').empty().append(lockoutHtml);
             overlay.remove();
             if (isFirst == false) {
                 window.history.pushState(null, document.title, urlOrigin + '&' + query);

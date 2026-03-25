@@ -134,7 +134,8 @@ jQuery(function ($) {
 
         if (data.success == true) {
             var parent = form.closest('.source-code');
-            parent.html(data.data.html);
+            var sourceHtml = jQuery.parseHTML(data.data.html || '', document, false);
+            parent.empty().append(sourceHtml);
 
             // hljs.highlightBlock(parent.find('pre code'));
             $('pre code').each(function (i, block) {
@@ -270,25 +271,29 @@ WDScan.handleFileIssues = function (data) {
                 }
                 if (!jq('.def-issues-below').length) {
                     if (jq('li.issues-nav a').length) {
-                        jq('li.issues-nav a').append('<span class="def-tag tag-error def-issues-below">' + data.data.counts.issues + '</span>');
+                        jq('li.issues-nav a').append(
+                            jQuery('<span/>', { 'class': 'def-tag tag-error def-issues-below' }).text(data.data.counts.issues)
+                        );
                     }
                 } else {
-                    jq('.def-issues-below').html(data.data.counts.issues);
+                    jq('.def-issues-below').text(data.data.counts.issues);
                 }
                 if (!jq('.def-issues-summary').length) {
                     if (jq('.def-issues-title').length) {
-                        jq('.def-issues-title').append('<span class="def-tag tag-error def-issues def-issues-summary">' + data.data.counts.issues + '</span>');
+                        jq('.def-issues-title').append(
+                            jQuery('<span/>', { 'class': 'def-tag tag-error def-issues def-issues-summary' }).text(data.data.counts.issues)
+                        );
                     }
                 } else {
-                    jq('.def-issues-summary').html(data.data.counts.issues);
+                    jq('.def-issues-summary').text(data.data.counts.issues);
                 }
                 jq('.def-issues-below').show();
-                jq('.def-issues').html(data.data.counts.issues);
+                jq('.def-issues').text(data.data.counts.issues);
                 if (jq('.def-issues-top-right-wp i:not(.tag-error)') && data.data.counts.issues_wp > 0) {
                     jq('.def-issues-top-right-wp').html('<span class="def-tag tag-error">' + data.data.counts.issues_wp + '</span>');
                 } else {
                     if (data.data.counts.issues_wp > 0) {
-                        jq('.def-issues-top-right-wp .tag-error').html(data.data.counts.issues_wp);
+                        jq('.def-issues-top-right-wp .tag-error').text(data.data.counts.issues_wp);
                     } else {
                         if (jq('.def-issues-top-right-wp span:not(.icon-tick)')) {
                             jq('.def-issues-top-right-wp').html('<i class="def-icon icon-tick"></i>');
@@ -301,7 +306,7 @@ WDScan.handleFileIssues = function (data) {
                         jq('.def-issues-top-right-pt').html('<span class="def-tag tag-error">' + data.data.counts.vuln_issues + '</span>');
                     } else {
                         if (data.data.counts.vuln_issues > 0) {
-                            jq('.def-issues-top-right-pt .tag-error').html(data.data.counts.vuln_issues);
+                            jq('.def-issues-top-right-pt .tag-error').text(data.data.counts.vuln_issues);
                         } else {
                             if (jq('.def-issues-top-right-pt span:not(.icon-tick)')) {
                                 jq('.def-issues-top-right-pt').html('<i class="def-icon icon-tick"></i>');
@@ -314,7 +319,7 @@ WDScan.handleFileIssues = function (data) {
                         jq('.def-issues-top-right-sc').html('<span class="def-tag tag-error">' + data.data.counts.content_issues + '</span>');
                     } else {
                         if (data.data.counts.content_issues > 0) {
-                            jq('.def-issues-top-right-sc .tag-error').html(data.data.counts.content_issues);
+                            jq('.def-issues-top-right-sc .tag-error').text(data.data.counts.content_issues);
                         } else {
                             if (jq('.def-issues-top-right-sc span:not(.icon-tick)')) {
                                 jq('.def-issues-top-right-sc').html('<i class="def-icon icon-tick"></i>');
@@ -324,7 +329,7 @@ WDScan.handleFileIssues = function (data) {
                 }
             } else {
                 //Show success messages
-                jq('.def-issues-top-left').html(0);
+                jq('.def-issues-top-left').text(0);
                 if (jq('.def-issues-top-left-icon i:not(.icon-tick)')) {
                     jq('.def-issues-top-left-icon').html('<i class="def-icon icon-tick"></i>');
                 }
@@ -350,9 +355,9 @@ WDScan.handleFileIssues = function (data) {
         //Ignored counts
         if (data.data.counts.ignored) {
             if (data.data.counts.ignored > 0) {
-                jq('.def-ignored').html(data.data.counts.ignored);
+                jq('.def-ignored').text(data.data.counts.ignored);
             } else {
-                jq('.def-ignored').html("");
+                jq('.def-ignored').text('');
             }
         }
     }
