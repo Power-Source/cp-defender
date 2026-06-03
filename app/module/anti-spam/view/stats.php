@@ -7,6 +7,7 @@
 
 use CP_Defender\Module\Anti_Spam\Model\Pattern;
 use CP_Defender\Module\Anti_Spam\Model\IP_Reputation;
+use CP_Defender\Module\Anti_Spam\Model\Stats;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -32,6 +33,10 @@ usort( $top_patterns, function($a, $b) {
 
 $top_spammer_ips = IP_Reputation::get_top_spammers( 10 );
 $blocked_ips = count( IP_Reputation::get_blocked_ips( 1000 ) );
+$anti_spam_stats = Stats::get_all();
+$honeypot_blocked = (int) $anti_spam_stats['honeypot_blocked'];
+$disposable_signup_blocked = (int) $anti_spam_stats['disposable_signup_blocked'];
+$disposable_comment_blocked = (int) $anti_spam_stats['disposable_comment_blocked'];
 
 // Zeitliche Statistik (letzte 30 Tage)
 $daily_stats = array();
@@ -84,6 +89,9 @@ if ( $table_blogs_exists ) {
 				<table class="wp-list-table widefat">
 					<tr><td><?php _e( 'Verfolgte IPs:', 'cpsec' ); ?></td><td><strong><?php echo number_format_i18n( $table_ips_exists ? (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table_ips}" ) : 0 ); ?></strong></td></tr>
 					<tr><td><?php _e( 'Blockierte IPs:', 'cpsec' ); ?></td><td><strong style="color: #d63638;"><?php echo number_format_i18n( $blocked_ips ); ?></strong></td></tr>
+					<tr><td><?php _e( 'Honeypot-Blockierungen:', 'cpsec' ); ?></td><td><strong><?php echo number_format_i18n( $honeypot_blocked ); ?></strong></td></tr>
+					<tr><td><?php _e( 'Wegwerf-E-Mail (Signup):', 'cpsec' ); ?></td><td><strong><?php echo number_format_i18n( $disposable_signup_blocked ); ?></strong></td></tr>
+					<tr><td><?php _e( 'Wegwerf-E-Mail (Kommentar):', 'cpsec' ); ?></td><td><strong><?php echo number_format_i18n( $disposable_comment_blocked ); ?></strong></td></tr>
 				</table>
 			</div>
 		</div>

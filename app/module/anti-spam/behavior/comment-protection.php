@@ -5,6 +5,7 @@ namespace CP_Defender\Module\Anti_Spam\Behavior;
 use CP_Defender\Module\Anti_Spam\Model\Settings;
 use CP_Defender\Module\Anti_Spam\Model\Comment_Blacklist;
 use CP_Defender\Module\Anti_Spam\Model\IP_Reputation;
+use CP_Defender\Module\Anti_Spam\Model\Stats;
 
 /**
  * Comment Protection Behavior
@@ -21,6 +22,9 @@ class Comment_Protection {
 	public static function init(): void {
 		// Pre-comment approval Hook (frühe Prüfung)
 		add_filter( 'pre_comment_approved', array( self::class, 'check_comment' ), 10, 2 );
+
+		// Hinweis auf Subsite-Diskussionsseite zu globalen Netzwerkfiltern.
+		add_action( 'admin_notices', array( self::class, 'render_subsite_exceptions_notice' ) );
 		
 		// Spam-Klassifizierung
 		add_filter( 'wp_blacklist_check', array( self::class, 'check_blacklist' ), 10, 2 );
@@ -258,6 +262,9 @@ class Comment_Protection {
 	private static function log_blocked_comment( array $comment_data, string $reason ): void {
 		// Kann optional in eine separate Tabelle geloggt werden
 		// Für jetzt: Silence ist golden, aber Actions können Plugins nutzen
+		if ( strpos( $reason, 'disposable_email:' ) === 0 ) {
+			Stats::increment( 'disposable_comment_blocked' );
+		}
 		
 		do_action( 'cp_defender_comment_blocked', $comment_data, $reason );
 	}
@@ -270,5 +277,35 @@ class Comment_Protection {
 		$main_domain = wp_parse_url( $main_site->siteurl ?? '', PHP_URL_HOST );
 		
 		return strcasecmp( $domain, $main_domain ) === 0;
+	}
+
+	/**
+	 * Zeigt auf Subsites einen Hinweis zu netzwerkweiten Filtern und lokalen Ausnahmen.
+	 */
+	public static function render_subsite_exceptions_notice(): void {
+		if ( ! is_multisite() || is_network_admin() ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		if ( ! Settings::get( 'comment_protection_enabled' ) ) {
+			return;
+		}
+
+		global $pagenow;
+		if ( 'options-discussion.php' !== $pagenow ) {
+			return;
+		}
+
+		echo '<div class="notice notice-warning"><p>';
+		echo esc_html__( 'PS Security Netzwerkfilter für Kommentare sind aktiv. Die Grundfilter gelten netzwerkweit für alle Subsites.', 'cpsec' );
+		echo ' ';
+		echo esc_html__( 'Du kannst auf dieser Subsite weiterhin lokale Ausnahmen über die ClassicPress-Diskussionslisten pflegen (z. B. Moderations-/Sperrlisten).', 'cpsec' );
+		echo ' ';
+		echo esc_html__( 'Achtung: Zu großzügige Ausnahmen können Spamkommentare und Bot-Durchläufe erhöhen.', 'cpsec' );
+		echo '</p></div>';
 	}
 }

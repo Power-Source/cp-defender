@@ -5,7 +5,7 @@ Requires at least: 5.0
 Tested up to: 6.2.9 
 ClassicPress 2.7.0
 Requires PHP: 7.4
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,6 +75,15 @@ Nein, das Anti-Spam-Modul ist speziell für Multisite-Installationen entwickelt.
 Ja! Unter "Patterns" kannst du beliebig viele eigene Regex-Patterns erstellen und live testen.
 
 == Changelog ==
+
+= 1.0.6 =
+
+* Fix: Audit-Logging liefert wieder lokale Ereignisse statt leerer Ergebnisse
+* Fix: IP-Lockout-Ereignisse (Login/404) werden im Audit-Widget und Audit-Feed korrekt berücksichtigt
+* NEU: Audit-Widget zeigt zusätzliche Kennzahlen getrennt an (Lockouts 24h, Honeypot-Blockierungen, Disposable-Blockierungen)
+* NEU: Persistente Anti-Spam-Statistiken für Honeypot- und Wegwerf-E-Mail-Blockierungen
+* Verbesserung: Hinweis auf Subsites in den Diskussions-Einstellungen zu netzwerkweiten Filtern und lokalen Ausnahmen
+* Verbesserung: Hinweistext in korrektem Deutsch mit Umlauten
 
 = 1.0.5 =
 

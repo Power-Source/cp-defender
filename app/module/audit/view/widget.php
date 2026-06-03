@@ -4,8 +4,23 @@
         <h3><?php _e( "AUDIT LOGGING", cp_defender()->domain ) ?></h3>
     </div>
     <div class="box-content">
+        <?php $widget_stats = isset( $widget_stats ) && is_array( $widget_stats ) ? $widget_stats : array(); ?>
         <div class="line end">
 			<?php printf( __( "In den letzten 24 Stunden wurden <strong>%d Ereignisse</strong> protokolliert.", cp_defender()->domain ), $eventDay ) ?>
+        </div>
+        <div class="row mline">
+            <div class="col-third tc">
+                <strong><?php echo (int) ( $widget_stats['lockout_24h'] ?? 0 ); ?></strong><br/>
+                <span><?php _e( "Lockouts (24h)", cp_defender()->domain ) ?></span>
+            </div>
+            <div class="col-third tc">
+                <strong><?php echo (int) ( $widget_stats['honeypot'] ?? 0 ); ?></strong><br/>
+                <span><?php _e( "Honeypot blockiert", cp_defender()->domain ) ?></span>
+            </div>
+            <div class="col-third tc">
+                <strong><?php echo (int) ( $widget_stats['disposable'] ?? 0 ); ?></strong><br/>
+                <span><?php _e( "Disposable blockiert", cp_defender()->domain ) ?></span>
+            </div>
         </div>
         <ul class="dev-list bold end">
             <li>

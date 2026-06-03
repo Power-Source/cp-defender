@@ -9,10 +9,14 @@ use Hammer\Helper\WP_Helper;
 use CP_Defender\Behavior\Utils;
 use CP_Defender\Component\Error_Code;
 use CP_Defender\Module\Audit\Model\Settings;
+use CP_Defender\Module\IP_Lockout\Model\Log_Model;
 
 class Audit_API extends Component {
 	const ACTION_ADDED = 'added', ACTION_UPDATED = 'updated', ACTION_DELETED = 'deleted', ACTION_TRASHED = 'trashed',
 		ACTION_RESTORED = 'restored';
+	const LOCAL_LOG_OPTION = 'wd_audit_local_logs';
+	const LOCAL_LOGS_LIMIT = 2000;
+	const PER_PAGE = 20;
 	public static $end_point = 'audit.wpmudev.org';
 
 	/**
@@ -23,8 +27,69 @@ class Audit_API extends Component {
 	 * @return array|mixed|object|\WP_Error
 	 */
 	public static function pullLogs( $filter = array(), $order_by = 'timestamp', $order = 'desc', $nopaging = false ) {
-		// Cloud sync disabled - local logs only
-		return array( 'data' => array(), 'total_items' => 0 );
+		$logs = self::get_local_logs();
+		$logs = array_merge( $logs, self::get_lockout_logs() );
+
+		$logs = array_values( array_filter( $logs, function ( $row ) use ( $filter ) {
+			if ( isset( $filter['date_from'] ) && strtotime( $filter['date_from'] ) > (int) $row['timestamp'] ) {
+				return false;
+			}
+
+			if ( isset( $filter['date_to'] ) && strtotime( $filter['date_to'] ) < (int) $row['timestamp'] ) {
+				return false;
+			}
+
+			if ( ! empty( $filter['user_id'] ) && (int) $row['user_id'] !== (int) $filter['user_id'] ) {
+				return false;
+			}
+
+			if ( ! empty( $filter['ip'] ) && $row['ip'] !== $filter['ip'] ) {
+				return false;
+			}
+
+			if ( ! empty( $filter['context'] ) && $row['context'] !== $filter['context'] ) {
+				return false;
+			}
+
+			if ( ! empty( $filter['action_type'] ) && $row['action_type'] !== $filter['action_type'] ) {
+				return false;
+			}
+
+			if ( ! empty( $filter['event_type'] ) ) {
+				$event_types = is_array( $filter['event_type'] ) ? $filter['event_type'] : array( $filter['event_type'] );
+				if ( ! in_array( $row['event_type'], $event_types ) ) {
+					return false;
+				}
+			}
+
+			return true;
+		} ) );
+
+		usort( $logs, function ( $a, $b ) use ( $order ) {
+			$cmp = (int) $b['timestamp'] <=> (int) $a['timestamp'];
+
+			return strtolower( $order ) === 'asc' ? -$cmp : $cmp;
+		} );
+
+		$total_items = count( $logs );
+		if ( $nopaging ) {
+			return array(
+				'data'        => $logs,
+				'total_items' => $total_items,
+				'total_pages' => 1,
+			);
+		}
+
+		$paged      = max( 1, (int) ( $filter['paged'] ?? 1 ) );
+		$per_page   = self::PER_PAGE;
+		$offset     = ( $paged - 1 ) * $per_page;
+		$total_page = max( 1, (int) ceil( $total_items / $per_page ) );
+
+		return array(
+			'data'        => array_slice( $logs, $offset, $per_page ),
+			'total_items' => $total_items,
+			'total_pages' => $total_page,
+		);
 	}
 
 	/**
@@ -33,12 +98,97 @@ class Audit_API extends Component {
 	 * @return array|mixed|object|\WP_Error
 	 */
 	public static function pullLogsSummary( $filter = array() ) {
-		// Cloud sync disabled - local summary only
+		$last_24_hours = self::pullLogs( array(
+			'date_from' => date( 'Y-m-d H:i:s', strtotime( '-24 hours', current_time( 'timestamp' ) ) ),
+			'date_to'   => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
+		), 'timestamp', 'desc', true );
+		$count        = is_array( $last_24_hours ) ? count( $last_24_hours['data'] ) : 0;
+
 		return array(
-			'total_items' => 0,
-			'attempts'    => 0,
-			'blocks'      => 0
+			'total_items' => $count,
+			'attempts'    => $count,
+			'blocks'      => $count,
+			'count'       => $count,
 		);
+	}
+
+	private static function get_local_logs() {
+		$logs = get_site_option( self::LOCAL_LOG_OPTION, array() );
+
+		if ( ! is_array( $logs ) ) {
+			return array();
+		}
+
+		return array_values( array_filter( $logs, function ( $row ) {
+			return is_array( $row )
+			       && isset( $row['timestamp'] )
+			       && isset( $row['msg'] )
+			       && isset( $row['event_type'] )
+			       && isset( $row['action_type'] );
+		} ) );
+	}
+
+	private static function get_lockout_logs() {
+		$logs = Log_Model::findAll( array(
+			'type' => array(
+				Log_Model::AUTH_LOCK,
+				Log_Model::LOCKOUT_404,
+			),
+		), 'id', 'DESC', '0,1000' );
+
+		if ( ! is_array( $logs ) || empty( $logs ) ) {
+			return array();
+		}
+
+		$mapped = array();
+		foreach ( $logs as $log ) {
+			if ( ! $log instanceof Log_Model ) {
+				continue;
+			}
+
+			$action_type = $log->type === Log_Model::AUTH_LOCK ? 'login_lockout' : '404_lockout';
+			$mapped[]    = array(
+				'timestamp'   => (int) $log->date,
+				'event_type'  => 'lockout',
+				'action_type' => $action_type,
+				'site_url'    => network_site_url(),
+				'user_id'     => 0,
+				'context'     => 'ip_lockout',
+				'ip'          => (string) $log->ip,
+				'msg'         => (string) $log->log,
+				'blog_id'     => (int) $log->blog_id,
+			);
+		}
+
+		return $mapped;
+	}
+
+	private static function persist_local_logs( $data ) {
+		$events = self::get_local_logs();
+
+		foreach ( $data as $row ) {
+			if ( ! is_array( $row ) || empty( $row['msg'] ) ) {
+				continue;
+			}
+
+			$events[] = array(
+				'timestamp'   => isset( $row['timestamp'] ) ? (int) $row['timestamp'] : time(),
+				'event_type'  => sanitize_text_field( $row['event_type'] ?? 'generic' ),
+				'action_type' => sanitize_text_field( $row['action_type'] ?? self::ACTION_UPDATED ),
+				'site_url'    => esc_url_raw( $row['site_url'] ?? network_site_url() ),
+				'user_id'     => isset( $row['user_id'] ) ? (int) $row['user_id'] : 0,
+				'context'     => sanitize_text_field( $row['context'] ?? '' ),
+				'ip'          => sanitize_text_field( $row['ip'] ?? '' ),
+				'msg'         => sanitize_text_field( $row['msg'] ?? '' ),
+				'blog_id'     => isset( $row['blog_id'] ) ? (int) $row['blog_id'] : 1,
+			);
+		}
+
+		if ( count( $events ) > self::LOCAL_LOGS_LIMIT ) {
+			$events = array_slice( $events, - self::LOCAL_LOGS_LIMIT );
+		}
+
+		update_site_option( self::LOCAL_LOG_OPTION, $events );
 	}
 
 	/**
@@ -67,6 +217,10 @@ class Audit_API extends Component {
 			self::ACTION_DELETED  => esc_html__( "gelöscht", cp_defender()->domain ),
 			self::ACTION_ADDED    => esc_html__( "erstellt", cp_defender()->domain ),
 			self::ACTION_RESTORED => esc_html__( "wiederhergestellt", cp_defender()->domain ),
+			'login_lockout'       => esc_html__( "Login-Sperre", cp_defender()->domain ),
+			'404_lockout'         => esc_html__( "404-Sperre", cp_defender()->domain ),
+			'ip_lockout'          => esc_html__( "IP-Sperre", cp_defender()->domain ),
+			'lockout'             => esc_html__( "Sperre", cp_defender()->domain ),
 		);
 	}
 
@@ -294,6 +448,8 @@ class Audit_API extends Component {
 	 * Store all events to WPMUDEV cloud
 	 */
 	public static function onCloud( $data ) {
+		self::persist_local_logs( $data );
+
 		if ( count( $data ) ) {
 			self::openSocket();
 			/**

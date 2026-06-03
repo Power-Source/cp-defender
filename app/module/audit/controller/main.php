@@ -11,6 +11,8 @@ use CP_Defender\Module\Audit\Behavior\Audit;
 use CP_Defender\Module\Audit\Component\Audit_API;
 use CP_Defender\Module\Audit\Component\Audit_Table;
 use CP_Defender\Module\Audit\Model\Settings;
+use CP_Defender\Module\Anti_Spam\Model\Stats as Anti_Spam_Stats;
+use CP_Defender\Module\IP_Lockout\Model\Log_Model;
 use CP_Defender\Vendor\Email_Search;
 
 class Main extends \CP_Defender\Controller {
@@ -141,6 +143,30 @@ class Main extends \CP_Defender\Controller {
 
 		$lastEventDate   = __( "Keine", cp_defender()->domain );
 		$dailyEventCount = 0;
+		$widgetStats     = array(
+			'lockout_24h' => 0,
+			'honeypot'    => 0,
+			'disposable'  => 0,
+		);
+
+		$lockoutSince = strtotime( '-24 hours', current_time( 'timestamp' ) );
+		$widgetStats['lockout_24h'] = (int) Log_Model::count( array(
+			'type' => array(
+				Log_Model::AUTH_LOCK,
+				Log_Model::LOCKOUT_404,
+			),
+			'date' => array(
+				'compare' => '>=',
+				'value'   => $lockoutSince,
+			),
+		) );
+
+		if ( class_exists( '\\CP_Defender\\Module\\Anti_Spam\\Model\\Stats' ) ) {
+			$anti_spam_stats            = Anti_Spam_Stats::get_all();
+			$widgetStats['honeypot']    = (int) ( $anti_spam_stats['honeypot_blocked'] ?? 0 );
+			$widgetStats['disposable']  = (int) ( $anti_spam_stats['disposable_signup_blocked'] ?? 0 )
+			                             + (int) ( $anti_spam_stats['disposable_comment_blocked'] ?? 0 );
+		}
 
 		if ( $eventsInMonth['total_items'] > 0 ) {
 			$request = Audit_API::pullLogsSummary();
@@ -157,9 +183,10 @@ class Main extends \CP_Defender\Controller {
 			$lastEventDate = $this->formatDateTime( date( 'd.m.Y H:i:s', $lastEventDate ) );
 		}
 		$content = $this->renderPartial( 'widget', array(
-			'eventMonth' => $eventsInMonth['total_items'],
-			'eventDay'   => $dailyEventCount,
-			'lastEvent'  => $lastEventDate
+			'eventMonth'    => $eventsInMonth['total_items'],
+			'eventDay'      => $dailyEventCount,
+			'lastEvent'     => $lastEventDate,
+			'widget_stats'  => $widgetStats,
 		), false );
 
 		wp_send_json_success( array(

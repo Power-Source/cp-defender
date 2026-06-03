@@ -5,6 +5,7 @@ namespace CP_Defender\Module\Anti_Spam\Controller;
 use CP_Defender\Module\Anti_Spam\Model\Settings;
 use CP_Defender\Module\Anti_Spam\Model\Pattern;
 use CP_Defender\Module\Anti_Spam\Model\IP_Reputation;
+use CP_Defender\Module\Anti_Spam\Model\Stats;
 use CP_Defender\Module\Anti_Spam\Behavior\Disposable_Email;
 
 /**
@@ -251,6 +252,7 @@ class Signup_Protection {
 		}
 
 		if ( $this->is_honeypot_triggered() ) {
+			Stats::increment( 'honeypot_blocked' );
 			$bp->signup->errors['defender_honeypot'] = __( 'Die Registrierung konnte nicht verarbeitet werden. Bitte versuche es erneut.', 'cpsec' );
 			return;
 		}
@@ -258,6 +260,7 @@ class Signup_Protection {
 		// Disposable Email prüfen
 		if ( ! empty( $_POST['signup_email'] ) && Settings::get( 'disposable_email_check_enabled', true ) ) {
 			if ( Disposable_Email::is_disposable( wp_unslash( $_POST['signup_email'] ) ) ) {
+				Stats::increment( 'disposable_signup_blocked' );
 				$bp->signup->errors['signup_email'] = __( 'Wegwerf-E-Mail-Adressen sind nicht erlaubt. Bitte verwende eine permanente E-Mail-Adresse.', 'cpsec' );
 			}
 		}
@@ -308,29 +311,18 @@ class Signup_Protection {
 		if ( ! Settings::get( 'disposable_email_check_enabled', true ) ) {
 			return $result;
 		}
-		
-		// Prüfe Blog-Email (wpmu_validate_blog_signup)
-		if ( ! empty( $_POST['blog_public_on'] ) && ! empty( $_POST['user_email'] ) ) {
-			$email = wp_unslash( $_POST['user_email'] );
-			
-			if ( Disposable_Email::is_disposable( $email ) ) {
-				$result['errors']->add(
-					'user_email',
-					__( 'Wegwerf-E-Mail-Adressen sind nicht erlaubt. Bitte verwende eine permanente E-Mail-Adresse.', 'cpsec' )
-				);
-			}
+
+		if ( empty( $_POST['user_email'] ) ) {
+			return $result;
 		}
-		
-		// Prüfe User-Email (wpmu_validate_user_signup)
-		if ( ! empty( $_POST['user_email'] ) ) {
-			$email = wp_unslash( $_POST['user_email'] );
-			
-			if ( Disposable_Email::is_disposable( $email ) ) {
-				$result['errors']->add(
-					'user_email',
-					__( 'Wegwerf-E-Mail-Adressen sind nicht erlaubt. Bitte verwende eine permanente E-Mail-Adresse.', 'cpsec' )
-				);
-			}
+
+		$email = wp_unslash( $_POST['user_email'] );
+		if ( Disposable_Email::is_disposable( $email ) ) {
+			Stats::increment( 'disposable_signup_blocked' );
+			$result['errors']->add(
+				'user_email',
+				__( 'Wegwerf-E-Mail-Adressen sind nicht erlaubt. Bitte verwende eine permanente E-Mail-Adresse.', 'cpsec' )
+			);
 		}
 		
 		return $result;
@@ -527,6 +519,7 @@ class Signup_Protection {
 		}
 
 		if ( $this->is_honeypot_triggered() ) {
+			Stats::increment( 'honeypot_blocked' );
 			$result['errors']->add( 'defender_honeypot', __( 'Die Registrierung konnte nicht verarbeitet werden. Bitte versuche es erneut.', 'cpsec' ) );
 		}
 

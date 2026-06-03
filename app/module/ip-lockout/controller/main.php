@@ -60,6 +60,51 @@ class Main extends Controller {
 
 		$this->handleIpAction();
 		$this->handleUserSearch();
+
+		add_action( 'enewsletter_cp_defender_blocked', array( $this, 'handleEnewsletterBlocked' ), 10, 2 );
+	}
+
+	/**
+	 * Consume blocked e-newsletter subscription attempts and sync them into Defender lockout data.
+	 *
+	 * @param array  $payload
+	 * @param string $email
+	 */
+	public function handleEnewsletterBlocked( $payload, $email = '' ) {
+		if ( ! is_array( $payload ) ) {
+			return;
+		}
+
+		$ip = isset( $payload['ip'] ) ? sanitize_text_field( $payload['ip'] ) : '';
+		if ( empty( $ip ) ) {
+			return;
+		}
+
+		$settings = Settings::instance();
+		if ( ! $settings->validateIp( $ip ) ) {
+			return;
+		}
+
+		if ( $settings->isWhitelist( $ip ) ) {
+			return;
+		}
+
+		if ( ! $settings->isBlacklist( $ip ) ) {
+			$settings->addIpToList( $ip, 'blacklist' );
+		}
+
+		$reason = isset( $payload['reason'] ) ? sanitize_text_field( $payload['reason'] ) : 'newsletter_blocked';
+		$email  = sanitize_email( $email );
+
+		$log             = new Log_Model();
+		$log->type       = Log_Model::AUTH_LOCK;
+		$log->ip         = $ip;
+		$log->date       = time();
+		$log->user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+		$log->log        = ! empty( $email )
+			? sprintf( esc_html__( 'Newsletter-Anmeldung blockiert (%1$s) fuer E-Mail %2$s', cp_defender()->domain ), $reason, $email )
+			: sprintf( esc_html__( 'Newsletter-Anmeldung blockiert (%s)', cp_defender()->domain ), $reason );
+		$log->save();
 	}
 
 	public function lockoutSummaryData() {
