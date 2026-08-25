@@ -76,8 +76,10 @@ Ja! Unter "Patterns" kannst du beliebig viele eigene Regex-Patterns erstellen un
 
 == Changelog ==
 
-= 1.0.6 =
+= 1.0.7 =
+Fix: Ersetze deprecated socket_set_timeout() mit stream_set_timeout()
 
+= 1.0.6 =
 * Fix: Audit-Logging liefert wieder lokale Ereignisse statt leerer Ergebnisse
 * Fix: IP-Lockout-Ereignisse (Login/404) werden im Audit-Widget und Audit-Feed korrekt berücksichtigt
 * NEU: Audit-Widget zeigt zusätzliche Kennzahlen getrennt an (Lockouts 24h, Honeypot-Blockierungen, Disposable-Blockierungen)

@@ -348,7 +348,7 @@ class Audit_API extends Component {
 		fwrite( $fp, "Connection: close\r\n" );
 		fwrite( $fp, "\r\n" );
 		fwrite( $fp, $vars );
-		socket_set_timeout( $fp, 5 );
+		stream_set_timeout( $fp, 5 );
 		$res = '';
 		while ( ! feof( $fp ) ) {
 			$res      .= fgets( $fp, 1024 );

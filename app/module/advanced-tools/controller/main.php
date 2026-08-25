@@ -358,23 +358,22 @@ class Main extends Controller {
 					wp_redirect( site_url( 'wp-login.php', 'login_post' ) );
 					exit;
 				}
-				$redirect = HTTP_Helper::retrieve_post( 'redirect_to', admin_url() );
+				$requested_redirect_to = isset( $_REQUEST['redirect_to'] ) ? wp_unslash( $_REQUEST['redirect_to'] ) : '';
+				$redirect              = $this->get_otp_login_redirect( $user, $requested_redirect_to );
 				if ( $method === Auth_API::AUTH_METHOD_EMAIL && Auth_API::verifyEmailCode( $user->ID, $otp ) ) {
 					delete_user_meta( $user->ID, 'defOTPLoginToken' );
 					delete_user_meta( $user->ID, 'defenderEmailOTP' );
 					delete_user_meta( $user->ID, 'defenderEmailOTPLastSent' );
 					wp_set_current_user( $user->ID, $user->user_login );
 					wp_set_auth_cookie( $user->ID, true );
-					$redirect = apply_filters( 'login_redirect', $redirect, isset( $_REQUEST['redirect_to'] ) ? $_REQUEST['redirect_to'] : '', $user );
-					wp_redirect( $redirect );
+					$this->redirect_after_otp_login( $redirect, $requested_redirect_to, $user );
 					exit;
 				} elseif ( $method !== Auth_API::AUTH_METHOD_EMAIL && Auth_API::compare( $secret, $otp ) ) {
 					//sign in
 					delete_user_meta( $user->ID, 'defOTPLoginToken' );
 					wp_set_current_user( $user->ID, $user->user_login );
 					wp_set_auth_cookie( $user->ID, true );
-					$redirect = apply_filters( 'login_redirect', $redirect, isset( $_REQUEST['redirect_to'] ) ? $_REQUEST['redirect_to'] : '', $user );
-					wp_redirect( $redirect );
+					$this->redirect_after_otp_login( $redirect, $requested_redirect_to, $user );
 					exit;
 				} else {
 					if ( $method === Auth_API::AUTH_METHOD_EMAIL ) {
@@ -387,8 +386,7 @@ class Main extends Controller {
 						delete_user_meta( $user->ID, 'defenderBackupCode' );
 						wp_set_current_user( $user->ID, $user->user_login );
 						wp_set_auth_cookie( $user->ID, true );
-						$redirect = apply_filters( 'login_redirect', $redirect, isset( $_REQUEST['redirect_to'] ) ? $_REQUEST['redirect_to'] : '', $user );
-						wp_redirect( $redirect );
+						$this->redirect_after_otp_login( $redirect, $requested_redirect_to, $user );
 						exit;
 					} else {
 						$params['error'] = new \WP_Error( 'opt_fail', __( "Hoppla, der eingegebene Passcode war falsch oder abgelaufen.", cp_defender()->domain ) );
@@ -397,6 +395,42 @@ class Main extends Controller {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Resolve OTP login redirect with optional conflict-safe preservation of requested redirect.
+	 *
+	 * @param \WP_User $user Logged in user.
+	 * @param string   $requested_redirect_to Redirect requested in login form.
+	 * @return string
+	 */
+	private function get_otp_login_redirect( $user, $requested_redirect_to = '' ) {
+		$default_redirect = apply_filters( 'defender_otp_default_login_redirect', admin_url(), $user );
+		$redirect         = HTTP_Helper::retrieve_post( 'redirect_to', $default_redirect );
+		$redirect         = wp_validate_redirect( $redirect, $default_redirect );
+
+		if ( apply_filters( 'defender_otp_preserve_requested_redirect', true, $user, $requested_redirect_to ) ) {
+			$requested_redirect_to = wp_validate_redirect( $requested_redirect_to, '' );
+			if ( ! empty( $requested_redirect_to ) ) {
+				return $requested_redirect_to;
+			}
+		}
+
+		return $redirect;
+	}
+
+	/**
+	 * Apply login_redirect filters and perform safe redirect after successful OTP login.
+	 *
+	 * @param string   $redirect_to Redirect target.
+	 * @param string   $requested_redirect_to Redirect requested in login form.
+	 * @param \WP_User $user Logged in user.
+	 * @return void
+	 */
+	private function redirect_after_otp_login( $redirect_to, $requested_redirect_to, $user ) {
+		$redirect_to = apply_filters( 'login_redirect', $redirect_to, $requested_redirect_to, $user );
+		$fallback    = apply_filters( 'defender_otp_default_login_redirect', admin_url(), $user );
+		wp_safe_redirect( wp_validate_redirect( $redirect_to, $fallback ) );
 	}
 
 	/**
