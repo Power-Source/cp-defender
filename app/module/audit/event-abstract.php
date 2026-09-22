@@ -286,7 +286,7 @@ abstract class Event_Abstract extends \Hammer\WP\Component {
 			}
 
 			foreach ( $params as $key => $val ) {
-				$replacer = $val;
+				$replacer = is_null( $val ) ? '' : $val;
 				if ( is_array( $replacer ) || is_object( $replacer ) ) {
 					continue;
 				}

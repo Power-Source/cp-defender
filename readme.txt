@@ -78,6 +78,7 @@ Ja! Unter "Patterns" kannst du beliebig viele eigene Regex-Patterns erstellen un
 
 = 1.0.7 =
 Fix: Ersetze deprecated socket_set_timeout() mit stream_set_timeout()
+Fix: Verhindere PHP-Deprecated-Warnung bei null-Werten in str_replace()
 
 = 1.0.6 =
 * Fix: Audit-Logging liefert wieder lokale Ereignisse statt leerer Ergebnisse
