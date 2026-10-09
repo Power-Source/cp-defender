@@ -15,9 +15,12 @@ jQuery(function ($) {
 
     $('div.auditing').on('form-submitted', function (e, data, form) {
         if (!form.hasClass('banIP')) {
-            return;
-        }
-        if (data.success == true) {
+        var exportUrl = new URL(ajaxurl, window.location.origin);
+        var query = new URLSearchParams(WDAudit.buildFilterQuery());
+
+        query.set('action', 'exportAsCvs');
+        exportUrl.search = query.toString();
+        window.location.assign(exportUrl.toString());
             form.closest('.well').prev().remove();
             form.closest('.well').remove();
             Defender.showNotification('success', data.data.message);
@@ -291,23 +294,23 @@ WDAudit.buildFilterQuery = function (currentInput) {
     var jq = jQuery;
     var form = jq('.audit-filter form');
     var inputs = form.find(':input');
-    var query = [];
+    var query = new URLSearchParams();
     inputs.each(function () {
         if (jq(this).attr('type') == 'checkbox') {
             if (jq(this).prop('checked') == true) {
-                query.push(jq(this).attr('name') + '=' + jq(this).val());
+                query.append(jq(this).attr('name'), jq(this).val());
             }
         } else if (jq(this).attr('name') != undefined) {
             if (jq(this).attr('name') == 'date_from') {
                 var date = jq(this).val().split('-');
-                query.push('date_from=' + date[0].trim());
-                query.push('date_to=' + date[1].trim());
+                query.append('date_from', date[0].trim());
+                query.append('date_to', date[1].trim());
             } else {
-                query.push(jq(this).attr('name') + '=' + jq(this).val());
+                query.append(jq(this).attr('name'), jq(this).val());
             }
         }
     });
-    return query.join('&');
+    return query.toString();
 }
 var isFirst = true;
 var urlOrigin = location.href;
