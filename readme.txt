@@ -5,7 +5,7 @@ Requires at least: 5.0
 Tested up to: 7.1
 ClassicPress 2.7.3
 Requires PHP: 7.4
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,6 +75,11 @@ Nein, das Anti-Spam-Modul ist speziell für Multisite-Installationen entwickelt.
 Ja! Unter "Patterns" kannst du beliebig viele eigene Regex-Patterns erstellen und live testen.
 
 == Changelog ==
+
+= 1.0.9 =
+* Fix: Migrationsbereinigung verarbeitet nur noch ausgewählte bestätigte Migrationsreste und bricht ohne Auswahl sofort ab.
+* Neu: Bulk-Aktion zum Löschen ausgewählter Scanbefunde ergänzt.
+* Fix: Das PS-Security-Dashboard löst keinen unbeabsichtigten CSV-Download der Audit-Protokolle mehr aus.
 
 = 1.0.8 =
 * Neu: Dateiscanner gleicht ClassicPress-Core-Dateien mit dem offiziellen Releasebaum ab und erkennt fehlende Dateien.

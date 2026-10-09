@@ -14,22 +14,6 @@ jQuery(function ($) {
     });
 
     $('div.auditing').on('form-submitted', function (e, data, form) {
-        if (!form.hasClass('banIP')) {
-        var exportUrl = new URL(ajaxurl, window.location.origin);
-        var query = new URLSearchParams(WDAudit.buildFilterQuery());
-
-        query.set('action', 'exportAsCvs');
-        exportUrl.search = query.toString();
-        window.location.assign(exportUrl.toString());
-            form.closest('.well').prev().remove();
-            form.closest('.well').remove();
-            Defender.showNotification('success', data.data.message);
-        } else {
-            Defender.showNotification('error', data.data.message);
-        }
-    });
-
-    $('div.auditing').on('form-submitted', function (e, data, form) {
         if (!form.hasClass('audit-settings')) {
             return;
         }

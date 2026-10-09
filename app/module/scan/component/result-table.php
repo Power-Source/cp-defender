@@ -199,7 +199,7 @@ class Result_Table extends \WP_List_Table {
 								<option value="delete_migrations"><?php _e( "Migrationsbereinigung", 'cpsec' ) ?></option>
 							<?php endif; ?>
 <!--                            <option value="resolve">--><?php //_e( "Resolve", 'cpsec' ) ?><!--</option>-->
-                            <!--                            <option value="delete">--><?php //_e( "Delete", 'cpsec' ) ?><!--</option>-->
+                            <option value="delete"><?php _e( "Löschen", 'cpsec' ) ?></option>
 						<?php endif; ?>
 						<?php if ( $this->type == Result_Item::STATUS_IGNORED ): ?>
                             <option value="unignore"><?php _e( "Wiederherstellen", 'cpsec' ) ?></option>
