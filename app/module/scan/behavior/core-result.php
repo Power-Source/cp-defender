@@ -52,9 +52,21 @@ class Core_Result extends Behavior {
 	public function getIssueDetail() {
 		$raw = $this->getRaw();
 		if ( $raw['type'] == 'unknown' ) {
+			if ( $this->isConfirmedMigrationRemnant() ) {
+				return esc_html__( "Bestätigter Migrationsrest einer früheren Core-Installation", 'cpsec' );
+			}
+
+			return esc_html__( "Unbekannte Datei im WordPress-Kern", 'cpsec' );
+		} elseif ( $raw['type'] == 'migration' ) {
+			if ( $this->isConfirmedMigrationRemnant() ) {
+				return esc_html__( "Bestätigter Migrationsrest einer früheren Core-Installation", 'cpsec' );
+			}
+
 			return esc_html__( "Unbekannte Datei im WordPress-Kern", 'cpsec' );
 		} elseif ( $raw['type'] == 'dir' ) {
 			return esc_html__( "Dieses Verzeichnis gehört nicht zum WordPress-Kern", 'cpsec' );
+		} elseif ( $raw['type'] == 'missing' ) {
+			return esc_html__( "Eine erforderliche ClassicPress-Core-Datei fehlt", 'cpsec' );
 		} elseif ( $raw['type'] == 'modified' ) {
 			return esc_html__( "Diese WordPress-Kerndatei scheint verändert worden zu sein", 'cpsec' );
 		}
@@ -67,7 +79,7 @@ class Core_Result extends Behavior {
 	public function purge() {
 		//remove the file first
 		$raw = $this->getRaw();
-		if ( $raw['type'] == 'unknown' ) {
+		if ( $raw['type'] == 'unknown' || ( $raw['type'] == 'migration' && $this->isConfirmedMigrationRemnant() ) ) {
 			$res = unlink( $raw['file'] );
 			if ( $res == false ) {
 				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "PS Security hat nicht genügend Berechtigungen, um diese Datei zu entfernen", 'cpsec' ) );
@@ -75,6 +87,10 @@ class Core_Result extends Behavior {
 			$this->getOwner()->delete();
 
 			return true;
+		} elseif ( $raw['type'] == 'migration' ) {
+			return new \WP_Error( Error_Code::INVALID, __( "Dieser Eintrag ist kein bestätigter Migrationsrest.", 'cpsec' ) );
+		} elseif ( $raw['type'] == 'missing' ) {
+			return new \WP_Error( Error_Code::INVALID, __( "Diese fehlende Datei kann nicht entfernt werden", 'cpsec' ) );
 		} elseif ( $raw['type'] == 'modified' ) {
 			return new \WP_Error( Error_Code::INVALID, __( "Diese Datei kann nicht entfernt werden", 'cpsec' ) );
 		} elseif ( $raw['type'] == 'dir' ) {
@@ -93,11 +109,24 @@ class Core_Result extends Behavior {
 	 * @return bool|\WP_Error
 	 */
 	public function resolve() {
-		$originSrc = $this->getOriginalSource();
 		$raw       = $this->getRaw();
+		if ( $raw['type'] == 'missing' ) {
+			$relativePath = ltrim( str_replace( wp_normalize_path( ABSPATH ), '', wp_normalize_path( $raw['file'] ) ), '/' );
+			$originSrc    = Scan_Api::getClassicPressReleaseFileContents( $relativePath );
+			if ( is_wp_error( $originSrc ) ) {
+				return $originSrc;
+			}
+			if ( ! wp_mkdir_p( dirname( $raw['file'] ) ) || file_put_contents( $raw['file'], $originSrc, LOCK_EX ) === false ) {
+				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "Die fehlende Core-Datei konnte nicht wiederhergestellt werden", 'cpsec' ) );
+			}
+			$this->getOwner()->markAsResolved();
+
+			return true;
+		}
 		if ( $raw['type'] != 'modified' ) {
 			return new \WP_Error( Error_Code::INVALID, __( "This file is not resolvable", 'cpsec' ) );
 		}
+		$originSrc = $this->getOriginalSource();
 
 		if ( ! is_writeable( $raw['file'] ) ) {
 			return new \WP_Error( Error_Code::NOT_WRITEABLE, sprintf( esc_html__( "It seems the %s file is currently using by another process or isn't writeable.", 'cpsec' ), $raw['file'] ) );
@@ -170,8 +199,10 @@ class Core_Result extends Behavior {
                                 </li>
                             </ul>
                         </div>
-						<?php if ( $raw['type'] == 'unknown' ) {
+						<?php if ( $raw['type'] == 'unknown' || ( $raw['type'] == 'migration' && $this->isConfirmedMigrationRemnant() ) ) {
 							$this->_dialogContentForAdded();
+						} elseif ( $raw['type'] == 'missing' ) {
+							$this->_dialogContentForMissing();
 						} elseif ( $raw['type'] == 'modified' ) {
 							$this->_dialogContentForModified();
 						} elseif ( $raw['type'] == 'dir' ) {
@@ -186,7 +217,7 @@ class Core_Result extends Behavior {
                                 <button type="submit" class="button button-secondary button-small">
 									<?php _e( "Ignore", 'cpsec' ) ?></button>
                             </form>
-							<?php if ( $raw['type'] == 'unknown' || $raw['type'] == 'dir' ): ?>
+							<?php if ( $raw['type'] == 'unknown' || ( $raw['type'] == 'migration' && $this->isConfirmedMigrationRemnant() ) || $raw['type'] == 'dir' ): ?>
                                 <form method="post" class="scan-frm delete-item float-r">
                                     <input type="hidden" name="action" value="deleteItem"/>
                                     <input type="hidden" name="id" value="<?php echo $this->getOwner()->id ?>"/>
@@ -203,6 +234,14 @@ class Core_Result extends Behavior {
 											<?php _e( "No", 'cpsec' ) ?>
                                         </button>
                                     </div>
+                                </form>
+							<?php elseif ( $raw['type'] == 'missing' ): ?>
+                                <form method="post" class="scan-frm float-r resolve-item">
+                                    <input type="hidden" name="id" value="<?php echo $this->getOwner()->id ?>"/>
+                                    <input type="hidden" name="action" value="resolveItem"/>
+								<?php wp_nonce_field( 'resolveItem' ) ?>
+                                    <button type="submit" class="button button-small">
+									<?php _e( "Fehlende Core-Datei wiederherstellen", 'cpsec' ) ?></button>
                                 </form>
 							<?php elseif ( $raw['type'] == 'modified' ): ?>
                                 <form method="post" class="scan-frm float-r resolve-item">
@@ -225,12 +264,33 @@ class Core_Result extends Behavior {
 	}
 
 	/**
+	 * Revalidate historical scan records before treating them as removable
+	 * migration remnants.
+	 *
+	 * @return bool
+	 */
+	private function isConfirmedMigrationRemnant() {
+		$raw = $this->getRaw();
+		if ( ! is_array( $raw ) || ! isset( $raw['file'] ) ) {
+			return false;
+		}
+
+		$root = trailingslashit( wp_normalize_path( ABSPATH ) );
+		$file = wp_normalize_path( $raw['file'] );
+		if ( strpos( $file, $root ) !== 0 ) {
+			return false;
+		}
+
+		return Scan_Api::isConfirmedWordPressMigrationRemnant( substr( $file, strlen( $root ) ) );
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getSrcCode() {
 		if ( is_file( $this->getSubtitle() ) || is_dir( $this->getSubtitle() ) ) {
 			$raw = $this->getRaw();
-			if ( $raw['type'] == 'unknown' ) {
+							if ( $raw['type'] == 'unknown' || $raw['type'] == 'migration' ) {
 				$content = file_get_contents( $this->getSubtitle() );
 				if ( function_exists( 'mb_convert_encoding' ) ) {
 					$content = mb_convert_encoding( $content, 'UTF-8', 'ASCII' );
@@ -306,6 +366,17 @@ class Core_Result extends Behavior {
         </div>
 		<?php
 
+	}
+
+	/**
+	 * Show detail for a file required by the official ClassicPress release.
+	 */
+	private function _dialogContentForMissing() {
+		?>
+        <p class="line">
+			<?php _e( "Diese Datei ist im offiziellen ClassicPress-Release vorhanden, fehlt jedoch in Deiner Installation.", 'cpsec' ) ?>
+        </p>
+		<?php
 	}
 
 	/**

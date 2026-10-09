@@ -109,17 +109,16 @@ class Main extends \CP_Defender\Controller {
 		}
 
 		$activeScan = Scan_Api::getActiveScan();
+		wp_clear_scheduled_hook( 'processScanCron' );
 		if ( is_object( $activeScan ) ) {
-			//remove it and it minions
+			Scan_Api::markScanCancelled( $activeScan->id );
 			$activeScan->delete();
 			Scan_Api::flushCache();
-			wp_send_json_success( array(
-				'url' => \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-scan' )
-			) );
 		}
+		Scan_Api::releaseLock();
 
-		wp_send_json_error( array(
-			'message' => ''
+		wp_send_json_success( array(
+			'url' => \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-scan' )
 		) );
 	}
 
@@ -255,6 +254,49 @@ class Main extends \CP_Defender\Controller {
 						'message' => __( "No item has been deleted", 'cpsec' )
 					) );
 				}
+				break;
+			case 'delete_migrations':
+				if ( ! function_exists( 'classicpress_version' ) ) {
+					wp_send_json_error( array(
+						'message' => __( "Die Migrationsbereinigung ist nur unter ClassicPress verfügbar.", 'cpsec' )
+					) );
+				}
+
+				$scan = Scan_Api::getLastScan();
+				if ( ! is_object( $scan ) ) {
+					wp_send_json_error( array(
+						'message' => __( "Es ist kein abgeschlossener Scan verfügbar.", 'cpsec' )
+					) );
+				}
+
+				$deleted = array();
+				$candidates = Result_Item::findAll( array(
+					'parentId' => $scan->id,
+					'status'   => Result_Item::STATUS_ISSUE,
+					'type'     => 'core'
+				) );
+				foreach ( $candidates as $item ) {
+					$raw = $item->raw;
+					if ( ! is_array( $raw ) || ! isset( $raw['file'] ) ) {
+						continue;
+					}
+
+					$relativePath = ltrim( str_replace( wp_normalize_path( ABSPATH ), '', wp_normalize_path( $raw['file'] ) ), '/' );
+					if ( Scan_Api::isConfirmedWordPressMigrationRemnant( $relativePath ) && $item->purge() === true ) {
+						$deleted[] = $item->id;
+					}
+				}
+
+				if ( $deleted ) {
+					$this->submitStatsToDev();
+					wp_send_json_success( array(
+						'message' => sprintf( _n( "%d Migrationsrest wurde entfernt.", "%d Migrationsreste wurden entfernt.", count( $deleted ), 'cpsec' ), count( $deleted ) )
+					) );
+				}
+
+				wp_send_json_error( array(
+					'message' => __( "Es wurden keine bestätigten Migrationsreste entfernt.", 'cpsec' )
+				) );
 				break;
 			case 'resolve':
 				$ids = array();
@@ -578,20 +620,23 @@ return;
 	 * Enqueue scripts & styles
 	 */
 	public function scripts() {
+		$scanScript    = cp_defender()->getPluginUrl() . 'app/module/scan/js/script.js';
+		$scanVersion   = filemtime( cp_defender()->getPluginPath() . 'app/module/scan/js/script.js' );
 		$data = array(
-			'scanning_title' => __( "Scanvorgang läuft", 'cpsec' ) . '<form class="scan-frm float-r"><input type="hidden" name="action" value="cancelScan"/>' . wp_nonce_field( 'cancelScan', '_wpnonce', true, false ) . '<button type="submit" class="button button-small button-secondary">' . __( "Abbrechen", 'cpsec' ) . '</button></form>',
-			'no_issues'      => __( "Dein Code ist aktuell fehlerfrei! Beim letzten Scan wurden keine Probleme gefunden, Du kannst aber jederzeit einen neuen Scan durchführen.", 'cpsec' )
+			'scanning_title' => __( "Scanvorgang läuft", 'cpsec' ),
+			'no_issues'      => __( "Dein Code ist aktuell fehlerfrei! Beim letzten Scan wurden keine Probleme gefunden, Du kannst aber jederzeit einen neuen Scan durchführen.", 'cpsec' ),
+			'migration_cleanup_confirmation' => __( "Bestätigte WordPress-Migrationsreste werden dauerhaft gelöscht. Fortfahren?", 'cpsec' )
 		);
 		if ( $this->isInPage() ) {
 			\WDEV_Plugin_Ui::load( cp_defender()->getPluginUrl() . 'shared-ui/' );
 			wp_enqueue_script( 'defender' );
-			wp_enqueue_script( 'scan', cp_defender()->getPluginUrl() . 'app/module/scan/js/script.js' );
+			wp_enqueue_script( 'scan', $scanScript, array(), $scanVersion );
 			wp_enqueue_script( 'highlight.js', cp_defender()->getPluginUrl() . 'app/module/scan/js/highlight.pack.js' );
 			wp_enqueue_script( 'highlight-linenumbers.js', cp_defender()->getPluginUrl() . 'app/module/scan/js/highlightjs-line-numbers.js' );
 			wp_enqueue_style( 'defender' );
 			wp_localize_script( 'scan', 'scan', $data );
 		} else {
-			wp_enqueue_script( 'scan', cp_defender()->getPluginUrl() . 'app/module/scan/js/script.js' );
+			wp_enqueue_script( 'scan', $scanScript, array(), $scanVersion );
 		}
 	}
 

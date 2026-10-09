@@ -5,7 +5,7 @@ Requires at least: 5.0
 Tested up to: 7.1
 ClassicPress 2.7.3
 Requires PHP: 7.4
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,6 +75,18 @@ Nein, das Anti-Spam-Modul ist speziell für Multisite-Installationen entwickelt.
 Ja! Unter "Patterns" kannst du beliebig viele eigene Regex-Patterns erstellen und live testen.
 
 == Changelog ==
+
+= 1.0.8 =
+* Neu: Dateiscanner gleicht ClassicPress-Core-Dateien mit dem offiziellen Releasebaum ab und erkennt fehlende Dateien.
+* Neu: Fehlende ClassicPress-Core-Dateien können im Befunddialog gezielt aus dem passenden offiziellen Release wiederhergestellt werden.
+* Neu: ClassicPress-Migrationsbereinigung entfernt nach Bestätigung nur Dateien, die im aktuellen ClassicPress-Core fehlen und im aktuellen WordPress-Core vorhanden sind.
+* Verbesserung: Migrationsreste werden gegen den aktuellen stabilen WordPress-Release statt gegen eine historische Kompatibilitätsversion geprüft.
+* Verbesserung: Bereits gespeicherte Scanbefunde werden vor Anzeige und Bereinigung erneut gegen die offiziellen Releasequellen validiert.
+* Verbesserung: Datei-Integritätsprüfung erfasst nun auch wp-config.php und hält eine SHA-256-Baseline für Content-Dateien vor.
+* Verbesserung: Der Content-Scan überspringt verschachtelte Vendor-, Snapshot-, Backup- und Build-Verzeichnisse zuverlässig.
+* Verbesserung: Scan-Abbruch reagiert schneller, stoppt ausstehende Durchläufe zuverlässig und bereinigt zugehörige Sperren und Cron-Aufgaben.
+* Verbesserung: Scan-Dialog, Fortschrittsanzeige und Befundaktionen wurden überarbeitet.
+* Verbesserung: Englische Übersetzungen für die Dateiscan-Oberfläche und neue Befundtypen ergänzt.
 
 = 1.0.7 =
 * Fix: Ersetze deprecated socket_set_timeout() mit stream_set_timeout()

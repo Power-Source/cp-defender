@@ -20,7 +20,7 @@ use CP_Defender\Module\Scan\Model\Settings;
  * @package CP_Defender\Module\Scan\Component
  */
 class Scan_Api extends Component {
-	const CACHE_CORE = 'wdfcore', CACHE_CONTENT = 'wdfcontent', CACHE_CHECKSUMS = 'wdfchecksum';
+	const CACHE_CORE = 'wdfcore', CACHE_CONTENT = 'wdfcontent', CACHE_CHECKSUMS = 'wdfchecksum', CACHE_CP_RELEASE_FILES = 'wdf_cp_release_files', CACHE_WP_RELEASE_FILES = 'wdf_wp_release_files', CACHE_WP_RELEASE_VERSION = 'wdf_wp_release_version';
 	const IGNORE_LIST = 'wdfscanignore', SCAN_PATTERN = 'wdfscanparttern';
 
 	private static $ignoreList = false;
@@ -74,6 +74,25 @@ class Scan_Api extends Component {
 	}
 
 	/**
+	 * Mark an active scan as cancelled so concurrent queue requests stop before
+	 * they can persist stale scan state.
+	 *
+	 * @param int $scanId
+	 * @return void
+	 */
+	public static function markScanCancelled( $scanId ) {
+		set_site_transient( 'wdf_scan_cancel_' . absint( $scanId ), 1, HOUR_IN_SECONDS );
+	}
+
+	/**
+	 * @param int $scanId
+	 * @return bool
+	 */
+	public static function isScanCancelled( $scanId ) {
+		return (bool) get_site_transient( 'wdf_scan_cancel_' . absint( $scanId ) );
+	}
+
+	/**
 	 * @return null|Scan
 	 */
 	public static function getLastScan() {
@@ -124,10 +143,12 @@ class Scan_Api extends Component {
 // SECURITY: Filter first-level files/directories to only allow known WordPress files
 		// Unknown files at ABSPATH level are suspicious (potential malware)
 		$firstLevelFiles = self::filterSuspiciousCoreItems( $firstLevelFiles );
+		$missingCoreFiles = self::getMissingClassicPressCoreFiles();
+		$files            = array_merge( $firstLevelFiles, $coreFiles, $missingCoreFiles );
 
-		$cache->set( self::CACHE_CORE, array_merge( $firstLevelFiles, $coreFiles ), 0 );
+		$cache->set( self::CACHE_CORE, $files, 0 );
 
-		return array_merge( $firstLevelFiles, $coreFiles );
+		return $files;
 	}
 
 	/**
@@ -240,6 +261,7 @@ class Scan_Api extends Component {
 			
 			// Known safe plugin directories
 			'uploads/wpcf7_uploads',
+			'uploads/snapshots',
 			'et-cache',
 			'w3tc-config',
 			'litespeed',
@@ -260,15 +282,63 @@ class Scan_Api extends Component {
 			'ext' => array( 'php' )
 		), true, $settings->max_filesize );
 		
+		$files = self::filterExcludedContentFiles( $files, $excludeDirs );
+
 		// PHASE 1 OPTIMIZATION: Nachfilterung für bekannte sichere Dateien
 		$files = self::filterSafeFiles( $files );
 		
-		//include wp-config.php here
-		$files[] = ABSPATH . 'wp-config.php';
+		$configPath = self::getWpConfigPath();
+		if ( $configPath !== false ) {
+			$files[] = $configPath;
+		}
 
 		$cache->set( self::CACHE_CONTENT, $files );
 
 		return $files;
+	}
+
+	/**
+	 * The legacy file helper only supports literal directory paths. Filter again
+	 * by path segment so exclusions also apply within plugins and themes.
+	 *
+	 * @param array $files
+	 * @param array $excludeDirs
+	 * @return array
+	 */
+	private static function filterExcludedContentFiles( $files, $excludeDirs ) {
+		$root = trailingslashit( wp_normalize_path( WP_CONTENT_DIR ) );
+
+		return array_values( array_filter( $files, function ( $file ) use ( $excludeDirs, $root ) {
+			$relative = '/' . ltrim( str_replace( $root, '', wp_normalize_path( $file ) ), '/' ) . '/';
+			foreach ( $excludeDirs as $directory ) {
+				$directory = trim( $directory, '/' );
+				if ( $directory !== '' && strpos( $relative, '/' . $directory . '/' ) !== false ) {
+					return false;
+				}
+			}
+
+			return true;
+		} ) );
+	}
+
+	/**
+	 * Return the wp-config.php file WordPress actually loads. It may live one
+	 * directory above ABSPATH in hardened installations.
+	 *
+	 * @return string|false
+	 */
+	public static function getWpConfigPath() {
+		$rootConfig = ABSPATH . 'wp-config.php';
+		if ( is_file( $rootConfig ) ) {
+			return $rootConfig;
+		}
+
+		$parentConfig = dirname( ABSPATH ) . '/wp-config.php';
+		if ( is_file( $parentConfig ) && ! is_file( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
+			return $parentConfig;
+		}
+
+		return false;
 	}
 
 	/**
@@ -317,6 +387,10 @@ class Scan_Api extends Component {
 		}
 
 		global $wp_version, $wp_local_package;
+		$version = $wp_version;
+		if ( function_exists( 'classicpress_version' ) ) {
+			$version = classicpress_version();
+		}
 		$locale = 'en_US';
 		if ( ! is_null( $wp_local_package ) && count( explode( '_', $wp_local_package ) ) == 2 ) {
 			$locale = $wp_local_package;
@@ -324,18 +398,261 @@ class Scan_Api extends Component {
 		if ( ! function_exists( 'get_core_checksums' ) ) {
 			include_once ABSPATH . 'wp-admin/includes/update.php';
 		}
-		$checksum = get_core_checksums( $wp_version, $locale );
+		$checksum = get_core_checksums( $version, $locale );
 		if ( $checksum == false ) {
 			return $checksum;
 		}
 
-		if ( isset( $checksum[ $wp_version ] ) ) {
-			return $checksum = $checksum[ $wp_version ];
+		if ( isset( $checksum[ $version ] ) ) {
+			return $checksum = $checksum[ $version ];
 		}
 
 		$cache->set( self::CACHE_CHECKSUMS, $checksum, 86400 );
 
 		return $checksum;
+	}
+
+	/**
+	 * Check whether a file is a confirmed WordPress-to-ClassicPress migration
+	 * remnant. It must be absent from ClassicPress and present in the matching
+	 * WordPress release. Remote lookup failures remain conservative.
+	 *
+	 * @param string $relativePath
+	 * @return bool
+	 */
+	public static function isConfirmedWordPressMigrationRemnant( $relativePath ) {
+		if ( ! function_exists( 'classicpress_version' ) ) {
+			return false;
+		}
+
+		$relativePath      = ltrim( $relativePath, '/' );
+		$classicPressFiles = self::getClassicPressReleaseFiles();
+		$wordPressFiles    = self::getWordPressReleaseFiles();
+		if ( ! is_array( $classicPressFiles ) || ! is_array( $wordPressFiles ) ) {
+			return false;
+		}
+
+		return ! isset( $classicPressFiles[ $relativePath ] ) && isset( $wordPressFiles[ $relativePath ] );
+	}
+
+	/**
+	 * @return array|false Paths in the official ClassicPress release tree.
+	 */
+	private static function getClassicPressReleaseFiles() {
+		$version  = classicpress_version();
+		$cacheKey = self::CACHE_CP_RELEASE_FILES . '_' . md5( $version );
+		$cached   = get_site_transient( $cacheKey );
+		if ( is_array( $cached ) ) {
+			return $cached;
+		}
+
+		$base = 'https://api.github.com/repos/ClassicPress/ClassicPress-release/git/';
+		$ref  = self::getRemoteJson( $base . 'ref/tags/' . rawurlencode( $version ) );
+		if ( ! isset( $ref['object']['url'], $ref['object']['type'] ) ) {
+			return false;
+		}
+
+		$object = $ref['object'];
+		if ( $object['type'] === 'tag' ) {
+			$tag = self::getRemoteJson( $object['url'] );
+			if ( ! isset( $tag['object']['url'], $tag['object']['type'] ) ) {
+				return false;
+			}
+			$object = $tag['object'];
+		}
+		if ( $object['type'] !== 'commit' ) {
+			return false;
+		}
+
+		$commit = self::getRemoteJson( $object['url'] );
+		if ( ! isset( $commit['tree']['sha'] ) ) {
+			return false;
+		}
+		$tree = self::getRemoteJson( $base . 'trees/' . $commit['tree']['sha'] . '?recursive=1' );
+		if ( empty( $tree['tree'] ) || ! empty( $tree['truncated'] ) ) {
+			return false;
+		}
+
+		$files = array();
+		foreach ( $tree['tree'] as $entry ) {
+			if ( isset( $entry['type'], $entry['path'] ) && $entry['type'] === 'blob' ) {
+				$files[ $entry['path'] ] = true;
+			}
+		}
+		set_site_transient( $cacheKey, $files, DAY_IN_SECONDS );
+
+		return $files;
+	}
+
+	/**
+	 * Return missing runtime Core files from the active ClassicPress release.
+	 * wp-content and release metadata are deliberately excluded.
+	 *
+	 * @return array
+	 */
+	private static function getMissingClassicPressCoreFiles() {
+		if ( ! function_exists( 'classicpress_version' ) ) {
+			return array();
+		}
+
+		$files = self::getClassicPressReleaseFiles();
+		if ( ! is_array( $files ) ) {
+			return array();
+		}
+
+		$missing = array();
+		foreach ( array_keys( $files ) as $relativePath ) {
+			if ( self::isExpectedClassicPressCoreFile( $relativePath ) && ! is_file( ABSPATH . $relativePath ) ) {
+				$missing[] = ABSPATH . $relativePath;
+			}
+		}
+
+		return $missing;
+	}
+
+	/**
+	 * @param string $relativePath
+	 * @return bool
+	 */
+	public static function isExpectedClassicPressCoreFile( $relativePath ) {
+		if ( ! function_exists( 'classicpress_version' ) ) {
+			return false;
+		}
+
+		$relativePath = ltrim( wp_normalize_path( $relativePath ), '/' );
+		if ( strpos( $relativePath, 'wp-admin/' ) === 0 || strpos( $relativePath, 'wp-includes/' ) === 0 ) {
+			return true;
+		}
+
+		return strpos( $relativePath, '/' ) === false && preg_match( '/\.(php|html|txt)$/', $relativePath );
+	}
+
+	/**
+	 * @param string $relativePath
+	 * @return string|\WP_Error
+	 */
+	public static function getClassicPressReleaseFileContents( $relativePath ) {
+		$relativePath = ltrim( wp_normalize_path( $relativePath ), '/' );
+		if ( ! self::isExpectedClassicPressCoreFile( $relativePath ) ) {
+			return new \WP_Error( Error_Code::INVALID, __( 'Diese Datei gehört nicht zum ClassicPress-Core.', 'cpsec' ) );
+		}
+
+		$files = self::getClassicPressReleaseFiles();
+		if ( ! is_array( $files ) || ! isset( $files[ $relativePath ] ) ) {
+			return new \WP_Error( Error_Code::INVALID, __( 'Die Originaldatei ist im ClassicPress-Release nicht verfügbar.', 'cpsec' ) );
+		}
+
+		$response = wp_remote_get(
+			'https://raw.githubusercontent.com/ClassicPress/ClassicPress-release/' . rawurlencode( classicpress_version() ) . '/' . str_replace( '%2F', '/', rawurlencode( $relativePath ) ),
+			array(
+				'timeout' => 20,
+				'headers' => array( 'User-Agent' => 'PS-Security-File-Scan' ),
+			)
+		);
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		if ( wp_remote_retrieve_response_code( $response ) !== 200 ) {
+			return new \WP_Error( Error_Code::INVALID, __( 'Die Originaldatei konnte nicht geladen werden.', 'cpsec' ) );
+		}
+
+		return wp_remote_retrieve_body( $response );
+	}
+
+	/**
+	 * @return array|false Paths in the current stable WordPress release.
+	 */
+	private static function getWordPressReleaseFiles() {
+		$version = self::getLatestWordPressReleaseVersion();
+		if ( $version === false ) {
+			return false;
+		}
+
+		$cacheKey = self::CACHE_WP_RELEASE_FILES . '_' . md5( $version );
+		$cached   = get_site_transient( $cacheKey );
+		if ( is_array( $cached ) ) {
+			return $cached;
+		}
+
+		$base = 'https://api.github.com/repos/WordPress/WordPress/git/';
+		$ref  = self::getRemoteJson( $base . 'ref/tags/' . rawurlencode( $version ) );
+		if ( ! isset( $ref['object']['url'], $ref['object']['type'] ) ) {
+			return false;
+		}
+
+		$object = $ref['object'];
+		if ( $object['type'] === 'tag' ) {
+			$tag = self::getRemoteJson( $object['url'] );
+			if ( ! isset( $tag['object']['url'], $tag['object']['type'] ) ) {
+				return false;
+			}
+			$object = $tag['object'];
+		}
+		if ( $object['type'] !== 'commit' ) {
+			return false;
+		}
+
+		$commit = self::getRemoteJson( $object['url'] );
+		if ( ! isset( $commit['tree']['sha'] ) ) {
+			return false;
+		}
+		$tree = self::getRemoteJson( $base . 'trees/' . $commit['tree']['sha'] . '?recursive=1' );
+		if ( empty( $tree['tree'] ) || ! empty( $tree['truncated'] ) ) {
+			return false;
+		}
+
+		$files = array();
+		foreach ( $tree['tree'] as $entry ) {
+			if ( isset( $entry['type'], $entry['path'] ) && $entry['type'] === 'blob' ) {
+				$files[ $entry['path'] ] = true;
+			}
+		}
+		set_site_transient( $cacheKey, $files, DAY_IN_SECONDS );
+
+		return $files;
+	}
+
+	/**
+	 * @return string|false The latest stable WordPress version.
+	 */
+	private static function getLatestWordPressReleaseVersion() {
+		$cached = get_site_transient( self::CACHE_WP_RELEASE_VERSION );
+		if ( is_string( $cached ) && $cached !== '' ) {
+			return $cached;
+		}
+
+		$versions = self::getRemoteJson( 'https://api.wordpress.org/core/version-check/1.7/?locale=en_US' );
+		if ( empty( $versions['offers'] ) || ! is_array( $versions['offers'] ) ) {
+			return false;
+		}
+
+		foreach ( $versions['offers'] as $offer ) {
+			if ( isset( $offer['response'], $offer['current'] ) && $offer['response'] === 'upgrade' && preg_match( '/^\d+\.\d+(?:\.\d+)?$/', $offer['current'] ) ) {
+				set_site_transient( self::CACHE_WP_RELEASE_VERSION, $offer['current'], DAY_IN_SECONDS );
+
+				return $offer['current'];
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param string $url
+	 * @return array|false
+	 */
+	private static function getRemoteJson( $url ) {
+		$response = wp_remote_get( $url, array(
+			'timeout' => 10,
+			'headers' => array( 'User-Agent' => 'PS-Security-File-Scan' ),
+		) );
+		if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
+			return false;
+		}
+
+		$body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+		return is_array( $body ) ? $body : false;
 	}
 
 	/**
@@ -347,6 +664,11 @@ class Scan_Api extends Component {
 		$start = microtime( true );
 		if ( ! is_object( $model ) ) {
 			return new \WP_Error( Error_Code::INVALID, __( "Es existiert kein Scan-Datensatz.", 'cpsec' ) );
+		}
+		if ( self::isScanCancelled( $model->id ) ) {
+			self::releaseLock();
+
+			return new \WP_Error( Error_Code::SCAN_ERROR, __( "Der Scan wurde abgebrochen.", 'cpsec' ) );
 		}
 
 		if ( $model->status == Scan::STATUS_ERROR ) {
@@ -400,6 +722,11 @@ class Scan_Api extends Component {
 			while ( ! $queue->isEnd() ) {
 				//while in the loop, the model can be set as ERROR, check and return of Error
 				$processResult = $queue->processItem();
+				if ( self::isScanCancelled( $model->id ) ) {
+					self::releaseLock();
+
+					return new \WP_Error( Error_Code::SCAN_ERROR, __( "Der Scan wurde abgebrochen.", 'cpsec' ) );
+				}
 				if ( $processResult == false ) {
 					//FIX #7: Error recovery - skip this item instead of aborting entire scan
 					// Track consecutive failures to prevent infinite loops
@@ -429,7 +756,7 @@ class Scan_Api extends Component {
 					$est      = microtime( true ) - $start;
 					$currMem  = ( memory_get_peak_usage( true ) / 1024 / 1024 );
 					$memLimit = apply_filters( 'defender_scan_memory_alloc', 256 );
-					$timeLimit = apply_filters( 'defender_scan_time_limit', 30 );
+					$timeLimit = apply_filters( 'defender_scan_time_limit', 5 );
 					if ( $est >= $timeLimit || $currMem >= $memLimit || $queue->isEnd() || $queue->key() == 1 ) {
 						//save current process and pause
 						$queue->saveProcess();
@@ -441,6 +768,7 @@ class Scan_Api extends Component {
 						self::releaseLock();
 						//we have to cache the checksum of content here
 						if ( $step == 'content' ) {
+							Content_Scan::persistIntegrityBaseline( $queue->isEnd() );
 							$altCache    = WP_Helper::getArrayCache();
 							$oldChecksum = $altCache->get( Content_Scan::CONTENT_CHECKSUM, null );
 							$tries       = $altCache->get( Content_Scan::FILES_TRIED, null );
@@ -463,6 +791,7 @@ class Scan_Api extends Component {
 
 		if ( $done == count( $steps ) ) {
 			//all done
+			Content_Scan::persistIntegrityBaseline();
 			//remove all old records
 			$lastScan = self::getLastScan();
 			if ( is_object( $lastScan ) ) {
@@ -480,6 +809,8 @@ class Scan_Api extends Component {
 
 			return true;
 		}
+
+		Content_Scan::persistIntegrityBaseline();
 
 		// Persist progress so UI (currentFile, skippedFiles) is visible each poll
 		$model->save();
@@ -773,7 +1104,9 @@ class Scan_Api extends Component {
 	public static function releaseLock() {
 		$lockPath = WP_Helper::getUploadDir() . '/cp-defender/';
 		$lockFile = $lockPath . 'scan-lock';
-		@unlink( $lockFile );
+		if ( is_file( $lockFile ) ) {
+			@unlink( $lockFile );
+		}
 	}
 
 	/**

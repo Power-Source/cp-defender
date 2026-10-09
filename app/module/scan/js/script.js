@@ -1,6 +1,59 @@
 jQuery(function ($) {
+    var scanCancelled = false;
+    var scanTimer = null;
+    var cancelInProgress = false;
+
+    $('body').on('submit', '#cancel-scan', function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (cancelInProgress) {
+            return false;
+        }
+
+        cancelInProgress = true;
+        scanCancelled = true;
+        if (scanTimer !== null) {
+            window.clearTimeout(scanTimer);
+        }
+
+        var form = $(this);
+        form.find('.button').attr('disabled', 'disabled');
+        $.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: form.serialize(),
+            dataType: 'json',
+            success: function (response) {
+                if (typeof response === 'string') {
+                    response = JSON.parse(response);
+                }
+                if (response && response.success && response.data && response.data.url) {
+                    location.href = response.data.url;
+                    return;
+                }
+                cancelInProgress = false;
+                form.find('.button').removeAttr('disabled');
+                Defender.showNotification('error', response && response.data && response.data.message ? response.data.message : 'Unable to cancel the scan.');
+            },
+            error: function () {
+                cancelInProgress = false;
+                form.find('.button').removeAttr('disabled');
+                Defender.showNotification('error', 'Unable to cancel the scan.');
+            }
+        });
+
+        return false;
+    });
+
     //bind form handler for every form inside scan section
     WDScan.formHandler();
+
+    $('#cancel-scan').on('submit', function () {
+        scanCancelled = true;
+        if (scanTimer !== null) {
+            window.clearTimeout(scanTimer);
+        }
+    });
 
     //bind handler for new scan form
     $('div.wdf-scanning').on('form-submitted', function (e, data, form) {
@@ -46,9 +99,13 @@ jQuery(function ($) {
                     $('.skipped-count').text(data.data.skippedFiles);
                 }
                 
-                setTimeout(function () {
-                    $('#process-scan').trigger('submit');
-                }, 1500);
+                if (!scanCancelled) {
+                    scanTimer = window.setTimeout(function () {
+                        if (!scanCancelled) {
+                            $('#process-scan').trigger('submit');
+                        }
+                    }, 1500);
+                }
             }
         })
         $('div.wdf-scanning').on('form-submitted-error', function (e, data, form, xhr) {
@@ -56,9 +113,13 @@ jQuery(function ($) {
                 return;
             }
             //try to reup
-            setTimeout(function () {
-                $('#process-scan').trigger('submit');
-            }, 1500);
+            if (!scanCancelled) {
+                scanTimer = window.setTimeout(function () {
+                    if (!scanCancelled) {
+                        $('#process-scan').trigger('submit');
+                    }
+                }, 1500);
+            }
         })
     }
 
@@ -192,6 +253,9 @@ jQuery(function ($) {
         $('.scan-chk').prop('checked', $(this).prop('checked'));
     });
     $('.scan-bulk-frm').on('submit', function () {
+        if ($(this).find('select[name="bulk"]').val() === 'delete_migrations' && !window.confirm(scan.migration_cleanup_confirmation)) {
+            return false;
+        }
         var data = $(this).serialize();
         $('.scan-chk').each(function () {
             if ($(this).prop('checked') == true) {

@@ -195,6 +195,9 @@ class Result_Table extends \WP_List_Table {
                     <select name="bulk" class="bulk-action">
 						<?php if ( $this->type != Result_Item::STATUS_IGNORED ): ?>
                             <option value="ignore"><?php _e( "Ignorieren", 'cpsec' ) ?></option>
+							<?php if ( function_exists( 'classicpress_version' ) ): ?>
+								<option value="delete_migrations"><?php _e( "Migrationsbereinigung", 'cpsec' ) ?></option>
+							<?php endif; ?>
 <!--                            <option value="resolve">--><?php //_e( "Resolve", 'cpsec' ) ?><!--</option>-->
                             <!--                            <option value="delete">--><?php //_e( "Delete", 'cpsec' ) ?><!--</option>-->
 						<?php endif; ?>

@@ -41,6 +41,14 @@ class Content_Result extends \Hammer\Base\Behavior {
 	 * @return string|void
 	 */
 	public function getIssueDetail() {
+		$raw = $this->getRaw();
+		if ( isset( $raw['type'] ) && $raw['type'] === 'integrity_modified' ) {
+			return __( "Datei weicht von der Integritätsbaseline ab", 'cpsec' );
+		}
+		if ( isset( $raw['type'] ) && $raw['type'] === 'integrity_new' ) {
+			return __( "Neue überwachte Datei erkannt", 'cpsec' );
+		}
+
 		return __( "Verdächtige Funktion gefunden", 'cpsec' );
 	}
 
@@ -48,7 +56,8 @@ class Content_Result extends \Hammer\Base\Behavior {
 	 * @return string
 	 */
 	public function renderDialog() {
-		$raw = $this->getRaw();
+		$raw              = $this->getRaw();
+		$isIntegrityIssue = isset( $raw['type'] ) && strpos( $raw['type'], 'integrity_' ) === 0;
 		ob_start()
 		?>
         <dialog class="scan-item-dialog" title="<?php esc_attr_e( "Problem Details", 'cpsec' ) ?>"
@@ -83,8 +92,14 @@ class Content_Result extends \Hammer\Base\Behavior {
                                 </li>
                             </ul>
                         </div>
-                        <div class="mline"><?php printf( __( " In der Datei %s befindet sich verdächtiger Code. Wenn Du sicher bist, dass der Code harmlos ist, kannst Du diese Warnung ignorieren. Andernfalls kannst Du diese Datei löschen. Bevor Du Dateien aus Deinem Webseite-Verzeichnis löschst, empfehlen wir, ein Backup Deiner Webseite zu erstellen.", 'cpsec' ), $this->getSubtitle() ) ?>
+                        <div class="mline">
+						<?php if ( $isIntegrityIssue ): ?>
+							<?php _e( "Die Datei wurde seit der vertrauenswürdigen Baseline geändert. Prüfe die Änderung vor einer manuellen Korrektur.", 'cpsec' ) ?>
+						<?php else: ?>
+							<?php printf( __( " In der Datei %s befindet sich verdächtiger Code. Wenn Du sicher bist, dass der Code harmlos ist, kannst Du diese Warnung ignorieren. Andernfalls kannst Du diese Datei löschen. Bevor Du Dateien aus Deinem Webseite-Verzeichnis löschst, empfehlen wir, ein Backup Deiner Webseite zu erstellen.", 'cpsec' ), $this->getSubtitle() ) ?>
+						<?php endif; ?>
                         </div>
+                        <?php if ( ! $isIntegrityIssue ): ?>
                         <div class="mline source-code">
                             <img src="<?php echo cp_defender()->getPluginUrl() ?>assets/img/loading.gif" width="18"
                                  height="18"/>
@@ -95,6 +110,7 @@ class Content_Result extends \Hammer\Base\Behavior {
                                 <input type="hidden" name="id" value="<?php echo $this->getOwner()->id ?>"/>
                             </form>
                         </div>
+						<?php endif; ?>
                         <div class="well well-small">
                             <form method="post" class="float-l ignore-item scan-frm">
                                 <input type="hidden" name="action" value="ignoreItem">
@@ -117,7 +133,8 @@ class Content_Result extends \Hammer\Base\Behavior {
 								$tooltips = ( __( "Diese Datei wird dadurch endgültig gelöscht. Möchtest Du fortfahren?", 'cpsec' ) );
 							}
 							?>
-                            <form method="post" class="scan-frm float-r delete-item">
+							<?php if ( ! $isIntegrityIssue ): ?>
+							<form method="post" class="scan-frm float-r delete-item">
                                 <input type="hidden" name="id" value="<?php echo $this->getOwner()->id ?>"/>
                                 <input type="hidden" name="action" value="deleteItem"/>
 								<?php wp_nonce_field( 'deleteItem' ) ?>
@@ -134,6 +151,7 @@ class Content_Result extends \Hammer\Base\Behavior {
                                     </button>
                                 </div>
                             </form>
+							<?php endif; ?>
                             <div class="clear"></div>
                         </div>
                     </div>
@@ -149,6 +167,9 @@ class Content_Result extends \Hammer\Base\Behavior {
 	 */
 	public function getSrcCode() {
 		$raw     = $this->getRaw();
+		if ( isset( $raw['type'] ) && strpos( $raw['type'], 'integrity_' ) === 0 ) {
+			return '';
+		}
 		$content = file_get_contents( $raw['file'] );
 		$content = explode( PHP_EOL, $content );
 		foreach ( $raw['meta'] as $meta ) {

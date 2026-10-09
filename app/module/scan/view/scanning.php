@@ -36,6 +36,13 @@
         </div>
     </div>
     <p class="tc sub status-text scan-status"><?php echo $model->statusText ?></p>
+    <div class="tr">
+        <form id="cancel-scan" method="post" class="scan-frm">
+            <input type="hidden" name="action" value="cancelScan"/>
+			<?php wp_nonce_field( 'cancelScan' ) ?>
+            <button type="submit" class="button button-small button-secondary"><?php _e( "Abbrechen", 'cpsec' ) ?></button>
+        </form>
+    </div>
     
     <!-- Erweiterte Scan-Informationen -->
     <div class="scan-details" style="margin-top: 15px; padding: 10px; background: #f9f9f9; border-radius: 4px; text-align: left; font-size: 12px;">

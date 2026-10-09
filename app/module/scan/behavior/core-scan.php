@@ -30,6 +30,22 @@ class Core_Scan extends Behavior {
 			return true;
 		}
 
+		$relPath      = Scan_Api::convertToUnixPath( $current );
+		$current_path = Scan_Api::convertToWindowsAbsPath( $current );
+		if ( ! file_exists( $current ) && Scan_Api::isExpectedClassicPressCoreFile( $relPath ) ) {
+			$item           = new Result_Item();
+			$item->parentId = $this->model->id;
+			$item->type     = 'core';
+			$item->status   = Result_Item::STATUS_ISSUE;
+			$item->raw      = array(
+				'type' => 'missing',
+				'file' => $current_path
+			);
+			$item->save();
+
+			return true;
+		}
+
 		$isSuspiciousRoot = $this->isSuspiciousRootItem( $current );
 
 		// OPTIMIZATION: Cache checksums per request to avoid repeated calls
@@ -51,9 +67,6 @@ class Core_Scan extends Behavior {
 		$item->parentId = $this->model->id;
 		$item->type     = 'core';
 		$item->status   = Result_Item::STATUS_ISSUE;
-		$relPath 		= Scan_Api::convertToUnixPath( $current ); //Windows File path fix set outside to be used in both file and dir checks
-		$current_path	= Scan_Api::convertToWindowsAbsPath( $current ); //Windows needs fixing for the paths
-
 		// OPTIMIZATION: Only check files that are in the checksum array
 		// Skip unnecessary hash calculations for files not in the list
 		if ( is_file( $current ) ) {
@@ -74,7 +87,7 @@ class Core_Scan extends Behavior {
 			} else {
 				// File not in checksum list - unknown file in core directory
 				$item->raw = array(
-					'type' => 'unknown',
+					'type' => Scan_Api::isConfirmedWordPressMigrationRemnant( $relPath ) ? 'migration' : 'unknown',
 					'file' => $current_path
 				);
 				$item->save();

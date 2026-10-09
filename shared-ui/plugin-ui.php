@@ -102,16 +102,9 @@ if ( ! class_exists( 'WDEV_Plugin_Ui' ) ) {
 			}
 
 			wp_enqueue_style(
-				'wdev-plugin-google_fonts',
-				'https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700|Roboto:400,500,300,300italic',
-				false,
-				$script_version
-			);
-
-			wp_enqueue_style(
 				'wdev-plugin-notice',
 				self::$module_url . 'notice.css',
-				array( 'wdev-plugin-google_fonts' ),
+				array(),
 				$script_version
 			);
 		}
@@ -136,7 +129,7 @@ if ( ! class_exists( 'WDEV_Plugin_Ui' ) ) {
 			wp_enqueue_style(
 				'wdev-plugin-ui',
 				self::$module_url . 'wdev-ui.css',
-				array( 'wdev-plugin-google_fonts' ),
+				array(),
 				$script_version
 			);
 

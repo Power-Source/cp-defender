@@ -464,7 +464,7 @@ msgstr ""
 
 #: app/module/hardener/rule.php:109, app/module/anti-spam/view/moderation.php:161, app/module/scan/component/result-table.php:197, app/module/scan/behavior/pro/content-result.php:104, app/module/scan/behavior/pro/vuln-result.php:154
 msgid "Ignorieren"
-msgstr ""
+msgstr "Ignore"
 
 #: app/module/hardener/rule.php:134, app/module/scan/component/result-table.php:202
 msgid "Wiederherstellen"
@@ -1052,7 +1052,7 @@ msgstr ""
 
 #: app/module/anti-spam/view/moderation.php:164, app/module/scan/component/result-table.php:205
 msgid "Anwenden"
-msgstr ""
+msgstr "Apply"
 
 #: app/module/anti-spam/view/moderation.php:169
 msgid "%s Einträge"
@@ -2707,7 +2707,7 @@ msgstr ""
 
 #: app/module/hardener/view/issues.php:3
 msgid "Probleme"
-msgstr ""
+msgstr "Issues"
 
 #: app/module/hardener/view/issues.php:12
 msgid ""
@@ -3031,7 +3031,59 @@ msgstr ""
 
 #: app/module/scan/behavior/core-result.php:55
 msgid "Unbekannte Datei im WordPress-Kern"
-msgstr ""
+msgstr "Unknown file in the WordPress core"
+
+#: app/module/scan/behavior/core-result.php:57
+msgid "Bestätigter Migrationsrest einer früheren WordPress-Core-Installation"
+msgstr "Confirmed migration remnant from a previous WordPress core installation"
+
+#: app/module/scan/behavior/core-result.php:59
+msgid "Bestätigter Migrationsrest einer früheren Core-Installation"
+msgstr "Confirmed migration remnant from a previous core installation"
+
+#: app/module/scan/behavior/core-result.php:90
+msgid "Dieser Eintrag ist kein bestätigter Migrationsrest."
+msgstr "This item is not a confirmed migration remnant."
+
+#: app/module/scan/behavior/core-result.php
+msgid "Eine erforderliche ClassicPress-Core-Datei fehlt"
+msgstr "A required ClassicPress core file is missing"
+
+#: app/module/scan/behavior/core-result.php
+msgid "Diese fehlende Datei kann nicht entfernt werden"
+msgstr "This missing file cannot be removed"
+
+#: app/module/scan/behavior/core-result.php
+msgid "Die fehlende Core-Datei konnte nicht wiederhergestellt werden"
+msgstr "The missing core file could not be restored"
+
+#: app/module/scan/behavior/core-result.php
+msgid "Fehlende Core-Datei wiederherstellen"
+msgstr "Restore missing core file"
+
+#: app/module/scan/behavior/core-result.php
+msgid "Diese Datei ist im offiziellen ClassicPress-Release vorhanden, fehlt jedoch in Deiner Installation."
+msgstr "This file is part of the official ClassicPress release but is missing from your installation."
+
+#: app/module/scan/component/scan-api.php
+msgid "Diese Datei gehört nicht zum ClassicPress-Core."
+msgstr "This file is not part of the ClassicPress core."
+
+#: app/module/scan/component/scan-api.php
+msgid "Die Originaldatei ist im ClassicPress-Release nicht verfügbar."
+msgstr "The original file is not available in the ClassicPress release."
+
+#: app/module/scan/component/scan-api.php
+msgid "Die Originaldatei konnte nicht geladen werden."
+msgstr "The original file could not be downloaded."
+
+#: app/module/scan/behavior/core-result.php:57
+msgid "Dieses Verzeichnis gehört nicht zum WordPress-Kern"
+msgstr "This directory does not belong to the WordPress core"
+
+#: app/module/scan/behavior/core-result.php:59
+msgid "Diese WordPress-Kerndatei scheint verändert worden zu sein"
+msgstr "This WordPress core file appears to have been modified"
 
 #: app/module/scan/behavior/core-result.php:79
 msgid "Diese Datei kann nicht entfernt werden"
@@ -3185,7 +3237,33 @@ msgstr ""
 
 #: app/module/scan/component/result-table.php:32
 msgid "Verdächtige Datei"
-msgstr ""
+msgstr "Suspicious file"
+
+#: app/module/scan/component/result-table.php:199
+msgid "Migrationsbereinigung"
+msgstr "Migration cleanup"
+
+#: app/module/scan/controller/main.php:617
+msgid "Bestätigte WordPress-Migrationsreste werden dauerhaft gelöscht. Fortfahren?"
+msgstr "Confirmed WordPress migration remnants will be permanently deleted. Continue?"
+
+#: app/module/scan/controller/main.php:253
+msgid "Die Migrationsbereinigung ist nur unter ClassicPress verfügbar."
+msgstr "Migration cleanup is only available in ClassicPress."
+
+#: app/module/scan/controller/main.php:258
+msgid "Es ist kein abgeschlossener Scan verfügbar."
+msgstr "No completed scan is available."
+
+#: app/module/scan/controller/main.php:285
+msgid "%d Migrationsrest wurde entfernt."
+msgid_plural "%d Migrationsreste wurden entfernt."
+msgstr[0] "%d migration remnant was removed."
+msgstr[1] "%d migration remnants were removed."
+
+#: app/module/scan/controller/main.php:291
+msgid "Es wurden keine bestätigten Migrationsreste entfernt."
+msgstr "No confirmed migration remnants were removed."
 
 #: app/module/scan/component/result-table.php:33
 msgid "Problem"
@@ -3209,7 +3287,7 @@ msgstr ""
 
 #: app/module/scan/component/result-table.php:152
 msgid "Problem beheben"
-msgstr ""
+msgstr "Review issue"
 
 #: app/module/scan/component/result-table.php:209
 msgid "%s Results"
@@ -3219,9 +3297,17 @@ msgstr ""
 msgid "Ein Scan läuft bereits"
 msgstr ""
 
+#: app/module/scan/behavior/core-result.php
+msgid "Möglicher Migrationsrest einer früheren Core-Installation"
+msgstr "Possible migration remnant from a previous core installation"
+
+#: app/module/scan/component/scan-api.php
+msgid "Der Scan wurde abgebrochen."
+msgstr "The scan was cancelled."
+
 #: app/module/scan/component/scan-api.php:37
 msgid "Initialisierung..."
-msgstr ""
+msgstr "Initializing..."
 
 #: app/module/scan/component/scan-api.php:349
 msgid "Es existiert kein Scan-Datensatz."
@@ -3229,15 +3315,15 @@ msgstr ""
 
 #: app/module/scan/component/scan-api.php:389
 msgid "Analysiere WordPress Core..."
-msgstr ""
+msgstr "Analyzing WordPress core..."
 
 #: app/module/scan/component/scan-api.php:392
 msgid "Analysiere WordPress Inhalt..."
-msgstr ""
+msgstr "Analyzing WordPress content..."
 
 #: app/module/scan/component/scan-api.php:395
 msgid "Überprüfe veröffentlichte Schwachstellen in deinen Plugins & Themes..."
-msgstr ""
+msgstr "Checking published vulnerabilities in your plugins and themes..."
 
 #: app/module/scan/controller/main.php:132
 msgid "No permission to clear scan cache."
@@ -3315,11 +3401,11 @@ msgstr "File Scanning"
 
 #: app/module/scan/controller/main.php:582
 msgid "Scanvorgang läuft"
-msgstr ""
+msgstr "Scan in progress"
 
 #: app/module/scan/controller/main.php:582, app/module/advanced-tools/view/login/disabled.php:20
 msgid "Abbrechen"
-msgstr ""
+msgstr "Cancel"
 
 #: app/module/scan/controller/main.php:583
 msgid ""
@@ -3509,6 +3595,9 @@ msgid ""
 "Fällen möchtest Du jedoch möglicherweise die unten aufgeführten, "
 "verdächtigen Dateien entfernen."
 msgstr ""
+"PS Security found potentially harmful files on your website. The security "
+"scan can identify harmless files in some cases, so review the findings below "
+"before removing any files."
 
 #: app/module/scan/view/new.php:6
 msgid "LOS GEHT'S"
@@ -3528,7 +3617,7 @@ msgstr ""
 
 #: app/module/scan/view/scanning.php:7
 msgid "Letzter Scan: %s"
-msgstr ""
+msgstr "Last scan: %s"
 
 #: app/module/scan/view/scanning.php:14, app/module/scan/view/layouts/layout.php:13
 msgid "Neuer Scan"
@@ -3539,18 +3628,20 @@ msgid ""
 "PS Security scannt Deine Dateien nach bösartigem Code. Dies dauert je nach "
 "Größe Deiner Webseite einige Minuten."
 msgstr ""
+"PS Security scans your files for malicious code. This may take a few minutes "
+"depending on the size of your website."
 
 #: app/module/scan/view/scanning.php:43
 msgid "Aktuelle Datei:"
-msgstr ""
+msgstr "Current file:"
 
 #: app/module/scan/view/scanning.php:48
 msgid "Verdächtige Funde:"
-msgstr ""
+msgstr "Suspicious findings:"
 
 #: app/module/scan/view/scanning.php:52
 msgid "Übersprungen:"
-msgstr ""
+msgstr "Skipped:"
 
 #: app/module/scan/view/setting.php:3, app/module/ip-lockout/view/layouts/layout.php:74, app/module/ip-lockout/view/layouts/layout.php:94, app/module/scan/view/layouts/layout.php:127
 msgid "Settings"

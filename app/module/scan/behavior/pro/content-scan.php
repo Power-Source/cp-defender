@@ -13,6 +13,10 @@ use CP_Defender\Module\Scan\Component\Scan_Api;
 
 class Content_Scan extends Behavior {
 	const CONTENT_CHECKSUM = 'cleanchecksum', FILES_TRIED = 'filestried';
+	const INTEGRITY_BASELINE = 'wdf_scan_integrity_baseline';
+	const INTEGRITY_INITIALIZED = 'wdf_scan_integrity_initialized';
+	const INTEGRITY_BASELINE_VERSION = 'wdf_scan_integrity_baseline_version';
+	const INTEGRITY_SCHEMA_VERSION = 2;
 	/**
 	 * @var Scan\Model\Scan
 	 */
@@ -21,6 +25,8 @@ class Content_Scan extends Behavior {
 	protected $tries = null;
 	protected $tokens = array();
 	protected $patterns = array();
+	protected static $integrityBaseline = null;
+	protected static $integrityBaselineDirty = false;
 
 	public function processItemInternal( $args, $current ) {
 		$start          = microtime( true );
@@ -75,6 +81,7 @@ class Content_Scan extends Behavior {
 
 		// Update current file for UI display (saved by queue at end of iteration)
 		$this->model->currentFile = str_replace( ABSPATH, '', $file );
+		$this->checkIntegrity( $file );
 
 		// FIX #4 & #6: Check file size and do quick regex scan BEFORE loading full file into memory
 		$maxSize = apply_filters( 'wdContentScanMaxFileSize', 2097152 ); // 2MB default
@@ -217,6 +224,99 @@ class Content_Scan extends Behavior {
 		unset( $content );
 
 		return true;
+	}
+
+	/**
+	 * Persist the baseline at the end of each queue request, rather than once per
+	 * file, to avoid repeated writes of a growing network option.
+	 */
+	public static function persistIntegrityBaseline( $markInitialized = false ) {
+		if ( self::$integrityBaselineDirty ) {
+			update_site_option( self::INTEGRITY_BASELINE, self::$integrityBaseline );
+			self::$integrityBaselineDirty = false;
+		}
+		if ( $markInitialized ) {
+			update_site_option( self::INTEGRITY_INITIALIZED, true );
+		}
+	}
+
+	/**
+	 * Record a SHA-256 baseline on the first scan and report every later content
+	 * change independently from the malware heuristics.
+	 *
+	 * @param string $file
+	 * @return void
+	 */
+	private function checkIntegrity( $file ) {
+		if ( self::$integrityBaseline === null ) {
+			$baselineVersion = (int) get_site_option( self::INTEGRITY_BASELINE_VERSION, 0 );
+			if ( $baselineVersion < self::INTEGRITY_SCHEMA_VERSION ) {
+				// Earlier versions could mark a partial scan as a complete baseline.
+				self::$integrityBaseline = array();
+				update_site_option( self::INTEGRITY_INITIALIZED, false );
+				update_site_option( self::INTEGRITY_BASELINE_VERSION, self::INTEGRITY_SCHEMA_VERSION );
+				self::removeIntegrityFindings( $this->model->id );
+			} else {
+				$baseline = get_site_option( self::INTEGRITY_BASELINE, array() );
+				self::$integrityBaseline = is_array( $baseline ) ? $baseline : array();
+			}
+		}
+
+		$path = wp_normalize_path( $file );
+		$hash = hash_file( 'sha256', $file );
+		if ( $hash === false ) {
+			return;
+		}
+
+		$known = isset( self::$integrityBaseline[ $path ] ) ? self::$integrityBaseline[ $path ] : null;
+		$ready = (bool) get_site_option( self::INTEGRITY_INITIALIZED, false );
+		$issueType = false;
+		if ( is_array( $known ) && isset( $known['hash'] ) && ! hash_equals( $known['hash'], $hash ) ) {
+			$issueType = 'integrity_modified';
+		} elseif ( $known === null && $ready ) {
+			$issueType = 'integrity_new';
+		}
+
+		if ( $issueType !== false ) {
+			$item           = new Scan\Model\Result_Item();
+			$item->type     = 'content';
+			$item->parentId = $this->model->id;
+			$item->status   = Scan\Model\Result_Item::STATUS_ISSUE;
+			$item->raw      = array(
+				'file'         => $file,
+				'type'         => $issueType,
+				'previousHash' => is_array( $known ) ? $known['hash'] : null,
+				'currentHash'  => $hash,
+			);
+			$item->save();
+		}
+
+		self::$integrityBaseline[ $path ] = array(
+			'hash'  => $hash,
+			'size'  => filesize( $file ),
+			'mtime' => filemtime( $file ),
+		);
+		self::$integrityBaselineDirty = true;
+	}
+
+	/**
+	 * Remove only integrity findings created from an invalid partial baseline.
+	 *
+	 * @param int $scanId
+	 * @return void
+	 */
+	private static function removeIntegrityFindings( $scanId ) {
+		$items = Scan\Model\Result_Item::findAll( array(
+			'parentId' => $scanId,
+			'type'     => 'content',
+			'status'   => Scan\Model\Result_Item::STATUS_ISSUE,
+		) );
+		foreach ( $items as $item ) {
+			$raw = $item->getRaw();
+			if ( is_array( $raw ) && isset( $raw['type'] ) && strpos( $raw['type'], 'integrity_' ) === 0 ) {
+				$item->delete();
+			}
+		}
 	}
 
 	/**
