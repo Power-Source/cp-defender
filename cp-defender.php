@@ -8,6 +8,7 @@
  * Author URI:  https://psource.eimen.net
  * License:     GNU General Public License (Version 2 - GPLv2)
  * Text Domain: cpsec
+ * Domain Path: /languages/
  * Network: true
  */
 
@@ -109,7 +110,7 @@ class CP_Defender {
 	}
 
 	public function loadTextdomain() {
-		load_plugin_textdomain( $this->domain, false, $this->plugin_path . 'languages' );
+		load_plugin_textdomain( $this->domain, false, dirname( plugin_basename( CP_DEFENDER_FILE ) ) . '/languages/' );
 		
 		// Replace "WordPress" with "ClassicPress" in all plugin texts when running on ClassicPress
 		if ( function_exists( 'classicpress_version' ) ) {

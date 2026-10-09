@@ -31,7 +31,7 @@ class Prevent_Php extends Rule {
 	 * @return string|void
 	 */
 	public function getTitle() {
-		return __( "PHP-Ausführung verhindern", cp_defender()->domain );
+		return __( "PHP-Ausführung verhindern", 'cpsec' );
 	}
 
 

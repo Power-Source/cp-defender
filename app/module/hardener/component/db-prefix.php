@@ -28,7 +28,7 @@ class DB_Prefix extends Rule {
 	}
 
 	public function getTitle() {
-		return __( "Standarddatenbankpräfix ändern", cp_defender()->domain );
+		return __( "Standarddatenbankpräfix ändern", 'cpsec' );
 	}
 
 	function process() {

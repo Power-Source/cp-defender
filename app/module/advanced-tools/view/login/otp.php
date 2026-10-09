@@ -230,15 +230,15 @@ do_action( 'login_header' );
         <p>
 			<?php
 			if ( $loginMethod === 'email' ) {
-				_e( "Gib den 6-stelligen Code ein, den wir dir per E-Mail gesendet haben.", cp_defender()->domain );
+				_e( "Gib den 6-stelligen Code ein, den wir dir per E-Mail gesendet haben.", 'cpsec' );
 			} else {
-				_e( "Öffne die Google Authenticator App und gib den 6-stelligen Passcode ein.", cp_defender()->domain );
+				_e( "Öffne die Google Authenticator App und gib den 6-stelligen Passcode ein.", 'cpsec' );
 			}
 			?>
         </p>
         <input type="text" value="" name="otp">
         <button class="button button-primary float-r"
-                type="submit"><?php _e( "Authentifizieren", cp_defender()->domain ) ?></button>
+                type="submit"><?php _e( "Authentifizieren", 'cpsec' ) ?></button>
         <input type="hidden" name="login_token" value="<?php echo $loginToken ?>"/>
         <input type="hidden" name="redirect_to" value="<?php echo $redirect_to ?>"/>
 		<?php wp_nonce_field( 'DefOtpCheck' ) ?>
@@ -247,7 +247,7 @@ do_action( 'login_header' );
 		<p id="nav">
 			<a class="def-otp-request"
 			   href="<?php echo admin_url( 'admin-ajax.php?action=defResendEmailOTP&token=' . $loginToken . '&nonce=' . wp_create_nonce( 'defResendEmailOTP' ) ) ?>">
-				<?php _e( "Code erneut senden", cp_defender()->domain ) ?></a>
+				<?php _e( "Code erneut senden", 'cpsec' ) ?></a>
 			<img class="def-ajaxloader" src="<?php echo cp_defender()->getPluginUrl() . 'app/module/advanced-tools/img/spinner.svg' ?>"/>
 			<strong class="notification"></strong>
 		</p>
@@ -255,7 +255,7 @@ do_action( 'login_header' );
         <p id="nav">
 			<a class="def-otp-request"
                href="<?php echo admin_url( 'admin-ajax.php?action=defRetrieveOTP&token=' . $loginToken . '&nonce=' . wp_create_nonce( 'defRetrieveOTP' ) ) ?>">
-				<?php _e( "Gerät verloren?", cp_defender()->domain ) ?></a>
+				<?php _e( "Gerät verloren?", 'cpsec' ) ?></a>
 			<img class="def-ajaxloader" src="<?php echo cp_defender()->getPluginUrl() . 'app/module/advanced-tools/img/spinner.svg' ?>"/>
 			<strong class="notification"></strong>
         </p>

@@ -29,11 +29,11 @@ class Scan extends Behavior {
         <div class="dev-box">
             <div class="box-title">
                 <span class="span-icon icon-scan"></span>
-                <h3><?php _e( "DATEI-ÜBERPRÜFUNG", cp_defender()->domain ) ?>
+                <h3><?php _e( "DATEI-ÜBERPRÜFUNG", 'cpsec' ) ?>
                 <?php
                  if($this->countAll > 0):
                 ?>
-                <span class="def-tag tag-error" tooltip="<?php printf(esc_attr__("Du hast %s verdächtige Dateien, die Deine Aufmerksamkeit erfordern.",cp_defender()->domain),$this->countAll) ?>"><?php echo $this->countAll ?></span>
+                <span class="def-tag tag-error" tooltip="<?php printf(esc_attr__("Du hast %s verdächtige Dateien, die Deine Aufmerksamkeit erfordern.",'cpsec'),$this->countAll) ?>"><?php echo $this->countAll ?></span>
                 <?php endif; ?>
                 </h3>
 
@@ -69,13 +69,13 @@ class Scan extends Behavior {
 				?>
                 <input type="hidden" name="action" value="startAScan"/>
                 <button type="submit"
-                        class="button button-small"><?php _e( "SCAN STARTEN", cp_defender()->domain ) ?></button>
+                        class="button button-small"><?php _e( "SCAN STARTEN", 'cpsec' ) ?></button>
             </form>
 			<?php
 		} elseif ( is_object( $activeScan ) && $activeScan->status != \CP_Defender\Module\Scan\Model\Scan::STATUS_ERROR ) {
 			?>
             <img src="<?php echo cp_defender()->getPluginUrl() ?>assets/img/loading.gif" width="18"
-                 height="18"/> <?php _e( "Scanning…", cp_defender()->domain ) ?>
+                 height="18"/> <?php _e( "Scanning…", 'cpsec' ) ?>
 			<?php
 		} elseif ( is_object( $activeScan ) && $activeScan->status == \CP_Defender\Module\Scan\Model\Scan::STATUS_ERROR ) {
 			echo $this->activeScan->statusText;
@@ -99,14 +99,14 @@ class Scan extends Behavior {
 		ob_start();
 		?>
         <div class="line">
-			<?php _e( "Scanne Deine Webseite nach Dateiänderungen, Schwachstellen und eingeschleustem Code und lasse Dich über verdächtige Aktivitäten informieren.", cp_defender()->domain ) ?>
+			<?php _e( "Scanne Deine Webseite nach Dateiänderungen, Schwachstellen und eingeschleustem Code und lasse Dich über verdächtige Aktivitäten informieren.", 'cpsec' ) ?>
         </div>
 		<?php
 		if ( $this->countAll == 0 ) {
 			?>
             <div class="well well-green with-cap mline">
                 <i class="def-icon icon-tick"></i>
-				<?php _e( "Dein Code ist sauber. Alles in Ordnung.", cp_defender()->domain ) ?>
+				<?php _e( "Dein Code ist sauber. Alles in Ordnung.", 'cpsec' ) ?>
             </div>
 			<?php
 		} else {
@@ -115,7 +115,7 @@ class Scan extends Behavior {
             <ul class="dev-list bold end">
                 <li>
                     <div>
-                        <span class="list-label"><?php _e( "WordPress Core", cp_defender()->domain ) ?></span>
+                        <span class="list-label"><?php _e( "WordPress Core", 'cpsec' ) ?></span>
                         <span class="list-detail">
                             <?php echo $model->getCount( 'core' ) == 0 ? ' <i class="def-icon icon-tick"></i>' : '<span class="def-tag tag-error">' . $model->getCount( 'core' ) . '</span>' ?>
                         </span>
@@ -123,7 +123,7 @@ class Scan extends Behavior {
                 </li>
                 <li>
                     <div>
-                        <span class="list-label"><?php _e( "Plugins & Themes", cp_defender()->domain ) ?></span>
+                        <span class="list-label"><?php _e( "Plugins & Themes", 'cpsec' ) ?></span>
                         <span class="list-detail">
                             <?php if ( \CP_Defender\Behavior\Utils::instance()->getAPIKey() ): ?>
 	                            <?php echo $model->getCount( 'vuln' ) == 0 ? ' <i class="def-icon icon-tick"></i>' : '<span class="def-tag tag-error">' . $model->getCount( 'vuln' ) . '</span>' ?>
@@ -133,7 +133,7 @@ class Scan extends Behavior {
                 </li>
                 <li>
                     <div>
-                        <span class="list-label"><?php _e( "Verdächtiger Code", cp_defender()->domain ) ?></span>
+                        <span class="list-label"><?php _e( "Verdächtiger Code", 'cpsec' ) ?></span>
                         <span class="list-detail">
                             <?php echo $model->getCount( 'content' ) == 0 ? ' <i class="def-icon icon-tick"></i>' : '<span class="def-tag tag-error">' . $model->getCount( 'content' ) . '</span>' ?>
                         </span>
@@ -146,7 +146,7 @@ class Scan extends Behavior {
         <div class="row">
             <div class="col-third tl">
                 <a href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-scan' ) ?>"
-                   class="button button-small button-secondary"><?php _e( "BERICHT ANSEHEN", cp_defender()->domain ) ?></a>
+                   class="button button-small button-secondary"><?php _e( "BERICHT ANSEHEN", 'cpsec' ) ?></a>
             </div>
             <div class="col-two-third tr">
                 <p class="status-text">
@@ -154,13 +154,13 @@ class Scan extends Behavior {
 					if ( !empty( Settings::instance()->notification ) ) {
 						switch ( Settings::instance()->frequency ) {
 							case '1':
-								_e( "Automatische Scans werden täglich ausgeführt", cp_defender()->domain );
+								_e( "Automatische Scans werden täglich ausgeführt", 'cpsec' );
 								break;
 							case '7':
-								_e( "Automatische Scans werden wöchentlich ausgeführt", cp_defender()->domain );
+								_e( "Automatische Scans werden wöchentlich ausgeführt", 'cpsec' );
 								break;
 							case '30':
-								_e( "Automatische Scans werden monatlich ausgeführt", cp_defender()->domain );
+								_e( "Automatische Scans werden monatlich ausgeführt", 'cpsec' );
 								break;
 						}
 					}
@@ -177,14 +177,14 @@ class Scan extends Behavior {
 		ob_start();
 		?>
         <div class="line">
-			<?php _e( "Scanne Deine Webseite nach Dateiänderungen, Schwachstellen und eingeschleustem Code und lasse Dich über verdächtige Aktivitäten informieren.", cp_defender()->domain ) ?>
+			<?php _e( "Scanne Deine Webseite nach Dateiänderungen, Schwachstellen und eingeschleustem Code und lasse Dich über verdächtige Aktivitäten informieren.", 'cpsec' ) ?>
         </div>
         <form id="start-a-scan" method="post" class="scan-frm">
 			<?php
 			wp_nonce_field( 'startAScan' );
 			?>
             <input type="hidden" name="action" value="startAScan"/>
-            <button type="submit" class="button button-small"><?php _e( "SCAN STARTEN", cp_defender()->domain ) ?></button>
+            <button type="submit" class="button button-small"><?php _e( "SCAN STARTEN", 'cpsec' ) ?></button>
         </form>
 		<?php
 		return ob_get_clean();
@@ -196,7 +196,7 @@ class Scan extends Behavior {
 		?>
         <div class="wdf-scanning"></div>
         <div class="line">
-			<?php _e( "Defender scannt Deine Dateien nach bösartigem Code. Dies dauert je nach Größe Deiner Webseite einige Minuten.", cp_defender()->domain ) ?>
+			<?php _e( "Defender scannt Deine Dateien nach bösartigem Code. Dies dauert je nach Größe Deiner Webseite einige Minuten.", 'cpsec' ) ?>
         </div>
         <div class="well mline">
             <div class="scan-progress">

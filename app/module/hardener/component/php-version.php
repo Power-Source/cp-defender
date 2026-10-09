@@ -25,7 +25,7 @@ class PHP_Version extends Rule {
 	}
 
 	public function getTitle() {
-		return __( "Aktualisiere PHP auf die neueste Version.", cp_defender()->domain );
+		return __( "Aktualisiere PHP auf die neueste Version.", 'cpsec' );
 	}
 
 	function addHooks() {

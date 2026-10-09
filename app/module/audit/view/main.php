@@ -1,14 +1,14 @@
 <div class="dev-box">
     <div class="box-title">
-        <h3><?php _e( "EREIGNISPROTOKOLLE", cp_defender()->domain ) ?></h3>
-        <button type="button" class="button button-secondary button-small audit-csv"><?php _e( "Export CSV", cp_defender()->domain ) ?></button>
+        <h3><?php _e( "EREIGNISPROTOKOLLE", 'cpsec' ) ?></h3>
+        <button type="button" class="button button-secondary button-small audit-csv"><?php _e( "Export CSV", 'cpsec' ) ?></button>
     </div>
     <div class="box-content">
-        <p class="mline"><?php _e( "Hier findest du deine neuesten Ereignisprotokolle, die zeigen, was im Hintergrund passiert ist.", cp_defender()->domain ) ?></p>
+        <p class="mline"><?php _e( "Hier findest du deine neuesten Ereignisprotokolle, die zeigen, was im Hintergrund passiert ist.", 'cpsec' ) ?></p>
         <div class="well well-white audit-filter mline">
             <form method="post">
                 <strong>
-					<?php _e( "Filter", cp_defender()->domain ) ?>
+					<?php _e( "Filter", 'cpsec' ) ?>
                 </strong>
                 <div class="columns">
                     <div class="column is-5">
@@ -35,7 +35,7 @@
             <div class="clear"></div>
         </div>
         <div id="audit-table-container">
-			<?php _e( "Lade Ereignisse...", cp_defender()->domain ) ?>
+			<?php _e( "Lade Ereignisse...", 'cpsec' ) ?>
         </div>
     </div>
 </div>

@@ -16,7 +16,7 @@ class Media_Audit extends Event_Abstract {
 				'level'        => self::LOG_LEVEL_INFO,
 				'event_type'   => $this->type,
 				'action_type'  => self::ACTION_UPLOADED,
-				'text'         => sprintf( esc_html__( "%s hat die Datei \"%s\" in die Medienbibliothek hochgeladen", cp_defender()->domain ), '{{wp_user}}', '{{file_path}}' ),
+				'text'         => sprintf( esc_html__( "%s hat die Datei \"%s\" in die Medienbibliothek hochgeladen", 'cpsec' ), '{{wp_user}}', '{{file_path}}' ),
 				'program_args' => array(
 					'file_path'  => array(
 						'callable' => 'get_post_meta',
@@ -40,7 +40,7 @@ class Media_Audit extends Event_Abstract {
 				'level'        => self::LOG_LEVEL_INFO,
 				'action_type'  => Audit_API::ACTION_UPDATED,
 				'event_type'   => $this->type,
-				'text'         => sprintf( esc_html__( "%s hat die Datei \"%s\" aus der Medienbibliothek aktualisiert", cp_defender()->domain ), '{{wp_user}}', '{{file_path}}' ),
+				'text'         => sprintf( esc_html__( "%s hat die Datei \"%s\" aus der Medienbibliothek aktualisiert", 'cpsec' ), '{{wp_user}}', '{{file_path}}' ),
 				'program_args' => array(
 					'file_path' => array(
 						'callable' => 'get_post_meta',
@@ -64,7 +64,7 @@ class Media_Audit extends Event_Abstract {
 				'level'        => self::LOG_LEVEL_INFO,
 				'action_type'  => Audit_API::ACTION_DELETED,
 				'event_type'   => $this->type,
-				'text'         => sprintf( esc_html__( "%s hat die Datei \"%s\" aus der Medienbibliothek gelöscht", cp_defender()->domain ), '{{wp_user}}', '{{file_path}}' ),
+				'text'         => sprintf( esc_html__( "%s hat die Datei \"%s\" aus der Medienbibliothek gelöscht", 'cpsec' ), '{{wp_user}}', '{{file_path}}' ),
 				'program_args' => array(
 					'file_path' => array(
 						'callable' => 'get_post_meta',
@@ -88,7 +88,7 @@ class Media_Audit extends Event_Abstract {
 
 	public function dictionary() {
 		return array(
-			self::ACTION_UPLOADED => esc_html__( "Hochgeladen", cp_defender()->domain )
+			self::ACTION_UPLOADED => esc_html__( "Hochgeladen", 'cpsec' )
 		);
 	}
 

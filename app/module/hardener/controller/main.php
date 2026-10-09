@@ -53,7 +53,7 @@ class Main extends Controller {
 		if ( is_object( $rule ) ) {
 			$rule->restore();
 			wp_send_json_success( array(
-				'message' => __( "Sicherheitsoptimierung erfolgreich wiederhergestellt.", cp_defender()->domain ),
+				'message' => __( "Sicherheitsoptimierung erfolgreich wiederhergestellt.", 'cpsec' ),
 				'issues'  => $this->getCount( 'issues' ),
 				'fixed'   => $this->getCount( 'fixed' ),
 				'ignore'  => $this->getCount( 'ignore' )
@@ -71,7 +71,7 @@ class Main extends Controller {
 		if ( is_object( $rule ) ) {
 			$rule->ignore();
 			wp_send_json_success( array(
-				'message' => __( "Sicherheitsoptimierung erfolgreich ignoriert.", cp_defender()->domain ),
+				'message' => __( "Sicherheitsoptimierung erfolgreich ignoriert.", 'cpsec' ),
 				'issues'  => $this->getCount( 'issues' ),
 				'fixed'   => $this->getCount( 'fixed' ),
 				'ignore'  => $this->getCount( 'ignore' )
@@ -87,7 +87,7 @@ class Main extends Controller {
 		do_action( "processRevert" . $slug );
 		//fall back
 		wp_send_json_success( array(
-			'message' => __( "Sicherheitsanpassung erfolgreich rückgängig gemacht.", cp_defender()->domain ),
+			'message' => __( "Sicherheitsanpassung erfolgreich rückgängig gemacht.", 'cpsec' ),
 			'issues'  => $this->getCount( 'issues' ),
 			'fixed'   => $this->getCount( 'fixed' ),
 			'ignore'  => $this->getCount( 'ignore' )
@@ -107,7 +107,7 @@ class Main extends Controller {
 		do_action( "processingHardener" . $slug );
 		//fall back
 		wp_send_json_success( array(
-			'message' => __( "Sicherheitsoptimierung erfolgreich behoben.", cp_defender()->domain ),
+			'message' => __( "Sicherheitsoptimierung erfolgreich behoben.", 'cpsec' ),
 			'issues'  => $this->getCount( 'issues' ),
 			'fixed'   => $this->getCount( 'fixed' ),
 			'ignore'  => $this->getCount( 'ignore' )
@@ -128,7 +128,7 @@ class Main extends Controller {
 		do_action( "processUpdate" . $slug );
 		//fall back
 		wp_send_json_success( array(
-			'message' => __( "Sicherheitsoptimierung erfolgreich aktualisiert.", cp_defender()->domain ),
+			'message' => __( "Sicherheitsoptimierung erfolgreich aktualisiert.", 'cpsec' ),
 			'issues'  => $this->getCount( 'issues' ),
 			'fixed'   => $this->getCount( 'fixed' ),
 			'ignore'  => $this->getCount( 'ignore' ),
@@ -146,7 +146,7 @@ return;
 }
 
 		$cap = is_multisite() ? 'manage_network_options' : 'manage_options';
-		add_submenu_page( 'cp-defender', esc_html__( "Sicherheits-Tweaks", cp_defender()->domain ), esc_html__( "Sicherheits-Tweaks", cp_defender()->domain ), $cap, $this->slug, array(
+		add_submenu_page( 'cp-defender', esc_html__( "Sicherheits-Tweaks", 'cpsec' ), esc_html__( "Sicherheits-Tweaks", 'cpsec' ), $cap, $this->slug, array(
 			&$this,
 			'actionIndex'
 		) );

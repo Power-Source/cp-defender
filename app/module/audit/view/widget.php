@@ -1,37 +1,37 @@
 <div class="dev-box">
     <div class="box-title">
         <span class="span-icon icon-audit"></span>
-        <h3><?php _e( "AUDIT LOGGING", cp_defender()->domain ) ?></h3>
+        <h3><?php _e( "AUDIT LOGGING", 'cpsec' ) ?></h3>
     </div>
     <div class="box-content">
         <?php $widget_stats = isset( $widget_stats ) && is_array( $widget_stats ) ? $widget_stats : array(); ?>
         <div class="line end">
-			<?php printf( __( "In den letzten 24 Stunden wurden <strong>%d Ereignisse</strong> protokolliert.", cp_defender()->domain ), $eventDay ) ?>
+			<?php printf( __( "In den letzten 24 Stunden wurden <strong>%d Ereignisse</strong> protokolliert.", 'cpsec' ), $eventDay ) ?>
         </div>
         <div class="row mline">
             <div class="col-third tc">
                 <strong><?php echo (int) ( $widget_stats['lockout_24h'] ?? 0 ); ?></strong><br/>
-                <span><?php _e( "Lockouts (24h)", cp_defender()->domain ) ?></span>
+                <span><?php _e( "Lockouts (24h)", 'cpsec' ) ?></span>
             </div>
             <div class="col-third tc">
                 <strong><?php echo (int) ( $widget_stats['honeypot'] ?? 0 ); ?></strong><br/>
-                <span><?php _e( "Honeypot blockiert", cp_defender()->domain ) ?></span>
+                <span><?php _e( "Honeypot blockiert", 'cpsec' ) ?></span>
             </div>
             <div class="col-third tc">
                 <strong><?php echo (int) ( $widget_stats['disposable'] ?? 0 ); ?></strong><br/>
-                <span><?php _e( "Disposable blockiert", cp_defender()->domain ) ?></span>
+                <span><?php _e( "Disposable blockiert", 'cpsec' ) ?></span>
             </div>
         </div>
         <ul class="dev-list bold end">
             <li>
                 <div>
-                    <span class="list-label"><?php _e( "Letztes protokolliertes Ereignis", cp_defender()->domain ) ?></span>
+                    <span class="list-label"><?php _e( "Letztes protokolliertes Ereignis", 'cpsec' ) ?></span>
                     <span class="list-detail"><?php echo $lastEvent ?></span>
                 </div>
             </li>
             <li>
                 <div>
-                    <span class="list-label"><?php _e( "In diesem Monat protokollierte Ereignisse", cp_defender()->domain ) ?></span>
+                    <span class="list-label"><?php _e( "In diesem Monat protokollierte Ereignisse", 'cpsec' ) ?></span>
                     <span class="list-detail"><?php echo $eventMonth ?></span>
                 </div>
             </li>
@@ -39,14 +39,14 @@
         <div class="row">
             <div class="col-third tl">
                 <a href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging' ) ?>"
-                   class="button button-small button-secondary"><?php _e( "VIEW LOGS", cp_defender()->domain ) ?></a>
+                   class="button button-small button-secondary"><?php _e( "VIEW LOGS", 'cpsec' ) ?></a>
             </div>
             <div class="col-two-third tr">
                 <p class="status-text"><?php
 					if ( \CP_Defender\Module\Audit\Model\Settings::instance()->notification ) {
-						_e( "Audit-Protokollberichte sind aktiviert", cp_defender()->domain );
+						_e( "Audit-Protokollberichte sind aktiviert", 'cpsec' );
 					} else {
-						_e( "Audit-Protokollberichte sind deaktiviert", cp_defender()->domain );
+						_e( "Audit-Protokollberichte sind deaktiviert", 'cpsec' );
 					}
 					?></p>
             </div>

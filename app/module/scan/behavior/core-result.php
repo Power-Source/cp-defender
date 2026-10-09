@@ -52,11 +52,11 @@ class Core_Result extends Behavior {
 	public function getIssueDetail() {
 		$raw = $this->getRaw();
 		if ( $raw['type'] == 'unknown' ) {
-			return esc_html__( "Unbekannte Datei im WordPress-Kern", cp_defender()->domain );
+			return esc_html__( "Unbekannte Datei im WordPress-Kern", 'cpsec' );
 		} elseif ( $raw['type'] == 'dir' ) {
-			return esc_html__( "Dieses Verzeichnis gehört nicht zum WordPress-Kern", cp_defender()->domain );
+			return esc_html__( "Dieses Verzeichnis gehört nicht zum WordPress-Kern", 'cpsec' );
 		} elseif ( $raw['type'] == 'modified' ) {
-			return esc_html__( "Diese WordPress-Kerndatei scheint verändert worden zu sein", cp_defender()->domain );
+			return esc_html__( "Diese WordPress-Kerndatei scheint verändert worden zu sein", 'cpsec' );
 		}
 	}
 
@@ -70,13 +70,13 @@ class Core_Result extends Behavior {
 		if ( $raw['type'] == 'unknown' ) {
 			$res = unlink( $raw['file'] );
 			if ( $res == false ) {
-				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "PS Security hat nicht genügend Berechtigungen, um diese Datei zu entfernen", cp_defender()->domain ) );
+				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "PS Security hat nicht genügend Berechtigungen, um diese Datei zu entfernen", 'cpsec' ) );
 			}
 			$this->getOwner()->delete();
 
 			return true;
 		} elseif ( $raw['type'] == 'modified' ) {
-			return new \WP_Error( Error_Code::INVALID, __( "Diese Datei kann nicht entfernt werden", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::INVALID, __( "Diese Datei kann nicht entfernt werden", 'cpsec' ) );
 		} elseif ( $raw['type'] == 'dir' ) {
 			$res = $this->deleteFolder( $raw['file'] );
 			if ( is_wp_error( $res ) ) {
@@ -96,11 +96,11 @@ class Core_Result extends Behavior {
 		$originSrc = $this->getOriginalSource();
 		$raw       = $this->getRaw();
 		if ( $raw['type'] != 'modified' ) {
-			return new \WP_Error( Error_Code::INVALID, __( "This file is not resolvable", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::INVALID, __( "This file is not resolvable", 'cpsec' ) );
 		}
 
 		if ( ! is_writeable( $raw['file'] ) ) {
-			return new \WP_Error( Error_Code::NOT_WRITEABLE, sprintf( esc_html__( "It seems the %s file is currently using by another process or isn't writeable.", cp_defender()->domain ), $raw['file'] ) );
+			return new \WP_Error( Error_Code::NOT_WRITEABLE, sprintf( esc_html__( "It seems the %s file is currently using by another process or isn't writeable.", 'cpsec' ), $raw['file'] ) );
 		}
 
 		file_put_contents( $raw['file'], $originSrc, LOCK_EX );
@@ -117,7 +117,7 @@ class Core_Result extends Behavior {
 		ob_start();
 		$raw = $this->getRaw();
 		?>
-        <dialog title="<?php esc_attr_e( "Issue Details", cp_defender()->domain ) ?>"
+        <dialog title="<?php esc_attr_e( "Issue Details", 'cpsec' ) ?>"
                 id="dia_<?php echo $this->getOwner()->id ?>">
             <div class="wpmud">
                 <div class="cp-defender">
@@ -127,7 +127,7 @@ class Core_Result extends Behavior {
                                 <li>
                                     <div>
                                     <span class="list-label">
-                                        <strong><?php _e( "Location", cp_defender()->domain ) ?></strong>
+                                        <strong><?php _e( "Location", 'cpsec' ) ?></strong>
                                     </span>
                                         <span class="list-detail">
                                         <?php echo $this->getSubtitle(); ?>
@@ -137,7 +137,7 @@ class Core_Result extends Behavior {
                                 <li>
                                     <div>
                                     <span class="list-label">
-                                        <strong><?php _e( "Size", cp_defender()->domain ) ?></strong>
+                                        <strong><?php _e( "Size", 'cpsec' ) ?></strong>
                                     </span>
                                         <span class="list-detail">
                                         <?php
@@ -154,7 +154,7 @@ class Core_Result extends Behavior {
                                 <li>
                                     <div>
                                     <span class="list-label">
-                                        <strong><?php _e( "Date Added", cp_defender()->domain ) ?></strong>
+                                        <strong><?php _e( "Date Added", 'cpsec' ) ?></strong>
                                     </span>
                                         <span class="list-detail">
                                         <?php
@@ -184,7 +184,7 @@ class Core_Result extends Behavior {
 								<?php wp_nonce_field( 'ignoreItem' ) ?>
                                 <input type="hidden" name="id" value="<?php echo $this->getOwner()->id ?>"/>
                                 <button type="submit" class="button button-secondary button-small">
-									<?php _e( "Ignore", cp_defender()->domain ) ?></button>
+									<?php _e( "Ignore", 'cpsec' ) ?></button>
                             </form>
 							<?php if ( $raw['type'] == 'unknown' || $raw['type'] == 'dir' ): ?>
                                 <form method="post" class="scan-frm delete-item float-r">
@@ -192,15 +192,15 @@ class Core_Result extends Behavior {
                                     <input type="hidden" name="id" value="<?php echo $this->getOwner()->id ?>"/>
 									<?php wp_nonce_field( 'deleteItem' ) ?>
                                     <button type="button" class="button button-small delete-mitem button-grey">
-										<?php _e( "Delete", cp_defender()->domain ) ?></button>
+										<?php _e( "Delete", 'cpsec' ) ?></button>
                                     <div class="confirm-box wd-hide">
-										<?php _e( "This will permanently remove the selected file/folder. Are you sure you want to continue?", cp_defender()->domain ) ?>
+										<?php _e( "This will permanently remove the selected file/folder. Are you sure you want to continue?", 'cpsec' ) ?>
                                         &nbsp;
                                         <button type="submit" class="button button-small button-grey">
-											<?php _e( "Yes", cp_defender()->domain ) ?>
+											<?php _e( "Yes", 'cpsec' ) ?>
                                         </button>
                                         <button type="button" class="button button-small button-secondary">
-											<?php _e( "No", cp_defender()->domain ) ?>
+											<?php _e( "No", 'cpsec' ) ?>
                                         </button>
                                     </div>
                                 </form>
@@ -210,7 +210,7 @@ class Core_Result extends Behavior {
                                     <input type="hidden" name="action" value="resolveItem"/>
 									<?php wp_nonce_field( 'resolveItem' ) ?>
                                     <button type="submit" class="button button-small">
-										<?php _e( "Restore to Original", cp_defender()->domain ) ?>
+										<?php _e( "Restore to Original", 'cpsec' ) ?>
                                     </button>
                                 </form>
 							<?php endif; ?>
@@ -259,7 +259,7 @@ class Core_Result extends Behavior {
 	private function _dialogContentForAdded() {
 		?>
         <p class="line">
-			<?php _e( "A stray file has been found in your site directory, which your version of WordPress doesn't need. As far as we can tell, the file is harmless (and maybe even from an older WordPress install) so it's safe to ignore it. If you choose to delete the file, we recommend backing up your website beforehand", cp_defender()->domain ) ?>
+			<?php _e( "A stray file has been found in your site directory, which your version of WordPress doesn't need. As far as we can tell, the file is harmless (and maybe even from an older WordPress install) so it's safe to ignore it. If you choose to delete the file, we recommend backing up your website beforehand", 'cpsec' ) ?>
         </p>
 		<?php
 		$ext     = pathinfo( $this->getSubtitle(), PATHINFO_EXTENSION );
@@ -275,7 +275,7 @@ class Core_Result extends Behavior {
             <div class="mline source-code">
                 <img src="<?php echo cp_defender()->getPluginUrl() ?>assets/img/loading.gif" width="18"
                      height="18"/>
-				<?php _e( "Pulling source file...", cp_defender()->domain ) ?>
+				<?php _e( "Pulling source file...", 'cpsec' ) ?>
                 <form method="post" class="float-l pull-src scan-frm">
                     <input type="hidden" name="action" value="pullSrcFile">
 					<?php wp_nonce_field( 'pullSrcFile' ) ?>
@@ -292,12 +292,12 @@ class Core_Result extends Behavior {
 	private function _dialogContentForModified() {
 		?>
         <p class="line">
-			<?php _e( "Compare your file with the original file in the WordPress repository. Pieces highlighted in red will be removed when you patch the file, and pieces highlighted in green will be added.", cp_defender()->domain ) ?>
+			<?php _e( "Compare your file with the original file in the WordPress repository. Pieces highlighted in red will be removed when you patch the file, and pieces highlighted in green will be added.", 'cpsec' ) ?>
         </p>
         <div class="mline source-code">
             <img src="<?php echo cp_defender()->getPluginUrl() ?>assets/img/loading.gif" width="18"
                  height="18"/>
-			<?php _e( "Pulling source file...", cp_defender()->domain ) ?>
+			<?php _e( "Pulling source file...", 'cpsec' ) ?>
             <form method="post" class="float-l pull-src scan-frm">
                 <input type="hidden" name="action" value="pullSrcFile">
 				<?php wp_nonce_field( 'pullSrcFile' ) ?>
@@ -314,12 +314,12 @@ class Core_Result extends Behavior {
 	private function _dialogContentForDir() {
 		?>
         <p>
-			<?php _e( "We found this folder in your WordPress file list. Your current version of WordPress doesn’t use this folder so it might belong to another application. If you don’t recognize it, you can delete this folder (don’t forget to back up your website first!) or get in touch with the PSOURCE support team for more information.", cp_defender()->domain ) ?>
+			<?php _e( "We found this folder in your WordPress file list. Your current version of WordPress doesn’t use this folder so it might belong to another application. If you don’t recognize it, you can delete this folder (don’t forget to back up your website first!) or get in touch with the PSOURCE support team for more information.", 'cpsec' ) ?>
         </p>
         <div class="mline source-code">
             <img src="<?php echo cp_defender()->getPluginUrl() ?>assets/img/loading.gif" width="18"
                  height="18"/>
-			<?php _e( "Pulling source file...", cp_defender()->domain ) ?>
+			<?php _e( "Pulling source file...", 'cpsec' ) ?>
             <form method="post" class="float-l pull-src scan-frm">
                 <input type="hidden" name="action" value="pullSrcFile">
 				<?php wp_nonce_field( 'pullSrcFile' ) ?>
@@ -400,12 +400,12 @@ class Core_Result extends Behavior {
 				$res = @unlink( $file->getRealPath() );
 			}
 			if ( $res == false ) {
-				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "Defender doesn't have enough permission to remove this file", cp_defender()->domain ) );
+				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "Defender doesn't have enough permission to remove this file", 'cpsec' ) );
 			}
 		}
 		$res = @rmdir( $dir );
 		if ( $res == false ) {
-			return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "Defender doesn't have enough permission to remove this file", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "Defender doesn't have enough permission to remove this file", 'cpsec' ) );
 		}
 
 		return true;

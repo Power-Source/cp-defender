@@ -34,14 +34,14 @@ class Scan_Api extends Component {
 
 			$model             = new Scan();
 			$model->status     = Scan::STATUS_INIT;
-			$model->statusText = __( "Initialisierung...", cp_defender()->domain );
+			$model->statusText = __( "Initialisierung...", 'cpsec' );
 			$model->currentFile = '';
 			$model->skippedFiles = 0;
 			$model->save();
 
 			return $model;
 		} else {
-			return new \WP_Error( Error_Code::INVALID, __( "Ein Scan läuft bereits", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::INVALID, __( "Ein Scan läuft bereits", 'cpsec' ) );
 		}
 	}
 
@@ -346,7 +346,7 @@ class Scan_Api extends Component {
 		$model = self::getActiveScan();
 		$start = microtime( true );
 		if ( ! is_object( $model ) ) {
-			return new \WP_Error( Error_Code::INVALID, __( "Es existiert kein Scan-Datensatz.", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::INVALID, __( "Es existiert kein Scan-Datensatz.", 'cpsec' ) );
 		}
 
 		if ( $model->status == Scan::STATUS_ERROR ) {
@@ -386,13 +386,13 @@ class Scan_Api extends Component {
 				//this is newly, we will update the status text here
 				switch ( $step ) {
 					case 'core':
-						$model->statusText = __( "Analysiere WordPress Core...", cp_defender()->domain );
+						$model->statusText = __( "Analysiere WordPress Core...", 'cpsec' );
 						break;
 					case 'content':
-						$model->statusText = __( "Analysiere WordPress Inhalt...", cp_defender()->domain );
+						$model->statusText = __( "Analysiere WordPress Inhalt...", 'cpsec' );
 						break;
 					case 'vuln':
-						$model->statusText = __( "Überprüfe veröffentlichte Schwachstellen in deinen Plugins & Themes...", cp_defender()->domain );
+						$model->statusText = __( "Überprüfe veröffentlichte Schwachstellen in deinen Plugins & Themes...", 'cpsec' );
 						break;
 				}
 				$model->save();

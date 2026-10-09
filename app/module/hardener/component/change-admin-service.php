@@ -85,19 +85,19 @@ class Change_Admin_Service extends Rule_Service implements IRule_Service {
 			$username = $this->username;
 		}
 		if ( strlen( $username ) == 0 ) {
-			return new \WP_Error( Error_Code::VALIDATE, __( "Der Benutzername darf nicht leer sein!", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::VALIDATE, __( "Der Benutzername darf nicht leer sein!", 'cpsec' ) );
 		}
 		if ( strtolower( $username ) == 'admin' ) {
-			return new \WP_Error( Error_Code::VALIDATE, __( "Du kannst admin nicht erneut als Benutzernamen verwenden!", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::VALIDATE, __( "Du kannst admin nicht erneut als Benutzernamen verwenden!", 'cpsec' ) );
 		}
 
 		if ( ! validate_username( $username ) ) {
-			return new \WP_Error( Error_Code::VALIDATE, __( "Der Benutzername ist ungültig!", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::VALIDATE, __( "Der Benutzername ist ungültig!", 'cpsec' ) );
 		}
 
 		//now check if the username unique
 		if ( username_exists( $username ) ) {
-			return new \WP_Error( Error_Code::VALIDATE, __( "Der Benutzername existiert bereits!", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::VALIDATE, __( "Der Benutzername existiert bereits!", 'cpsec' ) );
 		}
 
 		return true;

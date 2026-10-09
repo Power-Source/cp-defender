@@ -23,7 +23,7 @@ class Disable_Trackback extends Rule {
 	}
 
 	public function getTitle() {
-		return __( "Trackbacks und Pingbacks deaktivieren", cp_defender()->domain );
+		return __( "Trackbacks und Pingbacks deaktivieren", 'cpsec' );
 	}
 
 	function addHooks() {

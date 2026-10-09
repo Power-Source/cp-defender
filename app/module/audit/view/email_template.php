@@ -413,10 +413,10 @@
 											<tr style="padding: 0; text-align: left; vertical-align: top;">
 												<td class="hero-title"
 												    style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; padding-bottom: 18px; text-align: left; vertical-align: bottom; word-wrap: break-word;">
-													<h2 style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 30px; font-weight: 700; line-height: 1em; margin: 0; margin-bottom: 0; padding: 0; padding-left: 9px; text-align: left; text-transform: uppercase; word-wrap: normal;"><?php _e( "Audit Update From", cp_defender()->domain ) ?></h2>
+													<h2 style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 30px; font-weight: 700; line-height: 1em; margin: 0; margin-bottom: 0; padding: 0; padding-left: 9px; text-align: left; text-transform: uppercase; word-wrap: normal;"><?php _e( "Audit Update From", 'cpsec' ) ?></h2>
 													<h1 class="plugin-brand"
 													    style="Margin: 0; Margin-bottom: 0; color: #ff5c28; font-family: Helvetica, Arial, sans-serif; font-size: 60px; font-weight: 700; line-height: 1em; margin: 0; margin-bottom: 0; padding: 0; padding-left: 6px; text-align: left; text-transform: uppercase; word-wrap: normal;">
-														<?php _e("PS Security!",cp_defender()->domain) ?></h1>
+														<?php _e("PS Security!",'cpsec') ?></h1>
 												</td>
 												<td class="hero-image"
 												    style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;">
@@ -451,7 +451,7 @@
 											<tr style="padding: 0; text-align: left; vertical-align: top;">
 												<td class="related-items-title brand" align="left"
 												    style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #3eb4e4; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; padding-bottom: 10px; text-align: left; vertical-align: top; word-wrap: break-word;">
-													<?php esc_html_e( "PSOURCE Plugins, die einen Versuch wert sind", cp_defender()->domain ) ?>
+													<?php esc_html_e( "PSOURCE Plugins, die einen Versuch wert sind", 'cpsec' ) ?>
 												</td>
 											</tr>
 											<tr style="padding: 0; text-align: left; vertical-align: top;">
@@ -472,9 +472,9 @@
 																		style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: table-cell; max-width: 100%; outline: none; text-decoration: none; width: auto;">
 																	<span class="plugin-info"
 																	      style="display: table-cell; padding-left: 10px; vertical-align: bottom;">
-                                              <span><?php esc_html_e( "Optimiere deine Seite mit", cp_defender()->domain ) ?></span>
+                                              <span><?php esc_html_e( "Optimiere deine Seite mit", 'cpsec' ) ?></span>
                                               <span class="plugin-title hummingbird"
-                                                    style="color: #febd30; display: block;"><strong><?php esc_html_e( "PSOURCE Toolkit", cp_defender()->domain ) ?></strong></span>
+                                                    style="color: #febd30; display: block;"><strong><?php esc_html_e( "PSOURCE Toolkit", 'cpsec' ) ?></strong></span>
                                               </span>
 																</a>
 															</th>
@@ -491,9 +491,9 @@
 																		style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: table-cell; max-width: 100%; outline: none; text-decoration: none; width: auto;">
 																	<span class="plugin-info"
 																	      style="display: table-cell; padding-left: 10px; vertical-align: bottom;">
-                                              <span><?php esc_html_e( "Back-Up deine harte Arbeit mit", cp_defender()->domain ) ?></span>
+                                              <span><?php esc_html_e( "Back-Up deine harte Arbeit mit", 'cpsec' ) ?></span>
                                               <span class="plugin-title snapshot"
-                                                    style="color: #642486; display: block;"><strong><?php _e( "PS Snapshot", cp_defender()->domain ) ?></strong></span>
+                                                    style="color: #642486; display: block;"><strong><?php _e( "PS Snapshot", 'cpsec' ) ?></strong></span>
                                               </span>
 																</a>
 															</th>
@@ -527,7 +527,7 @@
 														<th class="small-12 large-8 columns first copy" align="center"
 															style="Margin: 0 auto; color: #707070; font-family: Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; line-height: 20px; margin: 0 auto; padding: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; text-align: left; width: 394.66667px;">
 																<p style="Margin: 0; Margin-bottom: 0; color: #707070; font-family: Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; line-height: 20px; margin: 0; margin-bottom: 0; padding: 0; text-align: center;">
-																	<?php printf( __( "<a href=\"%s\">Berichtseinstellungen konfigurieren</a>", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging', array( 'view' => 'report' ) ) ) ?>
+																	<?php printf( __( "<a href=\"%s\">Berichtseinstellungen konfigurieren</a>", 'cpsec' ), \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-logging', array( 'view' => 'report' ) ) ) ?>
 																</p>
 														</th>
 													</tr>

@@ -51,7 +51,7 @@ class Dashboard extends Controller {
 		if ( isset( $submenu['cp-defender'] ) ) {
 			$defender_menu = $submenu['cp-defender'];
 			//$defender_menu[6][4] = 'wd-menu-hide';
-			$defender_menu[0][0]    = esc_html__( "Dashboard", cp_defender()->domain );
+			$defender_menu[0][0]    = esc_html__( "Dashboard", 'cpsec' );
 			$defender_menu          = array_values( $defender_menu );
 			$submenu['cp-defender'] = $defender_menu;
 		}
@@ -294,9 +294,9 @@ class Dashboard extends Controller {
 			return;
 		}
 		
-		$menu_title = esc_html__( "PS Security", cp_defender()->domain );
+		$menu_title = esc_html__( "PS Security", 'cpsec' );
 		//$menu_title = sprintf( $menu_title, $indicator );
-		add_menu_page( esc_html__( "PS Security", cp_defender()->domain ), $menu_title, $cap, 'cp-defender', array(
+		add_menu_page( esc_html__( "PS Security", 'cpsec' ), $menu_title, $cap, 'cp-defender', array(
 			&$this,
 			'actionIndex'
 		), $this->get_menu_icon() );
@@ -328,10 +328,10 @@ class Dashboard extends Controller {
 		\WDEV_Plugin_Ui::load( cp_defender()->getPluginUrl() . 'shared-ui/' );
 		wp_enqueue_script( 'defender' );
 		$data = array(
-			'activator_title'  => __( "QUICK SETUP", cp_defender()->domain ) . '<form method="post" class="skip-activator float-r"><input type="hidden" name="action" value="skipActivator"/>' . wp_nonce_field( 'skipActivator', '_wpnonce', true, false ) . '<button type="submit" class="button button-small button-secondary">' . __( "Skip", cp_defender()->domain ) . '</button></form>',
-			'activate_scan'    => __( "Activating File Scanning...", cp_defender()->domain ),
-			'activate_audit'   => __( "Activating Audit Module...", cp_defender()->domain ),
-			'activate_lockout' => __( "Activating IP Lockouts Module...", cp_defender()->domain )
+			'activator_title'  => __( "QUICK SETUP", 'cpsec' ) . '<form method="post" class="skip-activator float-r"><input type="hidden" name="action" value="skipActivator"/>' . wp_nonce_field( 'skipActivator', '_wpnonce', true, false ) . '<button type="submit" class="button button-small button-secondary">' . __( "Skip", 'cpsec' ) . '</button></form>',
+			'activate_scan'    => __( "Activating File Scanning...", 'cpsec' ),
+			'activate_audit'   => __( "Activating Audit Module...", 'cpsec' ),
+			'activate_lockout' => __( "Activating IP Lockouts Module...", 'cpsec' )
 		);
 		wp_enqueue_style( 'defender' );
 		wp_localize_script( 'defender', 'dashboard', $data );

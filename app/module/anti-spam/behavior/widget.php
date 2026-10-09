@@ -28,10 +28,10 @@ class Widget extends Behavior {
         <div class="dev-box antispam-widget">
             <div class="box-title">
                 <span class="span-icon" style="background: #4CAF50;" aria-hidden="true">🛡️</span>
-                <h3><?php _e( "Anti-Spam", cp_defender()->domain ) ?>
+                <h3><?php _e( "Anti-Spam", 'cpsec' ) ?>
 					<?php if ( $suspicious > 0 ): ?>
                         <span class="def-tag tag-yellow"
-                              tooltip="<?php esc_attr_e( sprintf( __('%d verdächtige Blog-Registrierung(en) benötigen Aufmerksamkeit.', cp_defender()->domain ), $suspicious ) ); ?>">
+                              tooltip="<?php esc_attr_e( sprintf( __('%d verdächtige Blog-Registrierung(en) benötigen Aufmerksamkeit.', 'cpsec' ), $suspicious ) ); ?>">
                             <?php echo $suspicious; ?>
                         </span>
 					<?php endif; ?>
@@ -39,7 +39,7 @@ class Widget extends Behavior {
             </div>
             <div class="box-content">
                 <div class="line <?php echo $suspicious ? 'end' : ''; ?>">
-					<?php _e( "Das Anti-Spam-Modul schützt deine Multisite-Installation vor Spam-Blog-Registrierungen durch Pattern-Matching, IP-Reputation-Tracking und Rate-Limiting.", cp_defender()->domain ); ?>
+					<?php _e( "Das Anti-Spam-Modul schützt deine Multisite-Installation vor Spam-Blog-Registrierungen durch Pattern-Matching, IP-Reputation-Tracking und Rate-Limiting.", 'cpsec' ); ?>
                 </div>
 				
 				<?php if ( $suspicious > 0 ): ?>
@@ -49,7 +49,7 @@ class Widget extends Behavior {
                                 <a href="<?php echo network_admin_url( 'admin.php?page=cp-defender-antispam-moderation' ); ?>">
                                     <span class="list-label">
                                         <i class="def-icon icon-h-warning"></i>
-                                        <?php echo sprintf( __( '%d verdächtige Blog-Registrierung(en)', cp_defender()->domain ), $suspicious ); ?>
+                                        <?php echo sprintf( __( '%d verdächtige Blog-Registrierung(en)', 'cpsec' ), $suspicious ); ?>
                                     </span>
                                 </a>
                             </div>
@@ -58,7 +58,7 @@ class Widget extends Behavior {
                         <li>
                             <div>
                                 <span class="list-label">
-                                    <?php echo sprintf( __( '%d als Spam markiert', cp_defender()->domain ), $counts['spam'] ); ?>
+                                    <?php echo sprintf( __( '%d als Spam markiert', 'cpsec' ), $counts['spam'] ); ?>
                                 </span>
                             </div>
                         </li>
@@ -67,7 +67,7 @@ class Widget extends Behavior {
                     <li>
                         <div>
                             <span class="list-label">
-                                <?php echo sprintf( __( '%d Honeypot-Blockierungen', cp_defender()->domain ), $honeypot_blocked ); ?>
+                                <?php echo sprintf( __( '%d Honeypot-Blockierungen', 'cpsec' ), $honeypot_blocked ); ?>
                             </span>
                         </div>
                     </li>
@@ -76,7 +76,7 @@ class Widget extends Behavior {
                     <li>
                         <div>
                             <span class="list-label">
-                                <?php echo sprintf( __( '%d Wegwerf-E-Mail-Blockierungen', cp_defender()->domain ), $disposable_total ); ?>
+                                <?php echo sprintf( __( '%d Wegwerf-E-Mail-Blockierungen', 'cpsec' ), $disposable_total ); ?>
                             </span>
                         </div>
                     </li>
@@ -85,7 +85,7 @@ class Widget extends Behavior {
 				<?php else: ?>
                     <div class="well well-green with-cap mline">
                         <i class="def-icon icon-tick"></i>
-						<?php _e( "Keine verdächtigen Blog-Registrierungen gefunden. Gute Arbeit!", cp_defender()->domain ); ?>
+						<?php _e( "Keine verdächtigen Blog-Registrierungen gefunden. Gute Arbeit!", 'cpsec' ); ?>
                     </div>
                     <?php if ( $honeypot_blocked > 0 || $disposable_total > 0 ): ?>
                     <ul class="dev-list end">
@@ -93,7 +93,7 @@ class Widget extends Behavior {
                         <li>
                             <div>
                                 <span class="list-label">
-                                    <?php echo sprintf( __( '%d Honeypot-Blockierungen', cp_defender()->domain ), $honeypot_blocked ); ?>
+                                    <?php echo sprintf( __( '%d Honeypot-Blockierungen', 'cpsec' ), $honeypot_blocked ); ?>
                                 </span>
                             </div>
                         </li>
@@ -102,7 +102,7 @@ class Widget extends Behavior {
                         <li>
                             <div>
                                 <span class="list-label">
-                                    <?php echo sprintf( __( '%d Wegwerf-E-Mail-Blockierungen', cp_defender()->domain ), $disposable_total ); ?>
+                                    <?php echo sprintf( __( '%d Wegwerf-E-Mail-Blockierungen', 'cpsec' ), $disposable_total ); ?>
                                 </span>
                             </div>
                         </li>
@@ -115,13 +115,13 @@ class Widget extends Behavior {
                     <div class="col-third tl">
                         <a href="<?php echo network_admin_url( 'admin.php?page=cp-defender-antispam-settings' ); ?>"
                            class="button button-small button-secondary">
-							<?php _e( "EINSTELLUNGEN", cp_defender()->domain ); ?>
+							<?php _e( "EINSTELLUNGEN", 'cpsec' ); ?>
                         </a>
                     </div>
                     <div class="col-third tl">
                         <a href="<?php echo network_admin_url( 'admin.php?page=cp-defender-antispam-stats' ); ?>"
                            class="button button-small button-secondary">
-							<?php _e( "STATISTIKEN", cp_defender()->domain ); ?>
+							<?php _e( "STATISTIKEN", 'cpsec' ); ?>
                         </a>
                     </div>
                 </div>

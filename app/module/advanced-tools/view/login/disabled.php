@@ -1,51 +1,51 @@
 <div class="wrap">
-    <h2><?php _e( "Sicherheit", cp_defender()->domain ) ?></h2>
+    <h2><?php _e( "Sicherheit", 'cpsec' ) ?></h2>
     <table class="form-table">
         <tbody>
         <tr class="user-sessions-wrap hide-if-no-js">
-            <th><?php _e( "Zwei-Faktor-Authentifizierung", cp_defender()->domain ) ?></th>
+            <th><?php _e( "Zwei-Faktor-Authentifizierung", 'cpsec' ) ?></th>
             <td aria-live="assertive">
                 <div id="def2">
                     <div class="destroy-sessions">
                         <button type="button" class="button" id="show2AuthActivator">
-							<?php _e( "Aktivieren", cp_defender()->domain ) ?>
+							<?php _e( "Aktivieren", 'cpsec' ) ?>
                         </button>
                     </div>
                     <p class="description">
-						<?php _e( "Wähle eine der vom Netzwerk erlaubten Methoden für den zweiten Faktor.", cp_defender()->domain ) ?>
+						<?php _e( "Wähle eine der vom Netzwerk erlaubten Methoden für den zweiten Faktor.", 'cpsec' ) ?>
                     </p>
                 </div>
                 <div id="def2qr">
                     <button type="button" id="hide2AuthActivator"
-                            class="button"><?php _e( "Abbrechen", cp_defender()->domain ) ?></button>
-                    <p><?php _e( "Wähle zuerst deine bevorzugte Methode.", cp_defender()->domain ) ?></p>
+                            class="button"><?php _e( "Abbrechen", 'cpsec' ) ?></button>
+                    <p><?php _e( "Wähle zuerst deine bevorzugte Methode.", 'cpsec' ) ?></p>
 					<?php if ( empty( $allowAppAuth ) && empty( $allowEmailAuth ) ): ?>
-                        <p class="error"><?php _e( "Der Administrator hat aktuell keine Zwei-Faktor-Methode freigegeben.", cp_defender()->domain ) ?></p>
+                        <p class="error"><?php _e( "Der Administrator hat aktuell keine Zwei-Faktor-Methode freigegeben.", 'cpsec' ) ?></p>
 					<?php endif; ?>
                     <p>
 						<?php if ( ! empty( $allowAppAuth ) ): ?>
                             <label>
                                 <input type="radio" name="def_auth_method" value="app" <?php checked( ! isset( $authMethod ) || $authMethod !== 'email' || empty( $allowEmailAuth ) ); ?>/>
-								<?php _e( "Authenticator-App", cp_defender()->domain ) ?>
+								<?php _e( "Authenticator-App", 'cpsec' ) ?>
                             </label>
 						<?php endif; ?>
 						<?php if ( ! empty( $allowEmailAuth ) ): ?>
                             &nbsp;&nbsp;
                             <label>
                                 <input type="radio" name="def_auth_method" value="email" <?php checked( ( isset( $authMethod ) && $authMethod === 'email' ) || empty( $allowAppAuth ) ); ?>/>
-								<?php _e( "E-Mail-Code", cp_defender()->domain ) ?>
+								<?php _e( "E-Mail-Code", 'cpsec' ) ?>
                             </label>
 						<?php endif; ?>
                     </p>
                     <?php if ( ! empty( $allowAppAuth ) ): ?>
                     <div id="def2qr-app">
-                        <p><?php _e( "Verwende die Google Authenticator App, um dich mit einem separaten Passcode anzumelden.", cp_defender()->domain ) ?></p>
+                        <p><?php _e( "Verwende die Google Authenticator App, um dich mit einem separaten Passcode anzumelden.", 'cpsec' ) ?></p>
                     <div class="card">
                         <p>
-                            <strong><?php _e( "1. Installiere die Verifizierungs-App", cp_defender()->domain ) ?></strong>
+                            <strong><?php _e( "1. Installiere die Verifizierungs-App", 'cpsec' ) ?></strong>
                         </p>
                         <p>
-							<?php _e( "Lade die Google Authenticator App auf dein Gerät herunter und installiere sie über die untenstehenden Links.", cp_defender()->domain ) ?>
+							<?php _e( "Lade die Google Authenticator App auf dein Gerät herunter und installiere sie über die untenstehenden Links.", 'cpsec' ) ?>
                         </p>
                         <a href="https://itunes.apple.com/vn/app/google-authenticator/id388497605?mt=8">
                             <img src="<?php echo cp_defender()->getPluginUrl() . 'assets/img/ios-download.svg' ?>"/>
@@ -54,24 +54,24 @@
                             <img src="<?php echo cp_defender()->getPluginUrl() . 'assets/img/android-download.svg' ?>"/>
                         </a>
                         <div class="line"></div>
-                        <p><strong><?php _e( "2. Scanne den Barcode", cp_defender()->domain ) ?></strong></p>
-                        <p><?php _e( "Öffne die Google Authenticator App, die du gerade heruntergeladen hast, tippe auf das „+“-Symbol und verwende dann die Kamera deines Telefons, um den untenstehenden Barcode zu scannen.", cp_defender()->domain ) ?></p>
+                        <p><strong><?php _e( "2. Scanne den Barcode", 'cpsec' ) ?></strong></p>
+                        <p><?php _e( "Öffne die Google Authenticator App, die du gerade heruntergeladen hast, tippe auf das „+“-Symbol und verwende dann die Kamera deines Telefons, um den untenstehenden Barcode zu scannen.", 'cpsec' ) ?></p>
                             <?php $otpAuthUri = \CP_Defender\Module\Advanced_Tools\Component\Auth_API::getOtpAuthUri( get_site_url(), $secretKey, 'cp-defender' ); ?>
                         <img class="barcode"
                                 src="<?php echo \CP_Defender\Module\Advanced_Tools\Component\Auth_API::generateQRCode( get_site_url(), $secretKey, 149, 149, 'cp-defender' ) ?>"
                                 onerror="this.onerror=null;this.src='https://quickchart.io/qr?size=149&text=<?php echo rawurlencode( $otpAuthUri ) ?>';"/>
-                            <p><?php _e( "Falls der Barcode nicht angezeigt wird, richte die App manuell mit diesem Key ein:", cp_defender()->domain ) ?></p>
+                            <p><?php _e( "Falls der Barcode nicht angezeigt wird, richte die App manuell mit diesem Key ein:", 'cpsec' ) ?></p>
                             <p><code><?php echo esc_html( $secretKey ) ?></code></p>
                         <div class="line"></div>
-                        <p><strong><?php _e( "3. Gib den Passcode ein", cp_defender()->domain ) ?></strong></p>
+                        <p><strong><?php _e( "3. Gib den Passcode ein", 'cpsec' ) ?></strong></p>
                         <p>
-							<?php _e( "Gib den 6-stelligen Passcode, der auf deinem Gerät angezeigt wird, in das untenstehende Eingabefeld ein und klicke auf „Verifizieren“.", cp_defender()->domain ) ?>
+							<?php _e( "Gib den 6-stelligen Passcode, der auf deinem Gerät angezeigt wird, in das untenstehende Eingabefeld ein und klicke auf „Verifizieren“.", 'cpsec' ) ?>
                         </p>
                         <div class="well">
                             <p class="error"></p>
                             <input type="text" id="otpCode" class="def-small-text">
                             <button type="button" class="button button-primary" id="verifyOTP">
-								<?php _e( "Verifizieren", cp_defender()->domain ) ?>
+								<?php _e( "Verifizieren", 'cpsec' ) ?>
                             </button>
                             <input type="hidden" id="defNonce" value="<?php echo wp_create_nonce( 'defVerifyOTP' ) ?>"/>
                         </div>
@@ -80,11 +80,11 @@
                     <?php endif; ?>
                     <?php if ( ! empty( $allowEmailAuth ) ): ?>
                     <div id="def2qr-email" class="card">
-                        <p><strong><?php _e( "E-Mail-Code aktivieren", cp_defender()->domain ) ?></strong></p>
-                        <p><?php _e( "Bei jeder Anmeldung wird ein 6-stelliger Code an deine E-Mail-Adresse gesendet.", cp_defender()->domain ) ?></p>
+                        <p><strong><?php _e( "E-Mail-Code aktivieren", 'cpsec' ) ?></strong></p>
+                        <p><?php _e( "Bei jeder Anmeldung wird ein 6-stelliger Code an deine E-Mail-Adresse gesendet.", 'cpsec' ) ?></p>
                         <p class="error"></p>
                         <button type="button" class="button button-primary" id="enableEmailOTP">
-							<?php _e( "E-Mail-Verifizierung aktivieren", cp_defender()->domain ) ?>
+							<?php _e( "E-Mail-Verifizierung aktivieren", 'cpsec' ) ?>
                         </button>
                         <input type="hidden" id="defEnableEmailNonce" value="<?php echo wp_create_nonce( 'defEnableEmailOTP' ) ?>"/>
                     </div>
@@ -178,7 +178,7 @@
                         location.reload();
                     } else {
                         that.removeAttr('disabled');
-                        parent.find('.error').text('<?php echo esc_js( __( "Aktivierung fehlgeschlagen. Bitte versuche es erneut.", cp_defender()->domain ) ) ?>');
+                        parent.find('.error').text('<?php echo esc_js( __( "Aktivierung fehlgeschlagen. Bitte versuche es erneut.", 'cpsec' ) ) ?>');
                     }
                 }
             })

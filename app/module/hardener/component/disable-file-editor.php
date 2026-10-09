@@ -19,7 +19,7 @@ class Disable_File_Editor extends Rule {
 	}
 
 	public function getTitle() {
-		return __( "Deaktiviere den Dateieditor.", cp_defender()->domain );
+		return __( "Deaktiviere den Dateieditor.", 'cpsec' );
 	}
 
 	function addHooks() {

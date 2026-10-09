@@ -1,7 +1,7 @@
 <div class="dev-box">
     <div class="box-title">
         <h3 class="def-issues-title">
-			<?php _e( "Issues", cp_defender()->domain ) ?>
+			<?php _e( "Issues", 'cpsec' ) ?>
 			<?php $issues = $model->countAll( \CP_Defender\Module\Scan\Model\Result_Item::STATUS_ISSUE );
 			if ( $issues ) {
 				?>
@@ -11,14 +11,14 @@
 			?>
         </h3>
         <!--        <div>-->
-        <!--            <span>--><?php //_e( "Type", cp_defender()->domain ) ?><!--</span>-->
+        <!--            <span>--><?php //_e( "Type", 'cpsec' ) ?><!--</span>-->
         <!--            <select>-->
-        <!--                <option value="all">--><?php //_e( "All", cp_defender()->domain ) ?><!--</option>-->
-        <!--                <option value="core">--><?php //_e( "Core", cp_defender()->domain ) ?><!--</option>-->
+        <!--                <option value="all">--><?php //_e( "All", 'cpsec' ) ?><!--</option>-->
+        <!--                <option value="core">--><?php //_e( "Core", 'cpsec' ) ?><!--</option>-->
         <!--                <option value="plugins">-->
-		<?php //_e( "Plugins & Themes", cp_defender()->domain ) ?><!--</option>-->
+		<?php //_e( "Plugins & Themes", 'cpsec' ) ?><!--</option>-->
         <!--                <option value="suspicious">-->
-		<?php //_e( "Suspicious", cp_defender()->domain ) ?><!--</option>-->
+		<?php //_e( "Suspicious", 'cpsec' ) ?><!--</option>-->
         <!--            </select>-->
         <!--        </div>-->
     </div>
@@ -27,14 +27,14 @@
 		$table->prepare_items();
 		if ( $table->get_pagination_arg( 'total_items' ) > 0 ) {
 			?>
-            <p class="line"><?php _e( "PS Security hat potenziell schädliche Dateien auf Deiner Webseite gefunden. In vielen Fällen erkennt der Sicherheitsscan harmlose Dateien, in manchen Fällen möchtest Du jedoch möglicherweise die unten aufgeführten, verdächtigen Dateien entfernen.", cp_defender()->domain ) ?></p>
+            <p class="line"><?php _e( "PS Security hat potenziell schädliche Dateien auf Deiner Webseite gefunden. In vielen Fällen erkennt der Sicherheitsscan harmlose Dateien, in manchen Fällen möchtest Du jedoch möglicherweise die unten aufgeführten, verdächtigen Dateien entfernen.", 'cpsec' ) ?></p>
 			<?php
 			$table->display();
 		} else {
 			?>
             <div class="well well-green with-cap">
                 <i class="def-icon icon-tick" aria-hidden="true"></i>
-				<?php _e( "Dein Code ist derzeit sauber! Während des letzten Scans wurden keine Probleme gefunden, aber Du kannst jederzeit einen neuen Scan durchführen.", cp_defender()->domain ) ?>
+				<?php _e( "Dein Code ist derzeit sauber! Während des letzten Scans wurden keine Probleme gefunden, aber Du kannst jederzeit einen neuen Scan durchführen.", 'cpsec' ) ?>
             </div>
 			<?php
 		}

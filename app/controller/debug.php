@@ -26,7 +26,7 @@ class Debug extends Controller {
 	 */
 	public function adminMenu() {
 		$cap = is_multisite() ? 'manage_network_options' : 'manage_options';
-		add_submenu_page( 'cp-defender', esc_html__( "Debug", cp_defender()->domain ), esc_html__( "Debug", cp_defender()->domain ), $cap, $this->slug, array(
+		add_submenu_page( 'cp-defender', esc_html__( "Debug", 'cpsec' ), esc_html__( "Debug", 'cpsec' ), $cap, $this->slug, array(
 			&$this,
 			'actionIndex'
 		) );

@@ -212,15 +212,15 @@ class Audit_API extends Component {
 	 */
 	public static function dictionary() {
 		return array(
-			self::ACTION_TRASHED  => esc_html__( "zerstört", cp_defender()->domain ),
-			self::ACTION_UPDATED  => esc_html__( "aktualisiert", cp_defender()->domain ),
-			self::ACTION_DELETED  => esc_html__( "gelöscht", cp_defender()->domain ),
-			self::ACTION_ADDED    => esc_html__( "erstellt", cp_defender()->domain ),
-			self::ACTION_RESTORED => esc_html__( "wiederhergestellt", cp_defender()->domain ),
-			'login_lockout'       => esc_html__( "Login-Sperre", cp_defender()->domain ),
-			'404_lockout'         => esc_html__( "404-Sperre", cp_defender()->domain ),
-			'ip_lockout'          => esc_html__( "IP-Sperre", cp_defender()->domain ),
-			'lockout'             => esc_html__( "Sperre", cp_defender()->domain ),
+			self::ACTION_TRASHED  => esc_html__( "zerstört", 'cpsec' ),
+			self::ACTION_UPDATED  => esc_html__( "aktualisiert", 'cpsec' ),
+			self::ACTION_DELETED  => esc_html__( "gelöscht", 'cpsec' ),
+			self::ACTION_ADDED    => esc_html__( "erstellt", 'cpsec' ),
+			self::ACTION_RESTORED => esc_html__( "wiederhergestellt", 'cpsec' ),
+			'login_lockout'       => esc_html__( "Login-Sperre", 'cpsec' ),
+			'404_lockout'         => esc_html__( "404-Sperre", 'cpsec' ),
+			'ip_lockout'          => esc_html__( "IP-Sperre", 'cpsec' ),
+			'lockout'             => esc_html__( "Sperre", 'cpsec' ),
 		);
 	}
 

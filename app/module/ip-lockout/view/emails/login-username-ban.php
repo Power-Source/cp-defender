@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width">
-    <title><?php _e( "New Login Lockout", cp_defender()->domain ) ?></title>
+    <title><?php _e( "New Login Lockout", 'cpsec' ) ?></title>
     <style>
         a.plugin-brand:hover {
             color: #e23717 !important;
@@ -414,10 +414,10 @@
                                                 <td class="hero-title"
                                                     style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; padding-bottom: 18px; text-align: left; vertical-align: bottom; word-wrap: break-word;">
                                                     <h2 style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 30px; font-weight: 700; line-height: 1em; margin: 0; margin-bottom: 0; padding: 0; padding-left: 9px; text-align: left; text-transform: uppercase; word-wrap: normal;">
-														<?php esc_html_e( "Geschützt durch", cp_defender()->domain ) ?></h2>
+														<?php esc_html_e( "Geschützt durch", 'cpsec' ) ?></h2>
                                                     <h1 class="plugin-brand"
                                                         style="Margin: 0; Margin-bottom: 0; color: #ff5c28; font-family: Helvetica, Arial, sans-serif; font-size: 60px; font-weight: 700; line-height: 1em; margin: 0; margin-bottom: 0; padding: 0; padding-left: 6px; text-align: left; text-transform: uppercase; word-wrap: normal;">
-														<?php esc_html_e( "PS Security!", cp_defender()->domain ) ?></h1>
+														<?php esc_html_e( "PS Security!", 'cpsec' ) ?></h1>
                                                 </td>
                                                 <td class="hero-image"
                                                     style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;">
@@ -452,16 +452,16 @@
                                                 <td class="main-intro-content"
                                                     style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;">
                                                     <h3 style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 32px; font-weight: normal; line-height: 32px; margin: 0; margin-bottom: 0; padding: 0 0 28px; text-align: left; word-wrap: normal;">
-														<?php printf( __( "Hi %s,", cp_defender()->domain ), $admin ) ?></h3>
+														<?php printf( __( "Hi %s,", 'cpsec' ), $admin ) ?></h3>
 													<?php $setting = \CP_Defender\Module\IP_Lockout\Model\Settings::instance() ?>
 													<?php $utils = \CP_Defender\Behavior\Utils::instance() ?>
                                                     <p style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; margin-bottom: 0; padding: 0 0 24px; text-align: left;">
 														<?php
-														$lockout_duration = $setting->login_protection_lockout_ban == true ? __( "Du wurdest dauerhaft gesperrt.", cp_defender()->domain ) : sprintf( __( "Du wurdest für <strong>%s Sekunden</strong> ausgesperrt.", cp_defender()->domain ), $setting->login_protection_lockout_duration );
-														printf( __( "Wir haben gerade den Host <strong>%s</strong> von %s gesperrt, da versucht wurde, sich mit einem gesperrten Benutzernamen anzumelden. Du wurdest dauerhaft gesperrt.", cp_defender()->domain ), $ip, network_site_url() ) ?>
+														$lockout_duration = $setting->login_protection_lockout_ban == true ? __( "Du wurdest dauerhaft gesperrt.", 'cpsec' ) : sprintf( __( "Du wurdest für <strong>%s Sekunden</strong> ausgesperrt.", 'cpsec' ), $setting->login_protection_lockout_duration );
+														printf( __( "Wir haben gerade den Host <strong>%s</strong> von %s gesperrt, da versucht wurde, sich mit einem gesperrten Benutzernamen anzumelden. Du wurdest dauerhaft gesperrt.", 'cpsec' ), $ip, network_site_url() ) ?>
                                                     </p>
                                                     <p style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; margin-bottom: 0; padding: 0 0 24px; text-align: left;">
-														<?php printf( __( "Du kannst die vollständigen Sperrprotokolle <a href=\"%s\">hier</a> einsehen.", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-ip-lockout', array( 'view' => 'logs' ) ) ) ?>
+														<?php printf( __( "Du kannst die vollständigen Sperrprotokolle <a href=\"%s\">hier</a> einsehen.", 'cpsec' ), \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-ip-lockout', array( 'view' => 'logs' ) ) ) ?>
                                                         .</p>
                                                 </td>
                                             </tr>
@@ -476,14 +476,14 @@
                                                 <td class="main-signature-content"
                                                     style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;">
                                                     <p style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; margin-bottom: 0; padding: 0 0 24px; text-align: left;">
-														<?php esc_html_e( "Stay vigilant.", cp_defender()->domain ) ?></p>
+														<?php esc_html_e( "Stay vigilant.", 'cpsec' ) ?></p>
                                                     <p class="last-item"
                                                        style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; margin-bottom: 0; padding: 0; text-align: left;">
-                                                        <strong><?php esc_html_e( "PS Security", cp_defender()->domain ) ?></strong>
+                                                        <strong><?php esc_html_e( "PS Security", 'cpsec' ) ?></strong>
                                                         <br>
-														<?php esc_html_e( "Security Hero", cp_defender()->domain ) ?>
+														<?php esc_html_e( "Security Hero", 'cpsec' ) ?>
                                                         <br/>
-														<?php esc_html_e( "PSOURCE", cp_defender()->domain ) ?>
+														<?php esc_html_e( "PSOURCE", 'cpsec' ) ?>
                                                     </p>
                                                 </td>
                                             </tr>
@@ -509,7 +509,7 @@
                                             <tr style="padding: 0; text-align: left; vertical-align: top;">
                                                 <td class="related-items-title brand" align="left"
                                                     style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #3eb4e4; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 0; padding-bottom: 10px; text-align: left; vertical-align: top; word-wrap: break-word;">
-													<?php esc_html_e( "Related plugins worth giving a try", cp_defender()->domain ) ?>
+													<?php esc_html_e( "Related plugins worth giving a try", 'cpsec' ) ?>
                                                 </td>
                                             </tr>
                                             <tr style="padding: 0; text-align: left; vertical-align: top;">
@@ -530,9 +530,9 @@
 																		style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: table-cell; max-width: 100%; outline: none; text-decoration: none; width: auto;">
 																	<span class="plugin-info"
 																	      style="display: table-cell; padding-left: 10px; vertical-align: bottom;">
-                                              <span><?php esc_html_e( "Optimiere deine Seite mit", cp_defender()->domain ) ?></span>
+                                              <span><?php esc_html_e( "Optimiere deine Seite mit", 'cpsec' ) ?></span>
                                               <span class="plugin-title hummingbird"
-                                                    style="color: #febd30; display: block;"><strong><?php esc_html_e( "PSOURCE Toolkit", cp_defender()->domain ) ?></strong></span>
+                                                    style="color: #febd30; display: block;"><strong><?php esc_html_e( "PSOURCE Toolkit", 'cpsec' ) ?></strong></span>
                                               </span>
 																</a>
 															</th>
@@ -549,9 +549,9 @@
 																		style="-ms-interpolation-mode: bicubic; border: none; clear: both; display: table-cell; max-width: 100%; outline: none; text-decoration: none; width: auto;">
 																	<span class="plugin-info"
 																	      style="display: table-cell; padding-left: 10px; vertical-align: bottom;">
-                                              <span><?php esc_html_e( "Back up your hard work with", cp_defender()->domain ) ?></span>
+                                              <span><?php esc_html_e( "Back up your hard work with", 'cpsec' ) ?></span>
                                               <span class="plugin-title snapshot"
-                                                    style="color: #642486; display: block;"><strong><?php _e( "Snapshot", cp_defender()->domain ) ?></strong></span>
+                                                    style="color: #642486; display: block;"><strong><?php _e( "Snapshot", 'cpsec' ) ?></strong></span>
                                               </span>
 																</a>
 															</th>
@@ -589,7 +589,7 @@
 														<th class="small-12 large-8 columns first copy" align="center"
 															style="Margin: 0 auto; color: #707070; font-family: Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; line-height: 20px; margin: 0 auto; padding: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; text-align: left; width: 394.66667px;">
 																<p style="Margin: 0; Margin-bottom: 0; color: #707070; font-family: Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; line-height: 20px; margin: 0; margin-bottom: 0; padding: 0; text-align: center;">
-																	<?php printf( __( "<a href=\"%s\">Configure reporting preferences</a>", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-ip-lockout', array( 'view' => 'reporting' ) ) ) ?>
+																	<?php printf( __( "<a href=\"%s\">Configure reporting preferences</a>", 'cpsec' ), \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-ip-lockout', array( 'view' => 'reporting' ) ) ) ?>
 																</p>
 														</th>
 													</tr>

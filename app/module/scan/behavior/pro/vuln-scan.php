@@ -17,7 +17,7 @@ class Vuln_Scan extends Behavior {
 		$this->model = $model;
 
 		// Show progress in UI during vulnerability phase
-		$model->currentFile = __( 'Prüfe bekannte Schwachstellen…', cp_defender()->domain );
+		$model->currentFile = __( 'Prüfe bekannte Schwachstellen…', 'cpsec' );
 		$this->scan();
 
 		return true;
@@ -52,7 +52,7 @@ class Vuln_Scan extends Behavior {
 		
 		if ( empty( $api_token ) ) {
 			// Limited Mode: perform basic version/outdated checks so scan does not stall
-			$this->model->currentFile = __( 'Prüfe Versionsstände…', cp_defender()->domain );
+			$this->model->currentFile = __( 'Prüfe Versionsstände…', 'cpsec' );
 			$this->runBasicVersionCheck( $wp_version, $plugins, $themes );
 			return true;
 		}
@@ -213,8 +213,8 @@ class Vuln_Scan extends Behavior {
 			'slug' => $slug,
 			'bugs' => array(
 				array(
-					'vuln_type' => __( 'Veraltete Version', cp_defender()->domain ),
-					'title'     => sprintf( __( 'Update empfohlen: %s → %s', cp_defender()->domain ), $current_version, $new_version ),
+					'vuln_type' => __( 'Veraltete Version', 'cpsec' ),
+					'title'     => sprintf( __( 'Update empfohlen: %s → %s', 'cpsec' ), $current_version, $new_version ),
 					'fixed_in'  => $new_version,
 				),
 			),

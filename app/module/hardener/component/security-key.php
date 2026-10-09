@@ -35,7 +35,7 @@ class Security_Key extends Rule {
 	 * @return string
 	 */
 	function getTitle() {
-		return __( "Alte Sicherheitsschlüssel aktualisieren", cp_defender()->domain );
+		return __( "Alte Sicherheitsschlüssel aktualisieren", 'cpsec' );
 	}
 
 	function check() {
@@ -77,7 +77,7 @@ class Security_Key extends Rule {
 		} else {
 			Settings::instance()->addToResolved( self::$slug );
 			wp_send_json_success( array(
-				'message' => sprintf( __( 'Alle Schlüssel-Salts wurden neu generiert. Du musst dich jetzt <a href="%s"><strong>erneut anmelden</strong></a>.<br/>Die Seite wird automatisch nach <span class="hardener-timer">10</span> Sekunden neu geladen.', cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-hardener' ) ),
+				'message' => sprintf( __( 'Alle Schlüssel-Salts wurden neu generiert. Du musst dich jetzt <a href="%s"><strong>erneut anmelden</strong></a>.<br/>Die Seite wird automatisch nach <span class="hardener-timer">10</span> Sekunden neu geladen.', 'cpsec' ), \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-hardener' ) ),
 				'reload'  => 10
 			) );
 		}

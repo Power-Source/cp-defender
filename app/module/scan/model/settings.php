@@ -102,7 +102,7 @@ class Settings extends \Hammer\WP\Settings {
 	}
 
 	public function __construct( $id, $is_multi ) {
-		$this->email_subject   = __( 'Scan of {SITE_URL} complete. {ISSUES_COUNT} issues found.', cp_defender()->domain );
+		$this->email_subject   = __( 'Scan of {SITE_URL} complete. {ISSUES_COUNT} issues found.', 'cpsec' );
 		$this->email_has_issue = __( 'Hi {USER_NAME},
 
 PS Security here, reporting back from the front.
@@ -112,7 +112,7 @@ I\'ve finished scanning {SITE_URL} for vulnerabilities and I found {ISSUES_COUNT
 
 Stay Safe,
 PS Security
-Official PSOURCE Superhero', cp_defender()->domain );
+Official PSOURCE Superhero', 'cpsec' );
 		$this->email_all_ok    = __( 'Hi {USER_NAME},
 
 PS Security here, reporting back from the front.
@@ -123,7 +123,7 @@ Keep up the good work! With regular security scans and a well-hardened installat
 
 Stay safe,
 PS Security
-Official PSOURCE Superhero', cp_defender()->domain );
+Official PSOURCE Superhero', 'cpsec' );
 		//call parent to load stored
 		if ( is_admin() || is_network_admin() && current_user_can( 'manage_options' ) ) {
 			$this->receipts[] = get_current_user_id();

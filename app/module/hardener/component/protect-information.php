@@ -23,7 +23,7 @@ class Protect_Information extends Rule {
 	}
 
 	public function getTitle() {
-		return __( "Verhinderung der Offenlegung von Informationen", cp_defender()->domain );
+		return __( "Verhinderung der Offenlegung von Informationen", 'cpsec' );
 	}
 
 	function revert() {

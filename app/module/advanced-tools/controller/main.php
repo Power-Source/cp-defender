@@ -53,10 +53,10 @@ class Main extends Controller {
 				 */
 			} else {
 				if ( $isJetpackSSO ) {
-					cp_defender()->global['compatibility'][] = __( "Du hast die Jetpack-Anmeldung für WordPress.com aktiviert. Defender deaktiviert daher die Zwei-Faktor-Authentifizierung, um Konflikte zu vermeiden.", cp_defender()->domain );
+					cp_defender()->global['compatibility'][] = __( "Du hast die Jetpack-Anmeldung für WordPress.com aktiviert. Defender deaktiviert daher die Zwei-Faktor-Authentifizierung, um Konflikte zu vermeiden.", 'cpsec' );
 				}
 				if ( $isTML ) {
-					cp_defender()->global['compatibility'][] = __( "Du hast das Plugin Theme My Login aktiviert. Defender deaktiviert daher die Zwei-Faktor-Authentifizierung, um Konflikte zu vermeiden.", cp_defender()->domain );
+					cp_defender()->global['compatibility'][] = __( "Du hast das Plugin Theme My Login aktiviert. Defender deaktiviert daher die Zwei-Faktor-Authentifizierung, um Konflikte zu vermeiden.", 'cpsec' );
 				}
 			}
 			$this->add_filter( 'ms_shortcode_ajax_login', 'm2NoAjax' );
@@ -132,7 +132,7 @@ class Main extends Controller {
 	 */
 	public function alterUsersTable( $columns ) {
 		$columns = array_slice( $columns, 0, count( $columns ) - 1 ) + array(
-				'defAuth' => __( "Two Factor", cp_defender()->domain )
+				'defAuth' => __( "Two Factor", 'cpsec' )
 			) + array_slice( $columns, count( $columns ) - 1 );
 
 		return $columns;
@@ -155,7 +155,7 @@ class Main extends Controller {
 		if ( empty( $res ) ) {
 			//no user
 			wp_send_json_error( array(
-				'message' => __( "Dein Token ist ungültig.", cp_defender()->domain )
+				'message' => __( "Dein Token ist ungültig.", 'cpsec' )
 			) );
 		}
 
@@ -167,7 +167,7 @@ class Main extends Controller {
 		//send
 		wp_mail( $backupEmail, 'Dein OTP-Code', $code );
 		wp_send_json_success( array(
-			'message' => __( "Dein Code wurde an deine E-Mail gesendet.", cp_defender()->domain )
+			'message' => __( "Dein Code wurde an deine E-Mail gesendet.", 'cpsec' )
 		) );
 	}
 
@@ -200,7 +200,7 @@ class Main extends Controller {
 		$settings = Auth_Settings::instance();
 		if ( empty( $settings->allowEmailAuth ) ) {
 			wp_send_json_error( array(
-				'message' => __( "E-Mail-Verifizierung ist vom Administrator deaktiviert.", cp_defender()->domain )
+				'message' => __( "E-Mail-Verifizierung ist vom Administrator deaktiviert.", 'cpsec' )
 			) );
 		}
 
@@ -235,7 +235,7 @@ class Main extends Controller {
 
 		if ( ! Auth_API::isMethodAllowed( Auth_API::AUTH_METHOD_APP ) ) {
 			wp_send_json_error( array(
-				'message' => __( "App-Verifizierung ist vom Administrator deaktiviert.", cp_defender()->domain )
+				'message' => __( "App-Verifizierung ist vom Administrator deaktiviert.", 'cpsec' )
 			) );
 		}
 
@@ -243,7 +243,7 @@ class Main extends Controller {
 		$otp = trim( $otp );
 		if ( strlen( $otp ) == 0 ) {
 			wp_send_json_error( array(
-				'message' => __( "Bitte gib einen gültigen OTP-Code ein", cp_defender()->domain )
+				'message' => __( "Bitte gib einen gültigen OTP-Code ein", 'cpsec' )
 			) );
 		}
 
@@ -260,7 +260,7 @@ class Main extends Controller {
 		} else {
 			//now need to check if the current user have backup otp
 			wp_send_json_error( array(
-				'message' => __( "Dein OTP-Code ist falsch. Bitte versuche es erneut.", cp_defender()->domain )
+				'message' => __( "Dein OTP-Code ist falsch. Bitte versuche es erneut.", 'cpsec' )
 			) );
 		}
 	}
@@ -336,7 +336,7 @@ class Main extends Controller {
 		if ( ( $otp = HTTP_Helper::retrieve_post( 'otp', null ) ) != null ) {
 			$params = array();
 			if ( ! wp_verify_nonce( HTTP_Helper::retrieve_post( '_wpnonce' ), 'DefOtpCheck' ) ) {
-				$params['error'] = new \WP_Error( 'security_fail', __( "Ein Fehler ist aufgetreten", cp_defender()->domain ) );
+				$params['error'] = new \WP_Error( 'security_fail', __( "Ein Fehler ist aufgetreten", 'cpsec' ) );
 			}
 
 			$login_token = HTTP_Helper::retrieve_post( 'login_token' );
@@ -377,7 +377,7 @@ class Main extends Controller {
 					exit;
 				} else {
 					if ( $method === Auth_API::AUTH_METHOD_EMAIL ) {
-						$params['error'] = new \WP_Error( 'otp_fail', __( "Hoppla, der eingegebene E-Mail-Code war falsch oder abgelaufen.", cp_defender()->domain ) );
+						$params['error'] = new \WP_Error( 'otp_fail', __( "Hoppla, der eingegebene E-Mail-Code war falsch oder abgelaufen.", 'cpsec' ) );
 						$this->showOTPScreen( $user, $params );
 					}
 					$backupCode = get_user_meta( $user->ID, 'defenderBackupCode', true );
@@ -389,7 +389,7 @@ class Main extends Controller {
 						$this->redirect_after_otp_login( $redirect, $requested_redirect_to, $user );
 						exit;
 					} else {
-						$params['error'] = new \WP_Error( 'opt_fail', __( "Hoppla, der eingegebene Passcode war falsch oder abgelaufen.", cp_defender()->domain ) );
+						$params['error'] = new \WP_Error( 'opt_fail', __( "Hoppla, der eingegebene Passcode war falsch oder abgelaufen.", 'cpsec' ) );
 						$this->showOTPScreen( $user, $params );
 					}
 				}
@@ -502,14 +502,14 @@ class Main extends Controller {
 		$res   = $query->get_results();
 		if ( empty( $res ) ) {
 			wp_send_json_error( array(
-				'message' => __( "Dein Token ist ungültig.", cp_defender()->domain )
+				'message' => __( "Dein Token ist ungültig.", 'cpsec' )
 			) );
 		}
 
 		$user = $res[0];
 		if ( ! Auth_API::isMethodAllowed( Auth_API::AUTH_METHOD_EMAIL ) || Auth_API::getEffectiveUserAuthMethod( $user->ID ) !== Auth_API::AUTH_METHOD_EMAIL ) {
 			wp_send_json_error( array(
-				'message' => __( "E-Mail-Verifizierung ist für dieses Konto nicht aktiv.", cp_defender()->domain )
+				'message' => __( "E-Mail-Verifizierung ist für dieses Konto nicht aktiv.", 'cpsec' )
 			) );
 		}
 
@@ -517,19 +517,19 @@ class Main extends Controller {
 		if ( $remaining > 0 ) {
 			$minutes = (int) ceil( $remaining / 60 );
 			wp_send_json_error( array(
-				'message' => sprintf( __( "Bitte warte %d Minute(n), bevor du einen neuen Code anforderst.", cp_defender()->domain ), $minutes )
+				'message' => sprintf( __( "Bitte warte %d Minute(n), bevor du einen neuen Code anforderst.", 'cpsec' ), $minutes )
 			) );
 		}
 
 		$sent = Auth_API::sendEmailCode( $user->ID, true );
 		if ( ! $sent ) {
 			wp_send_json_error( array(
-				'message' => __( "Der Code konnte nicht gesendet werden. Bitte versuche es erneut.", cp_defender()->domain )
+				'message' => __( "Der Code konnte nicht gesendet werden. Bitte versuche es erneut.", 'cpsec' )
 			) );
 		}
 
 		wp_send_json_success( array(
-			'message' => __( "Ein neuer Code wurde an deine E-Mail gesendet.", cp_defender()->domain )
+			'message' => __( "Ein neuer Code wurde an deine E-Mail gesendet.", 'cpsec' )
 		) );
 	}
 
@@ -551,7 +551,7 @@ return;
 }
 
 		$cap = is_multisite() ? 'manage_network_options' : 'manage_options';
-		add_submenu_page( 'cp-defender', esc_html__( "Advanced Tools", cp_defender()->domain ), esc_html__( "Erweiterte Werkzeuge", cp_defender()->domain ), $cap, $this->slug, array(
+		add_submenu_page( 'cp-defender', esc_html__( "Advanced Tools", 'cpsec' ), esc_html__( "Erweiterte Werkzeuge", 'cpsec' ), $cap, $this->slug, array(
 			&$this,
 			'actionIndex'
 		) );
@@ -617,13 +617,13 @@ return;
 		$setting->import( $data );
 		if ( empty( $setting->allowAppAuth ) && empty( $setting->allowEmailAuth ) ) {
 			wp_send_json_error( array(
-				'message' => __( "Mindestens eine Zwei-Faktor-Methode muss erlaubt sein (App oder E-Mail).", cp_defender()->domain )
+				'message' => __( "Mindestens eine Zwei-Faktor-Methode muss erlaubt sein (App oder E-Mail).", 'cpsec' )
 			) );
 		}
 		$setting->save();
 
 		$res           = array(
-			'message' => __( "Deine Einstellungen wurden aktualisiert.", cp_defender()->domain )
+			'message' => __( "Deine Einstellungen wurden aktualisiert.", 'cpsec' )
 		);
 		$res['reload'] = 1;
 

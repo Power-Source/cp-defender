@@ -15,8 +15,8 @@ class Scan extends Module {
 	private function _registerPostTpe() {
 		register_post_type( 'wdf_scan', array(
 			'labels'              => array(
-				'name'          => __( "Scans", cp_defender()->domain ),
-				'singular_name' => __( "Scan", cp_defender()->domain )
+				'name'          => __( "Scans", 'cpsec' ),
+				'singular_name' => __( "Scan", 'cpsec' )
 			),
 			'capability_type'     => array( 'wdf_scan', 'wdf_scans' ),
 			'supports'            => array( '' ),
@@ -34,8 +34,8 @@ class Scan extends Module {
 		) );
 		register_post_type( 'wdf_scan_item', array(
 			'labels'              => array(
-				'name'          => __( "Scan Items", cp_defender()->domain ),
-				'singular_name' => __( "Scan Item", cp_defender()->domain )
+				'name'          => __( "Scan Items", 'cpsec' ),
+				'singular_name' => __( "Scan Item", 'cpsec' )
 			),
 			'capability_type'     => array( 'wdf_scan_item', 'wdf_scan_items' ),
 			'supports'            => array( '' ),

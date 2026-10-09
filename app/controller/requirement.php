@@ -32,22 +32,22 @@ class WD_Requirement {
                     </h2>
                 </div>
             </div>
-            <dialog id="requirement" title="<?php esc_attr_e( "Required Modules", cp_defender()->domain ) ?>">
+            <dialog id="requirement" title="<?php esc_attr_e( "Required Modules", 'cpsec' ) ?>">
                 <div class="line">
-					<?php _e( "It looks like some required PHP modules are missing or outdated. We recommend you get in touch with your web hosting service to update the modules listed below.", cp_defender()->domain ) ?>
+					<?php _e( "It looks like some required PHP modules are missing or outdated. We recommend you get in touch with your web hosting service to update the modules listed below.", 'cpsec' ) ?>
                 </div>
                 <table class="table">
                     <thead>
                     <tr>
-                        <th><?php _e( "Module", cp_defender()->domain ) ?></th>
-                        <th><?php _e( "Version", cp_defender()->domain ) ?></th>
+                        <th><?php _e( "Module", 'cpsec' ) ?></th>
+                        <th><?php _e( "Version", 'cpsec' ) ?></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td><?php _e( "PHP version", cp_defender()->domain ) ?></td>
+                        <td><?php _e( "PHP version", 'cpsec' ) ?></td>
                         <td>
-                            <span class="def-tag tag-yellow"><?php echo phpversion() ?></span>&nbsp;&nbsp;<?php _e( "Please upgrade to 5.3 or later.", cp_defender()->domain ) ?>
+                            <span class="def-tag tag-yellow"><?php echo phpversion() ?></span>&nbsp;&nbsp;<?php _e( "Please upgrade to 5.3 or later.", 'cpsec' ) ?>
                         </td>
                     </tr>
                     </tbody>
@@ -62,9 +62,9 @@ class WD_Requirement {
 	 */
 	public function admin_menu() {
 		$cap        = is_multisite() ? 'manage_network_options' : 'manage_options';
-		$menu_title = esc_html__( "Defender%s", cp_defender()->domain );
+		$menu_title = esc_html__( "Defender%s", 'cpsec' );
 		$menu_title = sprintf( $menu_title, ' <span class="update-plugins wd-issue-indicator-sidebar"></span>' );
-		add_menu_page( esc_html__( "Defender", cp_defender()->domain ), $menu_title, $cap, 'cp-defender', array(
+		add_menu_page( esc_html__( "Defender", 'cpsec' ), $menu_title, $cap, 'cp-defender', array(
 			&$this,
 			'actionIndex'
 		), $this->get_menu_icon() );

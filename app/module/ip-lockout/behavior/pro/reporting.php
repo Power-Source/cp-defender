@@ -37,15 +37,15 @@ class Reporting extends Behavior {
 		switch ( $settings->report_frequency ) {
 			case '1':
 				$after_time = 'yesterday midnight';
-				$time_unit  = __( "In den letzten 24 Stunden", cp_defender()->domain );
+				$time_unit  = __( "In den letzten 24 Stunden", 'cpsec' );
 				break;
 			case '7':
 				$after_time = '-7 days';
-				$time_unit  = __( "In der vergangenen Woche", cp_defender()->domain );
+				$time_unit  = __( "In der vergangenen Woche", 'cpsec' );
 				break;
 			case '30':
 				$after_time = '-30 days';
-				$time_unit  = __( "Im vergangenen Monat", cp_defender()->domain );
+				$time_unit  = __( "Im vergangenen Monat", 'cpsec' );
 				break;
 		}
 		$after_time = strtotime( $after_time, current_time( 'timestamp' ) );
@@ -68,7 +68,7 @@ class Reporting extends Behavior {
 					'From: PS Security <' . $no_reply_email . '>',
 					'Content-Type: text/html; charset=UTF-8'
 				);
-				wp_mail( $user->user_email, sprintf( __( "PS Security-Sperrbericht für %s", cp_defender()->domain ), network_site_url() ), $content, $headers );
+				wp_mail( $user->user_email, sprintf( __( "PS Security-Sperrbericht für %s", 'cpsec' ), network_site_url() ), $content, $headers );
 			}
 		}
 		$settings->lastReportSent = time();

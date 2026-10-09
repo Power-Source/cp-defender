@@ -31,7 +31,7 @@ class Change_Admin extends Rule {
 	 * @return string
 	 */
 	public function getTitle() {
-		return __( "Standard-Administratorkonto ändern", cp_defender()->domain );
+		return __( "Standard-Administratorkonto ändern", 'cpsec' );
 	}
 
 	/**
@@ -51,7 +51,7 @@ class Change_Admin extends Rule {
 		} else {
 			Settings::instance()->addToResolved( self::$slug );
 			wp_send_json_success( array(
-				'message' => sprintf( __( "Dein Administratorname hat sich geändert. Du musst dich <a href='" . wp_login_url() . "'><strong>%s</strong></a>.<br/>Dies wird nach <span class='hardener-timer'>10</span> Sekunden automatisch neu geladen.", cp_defender()->domain ), "neu anmelden" ),
+				'message' => sprintf( __( "Dein Administratorname hat sich geändert. Du musst dich <a href='" . wp_login_url() . "'><strong>%s</strong></a>.<br/>Dies wird nach <span class='hardener-timer'>10</span> Sekunden automatisch neu geladen.", 'cpsec' ), "neu anmelden" ),
 				'reload'  => 10
 			) );
 		}

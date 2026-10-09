@@ -3,7 +3,7 @@
         <div class="iplockout">
             <div class="advanced-tools">
                 <h2 class="title">
-			        <?php _e( "Migration", cp_defender()->domain ) ?>
+			        <?php _e( "Migration", 'cpsec' ) ?>
                 </h2>
             </div>
         </div>
@@ -12,7 +12,7 @@
 
 <dialog id="defLockoutUpgrade">
     <div class="line">
-		<?php _e( "Einen Moment bitte, wir aktualisieren Deine Daten. Bitte schließe diesen Tab nicht...", cp_defender()->domain ) ?>
+		<?php _e( "Einen Moment bitte, wir aktualisieren Deine Daten. Bitte schließe diesen Tab nicht...", 'cpsec' ) ?>
     </div>
     <div class="well mline">
         <div class="scan-progress">

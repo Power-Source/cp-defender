@@ -430,8 +430,8 @@ class Auth_API extends Component {
 			return false;
 		}
 
-		$subject = __( 'Dein Anmeldecode', cp_defender()->domain );
-		$message = sprintf( __( 'Dein PS Security Code lautet: %s. Der Code ist 5 Minuten gültig.', cp_defender()->domain ), $code );
+		$subject = __( 'Dein Anmeldecode', 'cpsec' );
+		$message = sprintf( __( 'Dein PS Security Code lautet: %s. Der Code ist 5 Minuten gültig.', 'cpsec' ), $code );
 
 		$sent = (bool) wp_mail( $email, $subject, $message );
 		if ( $sent ) {

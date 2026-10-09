@@ -28,7 +28,7 @@ class Vuln_Result extends \Hammer\Base\Behavior {
 				}
 				break;
 			default:
-				return esc_html__( "WordPress-Sicherheitslücke", cp_defender()->domain );
+				return esc_html__( "WordPress-Sicherheitslücke", 'cpsec' );
 				break;
 		}
 	}
@@ -50,7 +50,7 @@ class Vuln_Result extends \Hammer\Base\Behavior {
 	 */
 	public function getSubtitle() {
 		$raw  = $this->getRaw();
-		$text = __( "Version:", cp_defender()->domain );
+		$text = __( "Version:", 'cpsec' );
 		switch ( $raw['type'] ) {
 			case 'plugin':
 				$plugin = $this->getPluginBySlug( $raw['slug'] );
@@ -86,8 +86,8 @@ class Vuln_Result extends \Hammer\Base\Behavior {
 			$text    = '<div class="vuln-list">';
 			$text    .= '<p>' . $bug['title'] . '</p>';
 			$text    .= '<ul>';
-			$text    .= '<li>' . __( "Vulnerabilitätstyp:", cp_defender()->domain ) . ' ' . $bug['vuln_type'] . '</li>';
-			$text    .= '<li>' . __( "Dieser Fehler wurde in der Version behoben:", cp_defender()->domain ) . ' ' . $bug['fixed_in'] . '</li>';
+			$text    .= '<li>' . __( "Vulnerabilitätstyp:", 'cpsec' ) . ' ' . $bug['vuln_type'] . '</li>';
+			$text    .= '<li>' . __( "Dieser Fehler wurde in der Version behoben:", 'cpsec' ) . ' ' . $bug['fixed_in'] . '</li>';
 			$text    .= '</ul>';
 			$text    .= '</div>';
 			$texts[] = $text;
@@ -104,7 +104,7 @@ class Vuln_Result extends \Hammer\Base\Behavior {
 		$raw = $this->getRaw();
 		ob_start()
 		?>
-        <dialog title="<?php esc_attr_e( "Problem Details", cp_defender()->domain ) ?>"
+        <dialog title="<?php esc_attr_e( "Problem Details", 'cpsec' ) ?>"
                 id="dia_<?php echo $this->getOwner()->id ?>">
             <div class="wpmud">
                 <div class="cp-defender">
@@ -115,11 +115,11 @@ class Vuln_Result extends \Hammer\Base\Behavior {
                                     <div>
                                         <span class="list-label"><?php
 	                                        if ( $raw['type'] == 'plugin' ) {
-		                                        _e( "Plugin Name", cp_defender()->domain );
+		                                        _e( "Plugin Name", 'cpsec' );
 	                                        } elseif ( $raw['type'] == 'theme' ) {
-		                                        _e( "Theme Name", cp_defender()->domain );
+		                                        _e( "Theme Name", 'cpsec' );
 	                                        } elseif ( $raw['type'] == 'wordpress' ) {
-		                                        _e( "WordPress", cp_defender()->domain );
+		                                        _e( "WordPress", 'cpsec' );
 	                                        }
 	                                        ?></span>
                                         <span class="list-detail"><?php echo $this->getTitle() ?></span>
@@ -127,7 +127,7 @@ class Vuln_Result extends \Hammer\Base\Behavior {
                                 </li>
                                 <li>
                                     <div>
-                                        <span class="list-label"><?php _e( "Version", cp_defender()->domain ) ?></span>
+                                        <span class="list-label"><?php _e( "Version", 'cpsec' ) ?></span>
                                         <span class="list-detail">
                                             <?php echo $this->getSubTitle() ?>
                                         </span>
@@ -136,12 +136,12 @@ class Vuln_Result extends \Hammer\Base\Behavior {
                             </ul>
                         </div>
                         <div class="mline">
-							<?php _e( "In dieser Version wurde eine Sicherheitslücke gefunden:", cp_defender()->domain ) ?>
+							<?php _e( "In dieser Version wurde eine Sicherheitslücke gefunden:", 'cpsec' ) ?>
 							<?php echo $this->getIssueDetail() ?>
                         </div>
 						<?php if ( $this->hasFix ): ?>
                             <div class="mline">
-								<?php _e( "Es ist eine neuere Version verfügbar, die dieses Problem behebt. Wir empfehlen, auf die neueste Version zu aktualisieren.", cp_defender()->domain ) ?>
+								<?php _e( "Es ist eine neuere Version verfügbar, die dieses Problem behebt. Wir empfehlen, auf die neueste Version zu aktualisieren.", 'cpsec' ) ?>
                             </div>
                             <div class="clear"></div>
                             <div class="well">
@@ -151,24 +151,24 @@ class Vuln_Result extends \Hammer\Base\Behavior {
 										<?php wp_nonce_field( 'ignoreItem' ) ?>
                                         <input type="hidden" name="id" value="<?php echo $this->getOwner()->id ?>"/>
                                         <button type="submit" class="button button-secondary button-small">
-											<?php _e( "Ignorieren", cp_defender()->domain ) ?></button>
+											<?php _e( "Ignorieren", 'cpsec' ) ?></button>
                                     </form>
                                     <form method="post" class="scan-frm float-r resolve-item">
                                         <input type="hidden" name="id" value="<?php echo $this->getOwner()->id ?>"/>
                                         <input type="hidden" name="action" value="resolveItem"/>
 										<?php wp_nonce_field( 'resolveItem' ) ?>
-                                        <button class="button button-small"><?php _e( "Aktualisieren", cp_defender()->domain ) ?></button>
+                                        <button class="button button-small"><?php _e( "Aktualisieren", 'cpsec' ) ?></button>
                                     </form>
 								<?php else: ?>
                                     <a class="button button-small float-r"
-                                       href="<?php echo network_admin_url( 'update-core.php' ) ?>"><?php _e( "Aktualisieren", cp_defender()->domain ) ?></a>
+                                       href="<?php echo network_admin_url( 'update-core.php' ) ?>"><?php _e( "Aktualisieren", 'cpsec' ) ?></a>
 								<?php endif; ?>
                                 <div class="clear"></div>
                             </div>
 						<?php else: ?>
 							<?php
 							if ( $raw['type'] == 'wordpress' ) {
-								_e( "Dies ist ein bekanntes Problem, das von WordPress identifiziert wurde. Wenn eine Sicherheitsfreigabe verfügbar ist, empfehlen wir, Ihren WordPress-Kern auf die neueste Version zu aktualisieren, um sicherzustellen, dass Sie vor dieser Sicherheitslücke geschützt sind.", cp_defender()->domain );
+								_e( "Dies ist ein bekanntes Problem, das von WordPress identifiziert wurde. Wenn eine Sicherheitsfreigabe verfügbar ist, empfehlen wir, Ihren WordPress-Kern auf die neueste Version zu aktualisieren, um sicherzustellen, dass Sie vor dieser Sicherheitslücke geschützt sind.", 'cpsec' );
 							}
 							?>
 						<?php endif; ?>

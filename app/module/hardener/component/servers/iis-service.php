@@ -40,7 +40,7 @@ class Iis_Service extends Rule_Service implements IRule_Service {
 		$doc->preserveWhiteSpace = true;
 		if ( $doc->load( $path . '/' . $filename ) === false ) {
             return new \WP_Error( Error_Code::NOT_WRITEABLE,
-					sprintf( __( "The file %s could not be loaded", cp_defender()->domain ), $filename ) );
+					sprintf( __( "The file %s could not be loaded", 'cpsec' ), $filename ) );
 		}
 		$xpath = new \DOMXPath( $doc );
 		$read_accesspolicy = $xpath->query( '/configuration/system.webServer/handlers[starts-with(@accessPolicy,\'Read\')]' );

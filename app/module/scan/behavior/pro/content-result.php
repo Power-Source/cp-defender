@@ -41,7 +41,7 @@ class Content_Result extends \Hammer\Base\Behavior {
 	 * @return string|void
 	 */
 	public function getIssueDetail() {
-		return __( "Verdächtige Funktion gefunden", cp_defender()->domain );
+		return __( "Verdächtige Funktion gefunden", 'cpsec' );
 	}
 
 	/**
@@ -51,7 +51,7 @@ class Content_Result extends \Hammer\Base\Behavior {
 		$raw = $this->getRaw();
 		ob_start()
 		?>
-        <dialog class="scan-item-dialog" title="<?php esc_attr_e( "Problem Details", cp_defender()->domain ) ?>"
+        <dialog class="scan-item-dialog" title="<?php esc_attr_e( "Problem Details", 'cpsec' ) ?>"
                 id="dia_<?php echo $this->getOwner()->id ?>">
             <div class="wpmud">
                 <div class="cp-defender">
@@ -60,7 +60,7 @@ class Content_Result extends \Hammer\Base\Behavior {
                             <ul class="dev-list item-detail">
                                 <li>
                                     <div>
-                                        <span class="list-label"><?php _e( "Pfad", cp_defender()->domain ) ?></span>
+                                        <span class="list-label"><?php _e( "Pfad", 'cpsec' ) ?></span>
                                         <span class="list-detail">
                                             <?php echo $this->getSubTitle() ?>
                                         </span>
@@ -68,7 +68,7 @@ class Content_Result extends \Hammer\Base\Behavior {
                                 </li>
                                 <li>
                                     <div>
-                                        <span class="list-label"><?php _e( "Datum hinzugefügt", cp_defender()->domain ) ?></span>
+                                        <span class="list-label"><?php _e( "Datum hinzugefügt", 'cpsec' ) ?></span>
                                         <span class="list-detail">
                                            <?php
                                            $filemtime = filemtime( $this->getSubtitle() );
@@ -83,12 +83,12 @@ class Content_Result extends \Hammer\Base\Behavior {
                                 </li>
                             </ul>
                         </div>
-                        <div class="mline"><?php printf( __( " In der Datei %s befindet sich verdächtiger Code. Wenn Du sicher bist, dass der Code harmlos ist, kannst Du diese Warnung ignorieren. Andernfalls kannst Du diese Datei löschen. Bevor Du Dateien aus Deinem Webseite-Verzeichnis löschst, empfehlen wir, ein Backup Deiner Webseite zu erstellen.", cp_defender()->domain ), $this->getSubtitle() ) ?>
+                        <div class="mline"><?php printf( __( " In der Datei %s befindet sich verdächtiger Code. Wenn Du sicher bist, dass der Code harmlos ist, kannst Du diese Warnung ignorieren. Andernfalls kannst Du diese Datei löschen. Bevor Du Dateien aus Deinem Webseite-Verzeichnis löschst, empfehlen wir, ein Backup Deiner Webseite zu erstellen.", 'cpsec' ), $this->getSubtitle() ) ?>
                         </div>
                         <div class="mline source-code">
                             <img src="<?php echo cp_defender()->getPluginUrl() ?>assets/img/loading.gif" width="18"
                                  height="18"/>
-							<?php _e( "Quellcode wird geladen...", cp_defender()->domain ) ?>
+							<?php _e( "Quellcode wird geladen...", 'cpsec' ) ?>
                             <form method="post" class="float-l pull-src scan-frm">
                                 <input type="hidden" name="action" value="pullSrcFile">
 								<?php wp_nonce_field( 'pullSrcFile' ) ?>
@@ -101,20 +101,20 @@ class Content_Result extends \Hammer\Base\Behavior {
 								<?php wp_nonce_field( 'ignoreItem' ) ?>
                                 <input type="hidden" name="id" value="<?php echo $this->getOwner()->id ?>"/>
                                 <button type="submit" class="button button-secondary button-small">
-									<?php _e( "Ignorieren", cp_defender()->domain ) ?></button>
+									<?php _e( "Ignorieren", 'cpsec' ) ?></button>
                             </form>
 							<?php
 							$file     = $this->getSubtitle();
 							$tooltips = '';
 							if ( strpos( $file, WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'plugins' ) === 0 ) {
 								$loc      = 'plugin';
-								$tooltips = ( __( "TDadurch wird das gesamte Plugin, das diese Datei enthält, dauerhaft gelöscht. Möchtest Du fortfahren?", cp_defender()->domain ) );
+								$tooltips = ( __( "TDadurch wird das gesamte Plugin, das diese Datei enthält, dauerhaft gelöscht. Möchtest Du fortfahren?", 'cpsec' ) );
 							} elseif ( strpos( $file, WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'themes' ) === 0 ) {
 								$loc      = 'theme';
-								$tooltips = ( __( "Dadurch wird das gesamte Theme, das diese Datei enthält, endgültig gelöscht. Möchtest Du fortfahren?", cp_defender()->domain ) );
+								$tooltips = ( __( "Dadurch wird das gesamte Theme, das diese Datei enthält, endgültig gelöscht. Möchtest Du fortfahren?", 'cpsec' ) );
 							} else {
 								$loc      = 'standalone';
-								$tooltips = ( __( "Diese Datei wird dadurch endgültig gelöscht. Möchtest Du fortfahren?", cp_defender()->domain ) );
+								$tooltips = ( __( "Diese Datei wird dadurch endgültig gelöscht. Möchtest Du fortfahren?", 'cpsec' ) );
 							}
 							?>
                             <form method="post" class="scan-frm float-r delete-item">
@@ -122,15 +122,15 @@ class Content_Result extends \Hammer\Base\Behavior {
                                 <input type="hidden" name="action" value="deleteItem"/>
 								<?php wp_nonce_field( 'deleteItem' ) ?>
                                 <button type="button" class="button button-small delete-mitem button-grey">
-									<?php _e( "Löschen", cp_defender()->domain ) ?></button>
+									<?php _e( "Löschen", 'cpsec' ) ?></button>
                                 <div class="confirm-box wd-hide">
 									<?php echo $tooltips; ?>
                                     &nbsp;
                                     <button type="submit" class="button button-small button-grey">
-										<?php _e( "JA", cp_defender()->domain ) ?>
+										<?php _e( "JA", 'cpsec' ) ?>
                                     </button>
                                     <button type="button" class="button button-small button-secondary">
-										<?php _e( "NEIN", cp_defender()->domain ) ?>
+										<?php _e( "NEIN", 'cpsec' ) ?>
                                     </button>
                                 </div>
                             </form>
@@ -198,13 +198,13 @@ class Content_Result extends \Hammer\Base\Behavior {
 			$path = WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $pools[0];
 		} else {
 			if ( $file == ABSPATH . 'wp-config.php' ) {
-				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "Die Datei wp-config.php kann nicht entfernt werden. Bitte entferne den verdächtigen Code manuell.", cp_defender()->domain ) );
+				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "Die Datei wp-config.php kann nicht entfernt werden. Bitte entferne den verdächtigen Code manuell.", 'cpsec' ) );
 			}
 			$res = unlink( $raw['file'] );
 			if ( $res ) {
 				$this->getOwner()->delete();
 			} else {
-				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "PS Security hat nicht die erforderlichen Berechtigungen, um diese Datei zu entfernen.", cp_defender()->domain ) );
+				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "PS Security hat nicht die erforderlichen Berechtigungen, um diese Datei zu entfernen.", 'cpsec' ) );
 			}
 		}
 
@@ -225,12 +225,12 @@ class Content_Result extends \Hammer\Base\Behavior {
 				$res = @unlink( $file->getRealPath() );
 			}
 			if ( $res == false ) {
-				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "PS Security hat nicht die erforderlichen Berechtigungen, um diese Datei zu entfernen.", cp_defender()->domain ) );
+				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "PS Security hat nicht die erforderlichen Berechtigungen, um diese Datei zu entfernen.", 'cpsec' ) );
 			}
 		}
 		$res = @rmdir( $dir );
 		if ( $res == false ) {
-			return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "PS Security hat nicht die erforderlichen Berechtigungen, um diese Datei zu entfernen.", cp_defender()->domain ) );
+			return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "PS Security hat nicht die erforderlichen Berechtigungen, um diese Datei zu entfernen.", 'cpsec' ) );
 		}
 
 		return true;

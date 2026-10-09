@@ -129,13 +129,13 @@ class Main extends \CP_Defender\Controller {
 	public function clearScanCache() {
 		if ( ! $this->checkPermission() ) {
 			wp_send_json_error( array(
-				'message' => __( 'No permission to clear scan cache.', cp_defender()->domain )
+				'message' => __( 'No permission to clear scan cache.', 'cpsec' )
 			) );
 			return;
 		}
 		if ( ! wp_verify_nonce( HTTP_Helper::retrieve_post( '_wpnonce' ), 'clearScanCache' ) ) {
 			wp_send_json_error( array(
-				'message' => __( 'Security verification failed', cp_defender()->domain )
+				'message' => __( 'Security verification failed', 'cpsec' )
 			) );
 			return;
 		}
@@ -159,11 +159,11 @@ class Main extends \CP_Defender\Controller {
 			wp_cache_flush();
 			
 			wp_send_json_success( array(
-				'message' => __( 'Scan cache cleared successfully. The next scan will start fresh without cached checksums.', cp_defender()->domain )
+				'message' => __( 'Scan cache cleared successfully. The next scan will start fresh without cached checksums.', 'cpsec' )
 			) );
 		} catch ( Exception $e ) {
 			wp_send_json_error( array(
-				'message' => __( 'Error clearing cache: ', cp_defender()->domain ) . $e->getMessage()
+				'message' => __( 'Error clearing cache: ', 'cpsec' ) . $e->getMessage()
 			) );
 		}
 	}
@@ -215,7 +215,7 @@ class Main extends \CP_Defender\Controller {
 					'message' => _n( "The suspicious file has been successfully ignored.",
 						"The suspicious files have been successfully ignored.",
 						count( $items ),
-						cp_defender()->domain )
+						'cpsec' )
 				) );
 				break;
 			case 'unignore':
@@ -230,7 +230,7 @@ class Main extends \CP_Defender\Controller {
 					'message' => _n( "The suspicious file has been successfully restored.",
 						"The suspicious files have been successfully restored.",
 						count( $items ),
-						cp_defender()->domain )
+						'cpsec' )
 				) );
 				break;
 			case 'delete':
@@ -248,11 +248,11 @@ class Main extends \CP_Defender\Controller {
 					wp_send_json_success( array(
 						'message' => _n( "The suspicious files has been successfully deleted.",
 							"The suspicious files have been successfully deleted.",
-							count( $items ), cp_defender()->domain )
+							count( $items ), 'cpsec' )
 					) );
 				} else {
 					wp_send_json_error( array(
-						'message' => __( "No item has been deleted", cp_defender()->domain )
+						'message' => __( "No item has been deleted", 'cpsec' )
 					) );
 				}
 				break;
@@ -271,11 +271,11 @@ class Main extends \CP_Defender\Controller {
 					wp_send_json_success( array(
 						'message' => _n( "The suspicious files has been successfully resolved.",
 							"The suspicious files have been successfully resolved.",
-							count( $items ), cp_defender()->domain )
+							count( $items ), 'cpsec' )
 					) );
 				} else {
 					wp_send_json_error( array(
-						'message' => __( "No item has been resolved", cp_defender()->domain )
+						'message' => __( "No item has been resolved", 'cpsec' )
 					) );
 				}
 				break;
@@ -346,7 +346,7 @@ class Main extends \CP_Defender\Controller {
 			$this->submitStatsToDev();
 		}
 		wp_send_json_success( array(
-			'message' => __( "Your settings have been updated.", cp_defender()->domain )
+			'message' => __( "Your settings have been updated.", 'cpsec' )
 		) );
 	}
 
@@ -376,11 +376,11 @@ class Main extends \CP_Defender\Controller {
 					$this->submitStatsToDev();
 					wp_send_json_success( array(
 						'mid'     => 'mid-' . $model->id,
-						'message' => __( "This item has been resolved.", cp_defender()->domain )
+						'message' => __( "This item has been resolved.", 'cpsec' )
 					) );
 				} elseif ( $ret === false ) {
 					wp_send_json_error( array(
-						'message' => __( "Please try again!", cp_defender()->domain )
+						'message' => __( "Please try again!", 'cpsec' )
 					) );
 				} elseif ( is_string( $ret ) ) {
 					$this->submitStatsToDev();
@@ -391,7 +391,7 @@ class Main extends \CP_Defender\Controller {
 			}
 		} else {
 			wp_send_json_error( array(
-				'message' => __( "The item doesn't exist!", cp_defender()->domain )
+				'message' => __( "The item doesn't exist!", 'cpsec' )
 			) );
 		}
 	}
@@ -421,13 +421,13 @@ class Main extends \CP_Defender\Controller {
 			} else {
 				wp_send_json_success( array(
 					'mid'     => 'mid-' . $model->id,
-					'message' => __( "This item has been permanently removed", cp_defender()->domain ),
+					'message' => __( "This item has been permanently removed", 'cpsec' ),
 					'counts'  => $this->getIssuesAndIgnoredCounts( $model->parentId )
 				) );
 			}
 		} else {
 			wp_send_json_error( array(
-				'message' => __( "The item doesn't exist!", cp_defender()->domain )
+				'message' => __( "The item doesn't exist!", 'cpsec' )
 			) );
 		}
 	}
@@ -451,12 +451,12 @@ class Main extends \CP_Defender\Controller {
 			$this->submitStatsToDev();
 			wp_send_json_success( array(
 				'mid'     => 'mid-' . $model->id,
-				'message' => __( "The suspicious file has been successfully restored.", cp_defender()->domain ),
+				'message' => __( "The suspicious file has been successfully restored.", 'cpsec' ),
 				'counts'  => $this->getIssuesAndIgnoredCounts( $model->parentId )
 			) );
 		} else {
 			wp_send_json_error( array(
-				'message' => __( "The item doesn't exist!", cp_defender()->domain )
+				'message' => __( "The item doesn't exist!", 'cpsec' )
 			) );
 		}
 	}
@@ -480,12 +480,12 @@ class Main extends \CP_Defender\Controller {
 			$this->submitStatsToDev();
 			wp_send_json_success( array(
 				'mid'     => 'mid-' . $model->id,
-				'message' => __( "The suspicious file has been successfully ignored.", cp_defender()->domain ),
+				'message' => __( "The suspicious file has been successfully ignored.", 'cpsec' ),
 				'counts'  => $this->getIssuesAndIgnoredCounts( $model->parentId )
 			) );
 		} else {
 			wp_send_json_error( array(
-				'message' => __( "The item doesn't exist!", cp_defender()->domain )
+				'message' => __( "The item doesn't exist!", 'cpsec' )
 			) );
 		}
 	}
@@ -568,7 +568,7 @@ return;
 }
 
 		$cap = is_multisite() ? 'manage_network_options' : 'manage_options';
-		add_submenu_page( 'cp-defender', esc_html__( "Dateien Scannen", cp_defender()->domain ), esc_html__( "Dateien Scannen", cp_defender()->domain ), $cap, $this->slug, array(
+		add_submenu_page( 'cp-defender', esc_html__( "Dateien Scannen", 'cpsec' ), esc_html__( "Dateien Scannen", 'cpsec' ), $cap, $this->slug, array(
 			&$this,
 			'actionIndex'
 		) );
@@ -579,8 +579,8 @@ return;
 	 */
 	public function scripts() {
 		$data = array(
-			'scanning_title' => __( "Scanvorgang läuft", cp_defender()->domain ) . '<form class="scan-frm float-r"><input type="hidden" name="action" value="cancelScan"/>' . wp_nonce_field( 'cancelScan', '_wpnonce', true, false ) . '<button type="submit" class="button button-small button-secondary">' . __( "Abbrechen", cp_defender()->domain ) . '</button></form>',
-			'no_issues'      => __( "Dein Code ist aktuell fehlerfrei! Beim letzten Scan wurden keine Probleme gefunden, Du kannst aber jederzeit einen neuen Scan durchführen.", cp_defender()->domain )
+			'scanning_title' => __( "Scanvorgang läuft", 'cpsec' ) . '<form class="scan-frm float-r"><input type="hidden" name="action" value="cancelScan"/>' . wp_nonce_field( 'cancelScan', '_wpnonce', true, false ) . '<button type="submit" class="button button-small button-secondary">' . __( "Abbrechen", 'cpsec' ) . '</button></form>',
+			'no_issues'      => __( "Dein Code ist aktuell fehlerfrei! Beim letzten Scan wurden keine Probleme gefunden, Du kannst aber jederzeit einen neuen Scan durchführen.", 'cpsec' )
 		);
 		if ( $this->isInPage() ) {
 			\WDEV_Plugin_Ui::load( cp_defender()->getPluginUrl() . 'shared-ui/' );
@@ -855,9 +855,9 @@ return;
             <thead class="results-list-header" style="border-bottom: 2px solid #ff5c28;">
             <tr style="padding: 0; text-align: left; vertical-align: top;">
                 <th class="result-list-label-title"
-                    style="Margin: 0; color: #ff5c28; font-family: Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 700; line-height: 48px; margin: 0; padding: 0; text-align: left; width: 35%;"><?php esc_html_e( "File", cp_defender()->domain ) ?></th>
+                    style="Margin: 0; color: #ff5c28; font-family: Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 700; line-height: 48px; margin: 0; padding: 0; text-align: left; width: 35%;"><?php esc_html_e( "File", 'cpsec' ) ?></th>
                 <th class="result-list-data-title"
-                    style="Margin: 0; color: #ff5c28; font-family: Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 700; line-height: 48px; margin: 0; padding: 0; text-align: left;"><?php esc_html_e( "Issue", cp_defender()->domain ) ?></th>
+                    style="Margin: 0; color: #ff5c28; font-family: Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 700; line-height: 48px; margin: 0; padding: 0; text-align: left;"><?php esc_html_e( "Issue", 'cpsec' ) ?></th>
             </tr>
             </thead>
             <tbody class="results-list-content">
@@ -891,7 +891,7 @@ return;
                     style="-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; hyphens: auto; line-height: 26px; margin: 0; padding: 10px 0 0; text-align: left; vertical-align: top; word-wrap: break-word;">
                     <p style="Margin: 0; Margin-bottom: 0; color: #555555; font-family: Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; line-height: 26px; margin: 0; margin-bottom: 0; padding: 0 0 24px; text-align: left;">
                         <a class="plugin-brand" href="<?php echo \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-scan' ) ?>"
-                           style="Margin: 0; color: #ff5c28; display: inline-block; font: inherit; font-family: Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: left; text-decoration: none;"><?php esc_html_e( "Let’s get your site patched up.", cp_defender()->domain ) ?>
+                           style="Margin: 0; color: #ff5c28; display: inline-block; font: inherit; font-family: Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: left; text-decoration: none;"><?php esc_html_e( "Let’s get your site patched up.", 'cpsec' ) ?>
                             <img class="icon-arrow-right"
                                  src="<?php echo cp_defender()->getPluginUrl() ?>assets/email-images/icon-arrow-right-defender.png"
                                  alt="Arrow"

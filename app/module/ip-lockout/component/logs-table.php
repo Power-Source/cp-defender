@@ -34,9 +34,9 @@ class Logs_Table extends \WP_List_Table {
 	 */
 	function get_columns() {
 		$columns = array(
-			'reason' => esc_html__( 'DETAILS', cp_defender()->domain ),
-			'date'   => esc_html__( 'DATUM', cp_defender()->domain ),
-			'ip'     => esc_html__( 'IP', cp_defender()->domain ),
+			'reason' => esc_html__( 'DETAILS', 'cpsec' ),
+			'date'   => esc_html__( 'DATUM', 'cpsec' ),
+			'ip'     => esc_html__( 'IP', 'cpsec' ),
 			'action' => ''
 		);
 
@@ -128,7 +128,7 @@ class Logs_Table extends \WP_List_Table {
 	public function column_ip( Log_Model $log ) {
 		$ip = \CP_Defender\Behavior\Utils::instance()->getUserIp();
 		if ( $ip == $log->get_ip() ) {
-			return '<span tooltip="' . esc_attr( $ip ) . '" class="badge">' . __( "Du", cp_defender()->domain ) . '</span>';
+			return '<span tooltip="' . esc_attr( $ip ) . '" class="badge">' . __( "Du", 'cpsec' ) . '</span>';
 		} else {
 			return $log->get_ip();
 		}
@@ -143,29 +143,29 @@ class Logs_Table extends \WP_List_Table {
             <div class="well well-white lockout-logs-filter mline wd-hide">
                 <form>
                     <strong>
-						<?php _e( "Filter", cp_defender()->domain ) ?>
+						<?php _e( "Filter", 'cpsec' ) ?>
                     </strong>
                     <div class="columns">
                         <div class="column is-5">
                             <select name="interval">
-                                <option value="1"><?php _e( "Letzte 24 Stunden", cp_defender()->domain ) ?></option>
-                                <option value="7"><?php _e( "Letzte 7 Tage", cp_defender()->domain ) ?></option>
+                                <option value="1"><?php _e( "Letzte 24 Stunden", 'cpsec' ) ?></option>
+                                <option value="7"><?php _e( "Letzte 7 Tage", 'cpsec' ) ?></option>
                                 <option value="30"
-                                        selected><?php _e( "Letzte 30 Tage", cp_defender()->domain ) ?></option>
+                                        selected><?php _e( "Letzte 30 Tage", 'cpsec' ) ?></option>
                             </select>
                         </div>
                         <div class="column is-5">
                             <select name="type">
-                                <option value=""><?php esc_html_e( "Alle", cp_defender()->domain ) ?></option>
+                                <option value=""><?php esc_html_e( "Alle", 'cpsec' ) ?></option>
                                 <option <?php selected( \CP_Defender\Module\IP_Lockout\Model\Log_Model::AUTH_FAIL, \Hammer\Helper\HTTP_Helper::retrieve_get( 'filter' ) ) ?>
                                         value="<?php echo \CP_Defender\Module\IP_Lockout\Model\Log_Model::AUTH_FAIL ?>">
-									<?php esc_html_e( "Fehlgeschlagene Anmeldeversuche", cp_defender()->domain ) ?></option>
+									<?php esc_html_e( "Fehlgeschlagene Anmeldeversuche", 'cpsec' ) ?></option>
                                 <option <?php selected( \CP_Defender\Module\IP_Lockout\Model\Log_Model::AUTH_LOCK, \Hammer\Helper\HTTP_Helper::retrieve_get( 'filter' ) ) ?>
-                                        value="<?php echo \CP_Defender\Module\IP_Lockout\Model\Log_Model::AUTH_LOCK ?>"><?php esc_html_e( "Login lockout", cp_defender()->domain ) ?></option>
+                                        value="<?php echo \CP_Defender\Module\IP_Lockout\Model\Log_Model::AUTH_LOCK ?>"><?php esc_html_e( "Login lockout", 'cpsec' ) ?></option>
                                 <option <?php selected( \CP_Defender\Module\IP_Lockout\Model\Log_Model::ERROR_404, \Hammer\Helper\HTTP_Helper::retrieve_get( 'filter' ) ) ?>
-                                        value="<?php echo \CP_Defender\Module\IP_Lockout\Model\Log_Model::ERROR_404 ?>"><?php esc_html_e( "404 error", cp_defender()->domain ) ?></option>
+                                        value="<?php echo \CP_Defender\Module\IP_Lockout\Model\Log_Model::ERROR_404 ?>"><?php esc_html_e( "404 error", 'cpsec' ) ?></option>
                                 <option <?php selected( \CP_Defender\Module\IP_Lockout\Model\Log_Model::LOCKOUT_404, \Hammer\Helper\HTTP_Helper::retrieve_get( 'filter' ) ) ?>
-                                        value="<?php echo \CP_Defender\Module\IP_Lockout\Model\Log_Model::LOCKOUT_404 ?>"><?php esc_html_e( "404 lockout", cp_defender()->domain ) ?></option>
+                                        value="<?php echo \CP_Defender\Module\IP_Lockout\Model\Log_Model::LOCKOUT_404 ?>"><?php esc_html_e( "404 lockout", 'cpsec' ) ?></option>
                             </select>
                         </div>
                     </div>
@@ -195,7 +195,7 @@ class Logs_Table extends \WP_List_Table {
 			<?php else: ?>
                 <div class="well with-cap well-blue">
                     <i class="def-icon icon-info fill-blue"></i>
-					<?php _e( "Innerhalb des ausgewählten Zeitraums wurden keine Sperrereignisse protokolliert.", cp_defender()->domain ) ?>
+					<?php _e( "Innerhalb des ausgewählten Zeitraums wurden keine Sperrereignisse protokolliert.", 'cpsec' ) ?>
                 </div>
 			<?php endif; ?>
         </div>
@@ -242,12 +242,12 @@ class Logs_Table extends \WP_List_Table {
                 <div class="bulk-action">
 					<?php if ( $which === 'top' ): ?>
                         <p><?php
-							$dayText = sprintf( _n( '%s Tag', '%s Tage', HTTP_Helper::retrieve_get( 'interval', 30 ), cp_defender()->domain ), HTTP_Helper::retrieve_get( 'interval', 30 ) );
-							printf( esc_html__( 'Sperrprotokoll Deiner Webseite für die letzten %s.', cp_defender()->domain ), $dayText ) ?></p>
+							$dayText = sprintf( _n( '%s Tag', '%s Tage', HTTP_Helper::retrieve_get( 'interval', 30 ), 'cpsec' ), HTTP_Helper::retrieve_get( 'interval', 30 ) );
+							printf( esc_html__( 'Sperrprotokoll Deiner Webseite für die letzten %s.', 'cpsec' ), $dayText ) ?></p>
 					<?php endif; ?>
                 </div>
                 <div class="nav">
-                    <span><?php echo sprintf( esc_html__( "%s Ergebnisse", cp_defender()->domain ), $this->get_pagination_arg( 'total_items' ) ) ?></span>
+                    <span><?php echo sprintf( esc_html__( "%s Ergebnisse", 'cpsec' ), $this->get_pagination_arg( 'total_items' ) ) ?></span>
                     <div class="button-group">
 						<?php $this->pagination( $which ); ?>
                     </div>

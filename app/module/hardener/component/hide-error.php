@@ -28,7 +28,7 @@ class Hide_Error extends Rule {
 	}
 
 	public function getTitle() {
-		return __( "Fehlerberichterstattung ausblenden", cp_defender()->domain );
+		return __( "Fehlerberichterstattung ausblenden", 'cpsec' );
 	}
 
 	function revert() {

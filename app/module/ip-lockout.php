@@ -15,8 +15,8 @@ class IP_Lockout extends Module {
 	public function register_post_type() {
 		register_post_type( 'wd_iplockout_log', array(
 			'labels'          => array(
-				'name'          => __( "Sperrprotokolle", cp_defender()->domain ),
-				'singular_name' => __( "Sperrprotokoll", cp_defender()->domain )
+				'name'          => __( "Sperrprotokolle", 'cpsec' ),
+				'singular_name' => __( "Sperrprotokoll", 'cpsec' )
 			),
 			'public'          => false,
 			'show_ui'         => false,
@@ -30,8 +30,8 @@ class IP_Lockout extends Module {
 		) );
 		register_post_type( 'wd_ip_lockout', array(
 			'labels'          => array(
-				'name'          => __( "IP Aussperrungen", cp_defender()->domain ),
-				'singular_name' => __( "IP Aussperrung", cp_defender()->domain )
+				'name'          => __( "IP Aussperrungen", 'cpsec' ),
+				'singular_name' => __( "IP Aussperrung", 'cpsec' )
 			),
 			'public'          => false,
 			'show_ui'         => false,

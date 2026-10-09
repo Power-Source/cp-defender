@@ -1667,7 +1667,7 @@
     background: #D1F1EA; }
   .cp-defender .floated-alert.alert-ok:before {
     content: '\67';
-    font-family: 'WPMU-DEV-App-Icons';
+    font-family: 'PSOURCE-App-Icons';
     font-size: 18px;
     margin-right: 5px;
     vertical-align: middle;
@@ -1788,7 +1788,7 @@
       .cp-defender .hardener .rules .rule .rule-title i.icon-warning {
         top: 5px; }
     .cp-defender .hardener .rules .rule .rule-title:after {
-      font-family: 'WPMU-DEV-App-Icons';
+      font-family: 'PSOURCE-App-Icons';
       speak: none;
       font-style: normal;
       font-weight: normal;

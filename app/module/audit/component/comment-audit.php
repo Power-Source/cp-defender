@@ -24,7 +24,7 @@ class Comment_Audit extends Event_Abstract {
 				'event_type'  => $this->type,
 				'action_type' => self::ACTION_FLOOD,
 				'context'     => self::CONTEXT_COMMENT,
-				'text'        => sprintf( esc_html__( "Benutzer %s hat den Kommentarbereich mit Kommentaren überflutet", cp_defender()->domain ), '{{wp_user}}' ),
+				'text'        => sprintf( esc_html__( "Benutzer %s hat den Kommentarbereich mit Kommentaren überflutet", 'cpsec' ), '{{wp_user}}' ),
 			),
 			'deleted_comment'           => array(
 				'args'        => array( 'comment_ID' ),
@@ -90,10 +90,10 @@ class Comment_Audit extends Event_Abstract {
 	 */
 	public function dictionary() {
 		return array(
-			self::ACTION_DUPLICATED => esc_html__( "Dupliziert", cp_defender()->domain ),
-			self::ACTION_SPAMMED    => esc_html__( "Spam", cp_defender()->domain ),
-			self::ACTION_UNSPAMMED  => esc_html__( "Kein Spam", cp_defender()->domain ),
-			self::CONTEXT_COMMENT   => esc_html__( "Kommentar", cp_defender()->domain )
+			self::ACTION_DUPLICATED => esc_html__( "Dupliziert", 'cpsec' ),
+			self::ACTION_SPAMMED    => esc_html__( "Spam", 'cpsec' ),
+			self::ACTION_UNSPAMMED  => esc_html__( "Kein Spam", 'cpsec' ),
+			self::CONTEXT_COMMENT   => esc_html__( "Kommentar", 'cpsec' )
 		);
 	}
 
@@ -107,7 +107,7 @@ class Comment_Audit extends Event_Abstract {
 		$post            = get_post( $comment_data['comment_post_ID'] );
 		$post_type       = get_post_type_object( $post->post_type );
 		$post_type_label = strtolower( $post_type->labels->singular_name );
-		$text            = sprintf( esc_html__( "Benutzer %s hat einen doppelten Kommentar zu %s \"%s\" eingereicht", cp_defender()->domain ), is_user_logged_in() ? \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ) : $comment_data['comment_author'], $post_type_label, $post->post_title );
+		$text            = sprintf( esc_html__( "Benutzer %s hat einen doppelten Kommentar zu %s \"%s\" eingereicht", 'cpsec' ), is_user_logged_in() ? \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ) : $comment_data['comment_author'], $post_type_label, $post->post_title );
 
 		return array( $text, $post_type_label );
 	}
@@ -125,9 +125,9 @@ class Comment_Audit extends Event_Abstract {
 		$post_type_label = strtolower( $post_type->labels->singular_name );
 		$text            = false;
 		if ( $old_stat == 'unapproved' && $new_stat == 'approved' ) {
-			$text = sprintf( esc_html__( "%s hat den Kommentar mit der ID %s von %s genehmigt, auf %s \"%s\"", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $comment->comment_ID, $comment->comment_author, $post_type_label, $post->post_title );
+			$text = sprintf( esc_html__( "%s hat den Kommentar mit der ID %s von %s genehmigt, auf %s \"%s\"", 'cpsec' ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $comment->comment_ID, $comment->comment_author, $post_type_label, $post->post_title );
 		} elseif ( $new_stat == 'unapproved' && $old_stat == 'approved' ) {
-			$text = sprintf( esc_html__( "%s hat den Kommentar mit der ID %s von %s nicht genehmigt, auf %s \"%s\"", cp_defender()->domain ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $comment->comment_ID, $comment->comment_author, $post_type_label, $post->post_title );
+			$text = sprintf( esc_html__( "%s hat den Kommentar mit der ID %s von %s nicht genehmigt, auf %s \"%s\"", 'cpsec' ), \CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $comment->comment_ID, $comment->comment_author, $post_type_label, $post->post_title );
 		}
 
 		return array( $text, $post_type_label );
@@ -159,16 +159,16 @@ class Comment_Audit extends Event_Abstract {
 				if ( $comment_approved === 'spam' ) {
 					$comment_status = 'spam';
 				} elseif ( $comment_approved === 1 ) {
-					$comment_status = esc_html__( "genehmigt", cp_defender()->domain );
+					$comment_status = esc_html__( "genehmigt", 'cpsec' );
 				} else {
-					$comment_status = esc_html__( "ausstehende Genehmigung", cp_defender()->domain );
+					$comment_status = esc_html__( "ausstehende Genehmigung", 'cpsec' );
 				}
 				if ( $comment['comment_parent'] == 0 ) {
-					$text = sprintf( esc_html__( "%s hat %s kommentiert \"%s\" - Kommentarstatus: %s", cp_defender()->domain ),
+					$text = sprintf( esc_html__( "%s hat %s kommentiert \"%s\" - Kommentarstatus: %s", 'cpsec' ),
 						$comment['comment_author'], $post_type_label, $post->post_title, $comment_status );
 				} else {
 					$parent_comment = get_comment( $comment['comment_parent'] );
-					$text           = sprintf( esc_html__( "%s antwortete auf %s' Kommentar zu %s \"%s\" - Kommentarstatus: %s", cp_defender()->domain ),
+					$text           = sprintf( esc_html__( "%s antwortete auf %s' Kommentar zu %s \"%s\" - Kommentarstatus: %s", 'cpsec' ),
 						$comment['comment_author'], $parent_comment->comment_author, $post_type_label, $post->post_title, $comment_status );
 				}
 				break;
@@ -176,41 +176,41 @@ class Comment_Audit extends Event_Abstract {
 				if ( $comment_approved === 'spam' ) {
 					$comment_status = 'spam';
 				} elseif ( $comment_approved === 1 ) {
-					$comment_status = esc_html__( "genehmigt", cp_defender()->domain );
+					$comment_status = esc_html__( "genehmigt", 'cpsec' );
 				} else {
-					$comment_status = esc_html__( "ausstehende Genehmigung", cp_defender()->domain );
+					$comment_status = esc_html__( "ausstehende Genehmigung", 'cpsec' );
 				}
 				if ( $comment['comment_parent'] == 0 ) {
-					$text = sprintf( esc_html__( "%s hat %s kommentiert \"%s\" - Kommentarstatus: %s", cp_defender()->domain ),
+					$text = sprintf( esc_html__( "%s hat %s kommentiert \"%s\" - Kommentarstatus: %s", 'cpsec' ),
 						$comment['comment_author'], $post_type_label, $post->post_title, $comment_status );
 				} else {
 					$parent_comment = get_comment( $comment['comment_parent'] );
-					$text           = sprintf( esc_html__( "%s antwortete auf %s' Kommentar zu %s \"%s\" - Kommentarstatus: %s", cp_defender()->domain ),
+					$text           = sprintf( esc_html__( "%s antwortete auf %s' Kommentar zu %s \"%s\" - Kommentarstatus: %s", 'cpsec' ),
 						$comment['comment_author'], $parent_comment->comment_author, $post_type_label, $post->post_title, $comment_status );
 				}
 				break;
 			case 'deleted_comment':
-				$text = sprintf( esc_html__( "%s hat Kommentar ID %s gelöscht, Kommentarautor: %s zu %s \"%s\"", cp_defender()->domain ),
+				$text = sprintf( esc_html__( "%s hat Kommentar ID %s gelöscht, Kommentarautor: %s zu %s \"%s\"", 'cpsec' ),
 					\CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $comment_id, $comment['comment_author'], $post_type_label, $post->post_title );
 				break;
 			case 'trash_comment':
-				$text = sprintf( esc_html__( "%s hat Kommentar ID %s in den Papierkorb verschoben, Kommentarautor: %s zu %s \"%s\"", cp_defender()->domain ),
+				$text = sprintf( esc_html__( "%s hat Kommentar ID %s in den Papierkorb verschoben, Kommentarautor: %s zu %s \"%s\"", 'cpsec' ),
 					\CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $comment_id, $comment['comment_author'], $post_type_label, $post->post_title );
 				break;
 			case 'untrash_comment':
-				$text = sprintf( esc_html__( "%s hat Kommentar ID %s aus dem Papierkorb wiederhergestellt, Kommentarautor: %s zu %s \"%s\"", cp_defender()->domain ),
+				$text = sprintf( esc_html__( "%s hat Kommentar ID %s aus dem Papierkorb wiederhergestellt, Kommentarautor: %s zu %s \"%s\"", 'cpsec' ),
 					\CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $comment_id, $comment['comment_author'], $post_type_label, $post->post_title );
 				break;
 			case 'spam_comment':
-				$text = sprintf( esc_html__( "%s hat Kommentar ID %s, Kommentarautor: %s zu %s \"%s\" als Spam markiert", cp_defender()->domain ),
+				$text = sprintf( esc_html__( "%s hat Kommentar ID %s, Kommentarautor: %s zu %s \"%s\" als Spam markiert", 'cpsec' ),
 					\CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $comment_id, $comment['comment_author'], $post_type_label, $post->post_title );
 				break;
 			case 'unspam_comment':
-				$text = sprintf( esc_html__( "%s hat Kommentar ID %s, Kommentarautor: %s zu %s \"%s\" als Spam markiert", cp_defender()->domain ),
+				$text = sprintf( esc_html__( "%s hat Kommentar ID %s, Kommentarautor: %s zu %s \"%s\" als Spam markiert", 'cpsec' ),
 					\CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $comment_id, $comment['comment_author'], $post_type_label, $post->post_title );
 				break;
 			case 'edit_comment':
-				$text = sprintf( esc_html__( "%s hat Kommentar ID %s bearbeitet, Kommentarautor: %s zu %s \"%s\"", cp_defender()->domain ),
+				$text = sprintf( esc_html__( "%s hat Kommentar ID %s bearbeitet, Kommentarautor: %s zu %s \"%s\"", 'cpsec' ),
 					\CP_Defender\Behavior\Utils::instance()->getDisplayName( get_current_user_id() ), $comment_id, $comment['comment_author'], $post_type_label, $post->post_title );
 				break;
 			default:

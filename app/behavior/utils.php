@@ -73,7 +73,7 @@ class Utils extends Behavior {
 		} else {
 			// API key not available - feature requires PSOURCE account
 			return new \WP_Error( 'api_key_not_found',
-				esc_html__( "This feature requires an active PSOURCE account.", cp_defender()->domain ) );
+				esc_html__( "This feature requires an active PSOURCE account.", 'cpsec' ) );
 		}
 	}
 
@@ -178,7 +178,7 @@ class Utils extends Behavior {
 	 */
 	public function getDisplayName( $user_id = null ) {
 		if ( ! is_user_logged_in() && is_null( $user_id ) ) {
-			return esc_html__( "Guest", cp_defender()->domain );
+			return esc_html__( "Guest", 'cpsec' );
 		}
 
 		if ( is_null( $user_id ) ) {
@@ -187,7 +187,7 @@ class Utils extends Behavior {
 
 		$userdata = get_userdata( $user_id );
 		if ( ! is_object( $userdata ) ) {
-			return __( "Guest", cp_defender()->domain );
+			return __( "Guest", 'cpsec' );
 		}
 
 		$fullname = trim( $userdata->first_name . ' ' . $userdata->last_name );
@@ -737,9 +737,9 @@ class Utils extends Behavior {
 
 		$res['scan_items'] = $scanItems;
 		$labels            = array(
-			'core_integrity'   => esc_html__( "WordPress Core Integrity", cp_defender()->domain ),
-			'vulnerability_db' => esc_html__( "Plugins & Themes vulnerability", cp_defender()->domain ),
-			'file_suspicious'  => esc_html__( "Suspicious Code", cp_defender()->domain )
+			'core_integrity'   => esc_html__( "WordPress Core Integrity", 'cpsec' ),
+			'vulnerability_db' => esc_html__( "Plugins & Themes vulnerability", 'cpsec' ),
+			'file_suspicious'  => esc_html__( "Suspicious Code", 'cpsec' )
 		);
 
 		$lastLockout = Login_Protection_Api::getLastLockout();
@@ -768,7 +768,7 @@ class Utils extends Behavior {
 			'date_to'   => date( 'Y-m-d' ) . ' 23:59:59',
 		) );
 
-		$last_event_date = __( 'Keine', cp_defender()->domain );
+		$last_event_date = __( 'Keine', 'cpsec' );
 
 		if ( ! is_wp_error( $events_in_month ) ) {
 			$last_event_date = $events_in_month['data'][0]['timestamp'];
@@ -891,7 +891,7 @@ class Utils extends Behavior {
 			$meet          = false;
 			$result['php'] = array(
 				'status'  => $this->getPHPVersion(),
-				'message' => __( "Please upgrade to 5.3 or later", cp_defender()->domain )
+				'message' => __( "Please upgrade to 5.3 or later", 'cpsec' )
 			);
 		}
 
@@ -908,13 +908,13 @@ class Utils extends Behavior {
 		$text = '';
 		switch ( $freq ) {
 			case 1:
-				$text = __( "daily", cp_defender()->domain );
+				$text = __( "daily", 'cpsec' );
 				break;
 			case 7:
-				$text = __( "weekly", cp_defender()->domain );
+				$text = __( "weekly", 'cpsec' );
 				break;
 			case 30:
-				$text = __( "monthly", cp_defender()->domain );
+				$text = __( "monthly", 'cpsec' );
 				break;
 		}
 

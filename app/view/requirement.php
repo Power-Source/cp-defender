@@ -8,7 +8,7 @@
 	</div>
 	<dialog id="requirement">
 		<div class="line">
-			<?php _e( "PS Security scannt derzeit Deine Dateien auf Schadcode. Bitte habe Geduld, dies sollte je nach Größe Deiner Webseite nur wenige Minuten dauern.", cp_defender()->domain ) ?>
+			<?php _e( "PS Security scannt derzeit Deine Dateien auf Schadcode. Bitte habe Geduld, dies sollte je nach Größe Deiner Webseite nur wenige Minuten dauern.", 'cpsec' ) ?>
 		</div>
 
 	</dialog>

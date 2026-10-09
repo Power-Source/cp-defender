@@ -4,7 +4,7 @@
 
         </div>
         <div class="nav">
-            <span><?php printf( __( "%d Ergebnisse", cp_defender()->domain ), $data['total_items'] ) ?></span>
+            <span><?php printf( __( "%d Ergebnisse", 'cpsec' ), $data['total_items'] ) ?></span>
             <div class="button-group is-hidden-mobile">
 				<?php echo $pagination ?>
             </div>
@@ -17,9 +17,9 @@
             <table>
                 <thead>
                 <tr>
-                    <th><?php _e( "Zusammenfassung", cp_defender()->domain ) ?></th>
-                    <th><?php _e( "Zeit", cp_defender()->domain ) ?></th>
-                    <th class="is-hidden-touch"><?php _e( "IP-Adresse", cp_defender()->domain ) ?></th>
+                    <th><?php _e( "Zusammenfassung", 'cpsec' ) ?></th>
+                    <th><?php _e( "Zeit", 'cpsec' ) ?></th>
+                    <th class="is-hidden-touch"><?php _e( "IP-Adresse", 'cpsec' ) ?></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -31,7 +31,7 @@
                     <tr class="critical show-info" data-target="#<?php echo $timestamp ?>">
                         <td><?php echo wp_trim_words( $row['msg'], 10 ) ?></td>
                         <td><?php
-							echo \CP_Defender\Module\Audit\Component\Audit_API::time_since( $timestamp ) . esc_html__( " ago", cp_defender()->domain ); ?>
+							echo \CP_Defender\Module\Audit\Component\Audit_API::time_since( $timestamp ) . esc_html__( " ago", 'cpsec' ); ?>
                         </td>
                         <td class="is-hidden-touch">
 							<?php echo $row['ip'] ?>
@@ -46,16 +46,16 @@
                         <td colspan="4">
                             <div class="dev-box">
                                 <div class="box-content">
-                                    <strong><?php _e( "Beschreibung", cp_defender()->domain ) ?></strong>
+                                    <strong><?php _e( "Beschreibung", 'cpsec' ) ?></strong>
                                     <p class="mline"><?php echo $row['msg'] ?></p>
                                     <table class="log-detail is-hidden-touch">
                                         <thead>
                                         <tr>
-                                            <th><?php _e( "Kontext", cp_defender()->domain ) ?></th>
-                                            <th><?php _e( "Typ", cp_defender()->domain ) ?></th>
-                                            <th><?php _e( "IP-Adresse", cp_defender()->domain ) ?></th>
-                                            <th><?php _e( "Benutzer", cp_defender()->domain ) ?></th>
-                                            <th><?php _e( "Datum / Uhrzeit", cp_defender()->domain ) ?></th>
+                                            <th><?php _e( "Kontext", 'cpsec' ) ?></th>
+                                            <th><?php _e( "Typ", 'cpsec' ) ?></th>
+                                            <th><?php _e( "IP-Adresse", 'cpsec' ) ?></th>
+                                            <th><?php _e( "Benutzer", 'cpsec' ) ?></th>
+                                            <th><?php _e( "Datum / Uhrzeit", 'cpsec' ) ?></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -83,7 +83,7 @@
                                                    href="<?php echo $controller->buildFilterUrl( 'term', $row['user_id'] ) ?>">
 													<?php
 													if ( $row['user_id'] == 0 ) {
-														_e( "Guest", cp_defender()->domain );
+														_e( "Guest", 'cpsec' );
 													} else {
 														echo \CP_Defender\Behavior\Utils::instance()->getDisplayName( $row['user_id'] );
 													}
@@ -101,7 +101,7 @@
                                     <ul class="dev-list is-hidden-desktop">
                                         <li>
                                             <div class="list-label">
-                                                <strong><?php _e( "Kontext", cp_defender()->domain ) ?></strong>
+                                                <strong><?php _e( "Kontext", 'cpsec' ) ?></strong>
                                             </div>
                                             <div class="list-detail">
                                                 <a class="afilter"
@@ -112,7 +112,7 @@
                                         </li>
                                         <li>
                                             <div class="list-label">
-                                                <strong><?php _e( "Typ", cp_defender()->domain ) ?></strong>
+                                                <strong><?php _e( "Typ", 'cpsec' ) ?></strong>
                                             </div>
                                             <div class="list-detail">
                                                 <a class="afilter"
@@ -123,7 +123,7 @@
                                         </li>
                                         <li>
                                             <div class="list-label">
-                                                <strong><?php _e( "IP-Adresse", cp_defender()->domain ) ?></strong>
+                                                <strong><?php _e( "IP-Adresse", 'cpsec' ) ?></strong>
                                             </div>
                                             <div class="list-detail">
                                                 <a class="afilter"
@@ -134,14 +134,14 @@
                                         </li>
                                         <li>
                                             <div class="list-label">
-                                                <strong><?php _e( "Benutzer", cp_defender()->domain ) ?></strong>
+                                                <strong><?php _e( "Benutzer", 'cpsec' ) ?></strong>
                                             </div>
                                             <div class="list-detail">
                                                 <a class="afilter"
                                                    href="<?php echo $controller->buildFilterUrl( 'term', $row['user_id'] ) ?>">
 													<?php
 													if ( $row['user_id'] == 0 ) {
-														_e( "Guest", cp_defender()->domain );
+														_e( "Guest", 'cpsec' );
 													} else {
 														echo \CP_Defender\Behavior\Utils::instance()->getDisplayName( $row['user_id'] );
 													}
@@ -151,7 +151,7 @@
                                         </li>
                                         <li>
                                             <div class="list-label">
-                                                <strong><?php _e( "Datum / Uhrzeit", cp_defender()->domain ) ?></strong>
+                                                <strong><?php _e( "Datum / Uhrzeit", 'cpsec' ) ?></strong>
                                             </div>
                                             <div class="list-detail">
 	                                            <?php
@@ -165,7 +165,7 @@
                                         <div class="well">
                                             <div class="columns">
                                                 <div class="column is-10">
-                                                    <p><?php _e( "Du kannst diese IP-Adresse sperren, damit sie nicht mehr auf deine Seite zugreifen kann. Stelle nur sicher, dass es sich nicht um eine legitime Operation eines Plugins oder Dienstes handelt, der Zugriff benötigt.", cp_defender()->domain ) ?></p>
+                                                    <p><?php _e( "Du kannst diese IP-Adresse sperren, damit sie nicht mehr auf deine Seite zugreifen kann. Stelle nur sicher, dass es sich nicht um eine legitime Operation eines Plugins oder Dienstes handelt, der Zugriff benötigt.", 'cpsec' ) ?></p>
                                                 </div>
                                                 <div class="column is-2 tc">
                                                     <form method="post" class="audit-frm banIP">
@@ -175,7 +175,7 @@
                                                                value="<?php echo $row['ip'] ?>"/>
 														<?php wp_nonce_field( 'lockoutIPAction', 'nonce' ) ?>
                                                         <button type="submit" class="button">
-															<?php _e( "IP sperren", cp_defender()->domain ) ?></button>
+															<?php _e( "IP sperren", 'cpsec' ) ?></button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -195,7 +195,7 @@
 
             </div>
             <div class="nav">
-                <span><?php printf( __( "%d Results", cp_defender()->domain ), $data['total_items'] ) ?></span>
+                <span><?php printf( __( "%d Results", 'cpsec' ), $data['total_items'] ) ?></span>
                 <div class="button-group is-hidden-mobile">
 					<?php echo $pagination ?>
                 </div>
@@ -205,7 +205,7 @@
 	<?php else: ?>
         <div class="well with-cap well-blue">
             <i class="def-icon icon-info fill-blue"></i>
-			<?php _e( "There have been no events logged in the selected time period.", cp_defender()->domain ) ?>
+			<?php _e( "There have been no events logged in the selected time period.", 'cpsec' ) ?>
         </div>
 	<?php endif; ?>
 <?php else: ?>
