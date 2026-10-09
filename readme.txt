@@ -2,10 +2,10 @@
 Contributors: PSource
 Tags: updates, security, multisite, anti-spam, malware-scan
 Requires at least: 5.0
-Tested up to: 6.2.9 
-ClassicPress 2.7.0
+Tested up to: 7.1
+ClassicPress 2.7.3
 Requires PHP: 7.4
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,8 +77,12 @@ Ja! Unter "Patterns" kannst du beliebig viele eigene Regex-Patterns erstellen un
 == Changelog ==
 
 = 1.0.7 =
-Fix: Ersetze deprecated socket_set_timeout() mit stream_set_timeout()
-Fix: Verhindere PHP-Deprecated-Warnung bei null-Werten in str_replace()
+* Fix: Ersetze deprecated socket_set_timeout() mit stream_set_timeout()
+* Fix: Verhindere PHP-Deprecated-Warnung bei null-Werten in str_replace()
+* Neu: Deutsche und englische Gettext-Kataloge für die Plugin-Oberfläche
+* Verbesserung: Textdomain wird aus dem standardisierten Sprachdateiordner geladen
+* Verbesserung: Übersetzbare Texte verwenden eine statische Textdomain für vollständige Kataloge
+* Neu: Deutsch- und englischsprachige README-Dokumentation
 
 = 1.0.6 =
 * Fix: Audit-Logging liefert wieder lokale Ereignisse statt leerer Ergebnisse
