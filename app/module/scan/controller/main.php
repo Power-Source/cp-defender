@@ -262,12 +262,6 @@ class Main extends \CP_Defender\Controller {
 					) );
 				}
 
-				if ( empty( $items ) ) {
-					wp_send_json_error( array(
-						'message' => __( "Bitte wähle mindestens einen Migrationsrest aus.", 'cpsec' )
-					) );
-				}
-
 				$scan = Scan_Api::getLastScan();
 				if ( ! is_object( $scan ) ) {
 					wp_send_json_error( array(
@@ -276,19 +270,35 @@ class Main extends \CP_Defender\Controller {
 				}
 
 				$deleted = array();
-				foreach ( array_unique( array_map( 'absint', $items ) ) as $itemId ) {
-					$item = Result_Item::findByID( $itemId );
-					if ( ! is_object( $item ) || $item->parentId != $scan->id || $item->status !== Result_Item::STATUS_ISSUE || $item->type !== 'core' ) {
-						continue;
-					}
-
+				$errors  = array();
+				$candidates = Result_Item::findAll( array(
+					'parentId' => $scan->id,
+					'status'   => Result_Item::STATUS_ISSUE,
+					'type'     => 'core'
+				) );
+				foreach ( $candidates as $item ) {
 					$raw = $item->raw;
-					if ( ! is_array( $raw ) || ! isset( $raw['file'] ) || $raw['type'] !== 'migration' ) {
+					if ( ! is_array( $raw ) || ! isset( $raw['file'], $raw['type'] ) ) {
+						continue;
+					}
+					if ( $raw['type'] === 'unknown' ) {
+						$relativePath = ltrim( str_replace( wp_normalize_path( ABSPATH ), '', wp_normalize_path( $raw['file'] ) ), '/' );
+						if ( ! Scan_Api::isConfirmedWordPressMigrationRemnant( $relativePath ) ) {
+							continue;
+						}
+						$raw['type'] = 'migration';
+						$item->raw   = $raw;
+						$item->save();
+					}
+					if ( $raw['type'] !== 'migration' ) {
 						continue;
 					}
 
-					if ( $item->purge() === true ) {
+					$result = $item->purge();
+					if ( $result === true ) {
 						$deleted[] = $item->id;
+					} elseif ( is_wp_error( $result ) ) {
+						$errors[] = $result->get_error_message();
 					}
 				}
 
@@ -300,7 +310,7 @@ class Main extends \CP_Defender\Controller {
 				}
 
 				wp_send_json_error( array(
-					'message' => __( "Es wurden keine bestätigten Migrationsreste entfernt.", 'cpsec' )
+					'message' => $errors ? reset( $errors ) : __( "Es wurden keine bestätigten Migrationsreste gefunden.", 'cpsec' )
 				) );
 				break;
 			case 'resolve':

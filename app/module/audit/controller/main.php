@@ -535,18 +535,19 @@ class Main extends \CP_Defender\Controller {
 	}
 
 	public function scripts() {
+		$auditScript  = cp_defender()->getPluginUrl() . 'app/module/audit/js/script.js';
+		$auditVersion = filemtime( cp_defender()->getPluginPath() . 'app/module/audit/js/script.js' );
+
 		if ( $this->isInPage() ) {
 			\WDEV_Plugin_Ui::load( cp_defender()->getPluginUrl() . 'shared-ui/' );
 			wp_enqueue_script( 'defender' );
 			wp_enqueue_style( 'defender' );
-			wp_enqueue_script( 'audit', cp_defender()->getPluginUrl() . 'app/module/audit/js/script.js', array(
-				'jquery'
-			) );
+			wp_enqueue_script( 'audit', $auditScript, array( 'jquery' ), $auditVersion );
 			wp_enqueue_script( 'audit-momentjs', cp_defender()->getPluginUrl() . 'app/module/audit/js/moment/moment.min.js' );
 			wp_enqueue_style( 'audit-daterangepicker', cp_defender()->getPluginUrl() . 'app/module/audit/js/daterangepicker/daterangepicker.css' );
 			wp_enqueue_script( 'audit-daterangepicker', cp_defender()->getPluginUrl() . 'app/module/audit/js/daterangepicker/daterangepicker.js' );
 		} else {
-			wp_enqueue_script( 'audit', cp_defender()->getPluginUrl() . 'app/module/audit/js/script.js' );
+			wp_enqueue_script( 'audit', $auditScript, array(), $auditVersion );
 		}
 	}
 

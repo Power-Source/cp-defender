@@ -58,11 +58,7 @@ class Core_Result extends Behavior {
 
 			return esc_html__( "Unbekannte Datei im WordPress-Kern", 'cpsec' );
 		} elseif ( $raw['type'] == 'migration' ) {
-			if ( $this->isConfirmedMigrationRemnant() ) {
-				return esc_html__( "Bestätigter Migrationsrest einer früheren Core-Installation", 'cpsec' );
-			}
-
-			return esc_html__( "Unbekannte Datei im WordPress-Kern", 'cpsec' );
+			return esc_html__( "Bestätigter Migrationsrest einer früheren Core-Installation", 'cpsec' );
 		} elseif ( $raw['type'] == 'dir' ) {
 			return esc_html__( "Dieses Verzeichnis gehört nicht zum WordPress-Kern", 'cpsec' );
 		} elseif ( $raw['type'] == 'missing' ) {
@@ -79,7 +75,7 @@ class Core_Result extends Behavior {
 	public function purge() {
 		//remove the file first
 		$raw = $this->getRaw();
-		if ( $raw['type'] == 'unknown' || ( $raw['type'] == 'migration' && $this->isConfirmedMigrationRemnant() ) ) {
+		if ( $raw['type'] == 'unknown' || $raw['type'] == 'migration' ) {
 			$res = unlink( $raw['file'] );
 			if ( $res == false ) {
 				return new \WP_Error( Error_Code::NOT_WRITEABLE, __( "PS Security hat nicht genügend Berechtigungen, um diese Datei zu entfernen", 'cpsec' ) );
@@ -87,8 +83,6 @@ class Core_Result extends Behavior {
 			$this->getOwner()->delete();
 
 			return true;
-		} elseif ( $raw['type'] == 'migration' ) {
-			return new \WP_Error( Error_Code::INVALID, __( "Dieser Eintrag ist kein bestätigter Migrationsrest.", 'cpsec' ) );
 		} elseif ( $raw['type'] == 'missing' ) {
 			return new \WP_Error( Error_Code::INVALID, __( "Diese fehlende Datei kann nicht entfernt werden", 'cpsec' ) );
 		} elseif ( $raw['type'] == 'modified' ) {

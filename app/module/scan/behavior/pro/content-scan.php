@@ -75,16 +75,18 @@ class Content_Scan extends Behavior {
 	}
 
 	public function _scan_a_file( $file ) {
+		$this->model->currentFile = str_replace( ABSPATH, '', $file );
 		if ( ! file_exists( $file ) ) {
-			return false;
+			$this->model->skippedFiles++;
+
+			return true;
 		}
 
 		// Update current file for UI display (saved by queue at end of iteration)
-		$this->model->currentFile = str_replace( ABSPATH, '', $file );
 		$this->checkIntegrity( $file );
 
 		// FIX #4 & #6: Check file size and do quick regex scan BEFORE loading full file into memory
-		$maxSize = apply_filters( 'wdContentScanMaxFileSize', 2097152 ); // 2MB default
+		$maxSize = apply_filters( 'wdContentScanMaxFileSize', 524288 ); // 512KB default
 		if ( filesize( $file ) > $maxSize ) {
 			// File too large, skip it - increment skip counter
 			if ( ! isset( $this->model->skippedFiles ) ) {

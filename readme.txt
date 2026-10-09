@@ -77,9 +77,11 @@ Ja! Unter "Patterns" kannst du beliebig viele eigene Regex-Patterns erstellen un
 == Changelog ==
 
 = 1.0.9 =
-* Fix: Migrationsbereinigung verarbeitet nur noch ausgewählte bestätigte Migrationsreste und bricht ohne Auswahl sofort ab.
+* Fix: Migrationsbereinigung entfernt alle bestätigten Migrationsreste ohne eine fehleranfällige erneute Remote-Prüfung.
 * Neu: Bulk-Aktion zum Löschen ausgewählter Scanbefunde ergänzt.
 * Fix: Das PS-Security-Dashboard löst keinen unbeabsichtigten CSV-Download der Audit-Protokolle mehr aus.
+* Fix: Dateiscans werden nach der letzten Scan-Queue zuverlässig abgeschlossen und bleiben nicht bei 100 % stehen.
+* Fix: Die Migrationsrest-Prüfung lädt die ClassicPress- und WordPress-Releasebäume zuverlässig und klassifiziert Core-Dateien wieder korrekt.
 
 = 1.0.8 =
 * Neu: Dateiscanner gleicht ClassicPress-Core-Dateien mit dem offiziellen Releasebaum ab und erkennt fehlende Dateien.

@@ -24,6 +24,8 @@ class Scan_Api extends Component {
 	const IGNORE_LIST = 'wdfscanignore', SCAN_PATTERN = 'wdfscanparttern';
 
 	private static $ignoreList = false;
+	private static $classicPressReleaseFiles = null;
+	private static $wordPressReleaseFiles = null;
 
 	/**
 	 * @return Scan|\WP_Error
@@ -439,38 +441,24 @@ class Scan_Api extends Component {
 	 * @return array|false Paths in the official ClassicPress release tree.
 	 */
 	private static function getClassicPressReleaseFiles() {
+		if ( self::$classicPressReleaseFiles !== null ) {
+			return self::$classicPressReleaseFiles;
+		}
+
 		$version  = classicpress_version();
 		$cacheKey = self::CACHE_CP_RELEASE_FILES . '_' . md5( $version );
 		$cached   = get_site_transient( $cacheKey );
 		if ( is_array( $cached ) ) {
-			return $cached;
+			self::$classicPressReleaseFiles = $cached;
+
+			return self::$classicPressReleaseFiles;
 		}
 
-		$base = 'https://api.github.com/repos/ClassicPress/ClassicPress-release/git/';
-		$ref  = self::getRemoteJson( $base . 'ref/tags/' . rawurlencode( $version ) );
-		if ( ! isset( $ref['object']['url'], $ref['object']['type'] ) ) {
-			return false;
-		}
-
-		$object = $ref['object'];
-		if ( $object['type'] === 'tag' ) {
-			$tag = self::getRemoteJson( $object['url'] );
-			if ( ! isset( $tag['object']['url'], $tag['object']['type'] ) ) {
-				return false;
-			}
-			$object = $tag['object'];
-		}
-		if ( $object['type'] !== 'commit' ) {
-			return false;
-		}
-
-		$commit = self::getRemoteJson( $object['url'] );
-		if ( ! isset( $commit['tree']['sha'] ) ) {
-			return false;
-		}
-		$tree = self::getRemoteJson( $base . 'trees/' . $commit['tree']['sha'] . '?recursive=1' );
+		$tree = self::getRemoteJson( 'https://api.github.com/repos/ClassicPress/ClassicPress-release/git/trees/' . rawurlencode( $version ) . '?recursive=1' );
 		if ( empty( $tree['tree'] ) || ! empty( $tree['truncated'] ) ) {
-			return false;
+			self::$classicPressReleaseFiles = false;
+
+			return self::$classicPressReleaseFiles;
 		}
 
 		$files = array();
@@ -480,8 +468,9 @@ class Scan_Api extends Component {
 			}
 		}
 		set_site_transient( $cacheKey, $files, DAY_IN_SECONDS );
+		self::$classicPressReleaseFiles = $files;
 
-		return $files;
+		return self::$classicPressReleaseFiles;
 	}
 
 	/**
@@ -563,42 +552,30 @@ class Scan_Api extends Component {
 	 * @return array|false Paths in the current stable WordPress release.
 	 */
 	private static function getWordPressReleaseFiles() {
+		if ( self::$wordPressReleaseFiles !== null ) {
+			return self::$wordPressReleaseFiles;
+		}
+
 		$version = self::getLatestWordPressReleaseVersion();
 		if ( $version === false ) {
-			return false;
+			self::$wordPressReleaseFiles = false;
+
+			return self::$wordPressReleaseFiles;
 		}
 
 		$cacheKey = self::CACHE_WP_RELEASE_FILES . '_' . md5( $version );
 		$cached   = get_site_transient( $cacheKey );
 		if ( is_array( $cached ) ) {
-			return $cached;
+			self::$wordPressReleaseFiles = $cached;
+
+			return self::$wordPressReleaseFiles;
 		}
 
-		$base = 'https://api.github.com/repos/WordPress/WordPress/git/';
-		$ref  = self::getRemoteJson( $base . 'ref/tags/' . rawurlencode( $version ) );
-		if ( ! isset( $ref['object']['url'], $ref['object']['type'] ) ) {
-			return false;
-		}
-
-		$object = $ref['object'];
-		if ( $object['type'] === 'tag' ) {
-			$tag = self::getRemoteJson( $object['url'] );
-			if ( ! isset( $tag['object']['url'], $tag['object']['type'] ) ) {
-				return false;
-			}
-			$object = $tag['object'];
-		}
-		if ( $object['type'] !== 'commit' ) {
-			return false;
-		}
-
-		$commit = self::getRemoteJson( $object['url'] );
-		if ( ! isset( $commit['tree']['sha'] ) ) {
-			return false;
-		}
-		$tree = self::getRemoteJson( $base . 'trees/' . $commit['tree']['sha'] . '?recursive=1' );
+		$tree = self::getRemoteJson( 'https://api.github.com/repos/WordPress/WordPress/git/trees/' . rawurlencode( $version ) . '?recursive=1' );
 		if ( empty( $tree['tree'] ) || ! empty( $tree['truncated'] ) ) {
-			return false;
+			self::$wordPressReleaseFiles = false;
+
+			return self::$wordPressReleaseFiles;
 		}
 
 		$files = array();
@@ -608,8 +585,9 @@ class Scan_Api extends Component {
 			}
 		}
 		set_site_transient( $cacheKey, $files, DAY_IN_SECONDS );
+		self::$wordPressReleaseFiles = $files;
 
-		return $files;
+		return self::$wordPressReleaseFiles;
 	}
 
 	/**
@@ -764,8 +742,6 @@ class Scan_Api extends Component {
 						// Save model to persist currentFile and skippedFiles for UI
 						$model->save();
 
-						//unlock before return
-						self::releaseLock();
 						//we have to cache the checksum of content here
 						if ( $step == 'content' ) {
 							Content_Scan::persistIntegrityBaseline( $queue->isEnd() );
@@ -781,12 +757,17 @@ class Scan_Api extends Component {
 							}
 						}
 
+						if ( $queue->isEnd() ) {
+							break;
+						}
+
+						self::releaseLock();
+
 						return false;
 					}
 				}
 			}
-			//break at the end to prevent it stuck so long when init, also the heavy part is in the while loop
-			break;
+			$done ++;
 		}
 
 		if ( $done == count( $steps ) ) {
@@ -943,7 +924,13 @@ class Scan_Api extends Component {
 		}
 
 		if ( $total > 0 ) {
-			return round( ( $currentIndex / $total ) * 100, 2 );
+			$progress = round( ( $currentIndex / $total ) * 100, 2 );
+			$activeScan = self::getActiveScan();
+			if ( is_object( $activeScan ) && $activeScan->status !== Scan::STATUS_FINISH ) {
+				return min( $progress, 99 );
+			}
+
+			return $progress;
 		} else {
 			return ( 0 );
 		}
