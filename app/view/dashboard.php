@@ -63,7 +63,7 @@
                                 </li>
                                 <li>
                                     <div>
-                                        <span class="list-label"><?php _e( "Letzte IP-Sperrung" ) ?></span>
+                                        <span class="list-label"><?php _e( "Letzte IP-Sperrung", 'cpsec' ) ?></span>
                                         <span class="list-detail lastLockout">.</span>
                                     </div>
                                 </li>
