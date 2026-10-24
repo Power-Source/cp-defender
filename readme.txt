@@ -76,6 +76,9 @@ Ja! Unter "Patterns" kannst du beliebig viele eigene Regex-Patterns erstellen un
 
 == Changelog ==
 
+= 1.1.0 =
+* Fix: PHP-8.4-Deprecated-Warnung bei der Anti-Spam-Pattern-Prüfung durch explizit nullable deklarierten Aktionsfilter behoben.
+
 = 1.0.9 =
 * Fix: Migrationsbereinigung entfernt alle bestätigten Migrationsreste ohne eine fehleranfällige erneute Remote-Prüfung.
 * Neu: Bulk-Aktion zum Löschen ausgewählter Scanbefunde ergänzt.

@@ -214,7 +214,7 @@ class Pattern {
 	/**
 	 * Prüft einen Wert gegen alle aktiven Patterns eines Typs
 	 */
-	public static function check( string $value, string $type, string $action_filter = null ): ?array {
+	public static function check( string $value, string $type, ?string $action_filter = null ): ?array {
 		$patterns = self::get_all();
 		
 		foreach ( $patterns as $id => $pattern ) {
