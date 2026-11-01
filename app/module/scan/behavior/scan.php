@@ -125,9 +125,7 @@ class Scan extends Behavior {
                     <div>
                         <span class="list-label"><?php _e( "Plugins & Themes", 'cpsec' ) ?></span>
                         <span class="list-detail">
-                            <?php if ( \CP_Defender\Behavior\Utils::instance()->getAPIKey() ): ?>
-	                            <?php echo $model->getCount( 'vuln' ) == 0 ? ' <i class="def-icon icon-tick"></i>' : '<span class="def-tag tag-error">' . $model->getCount( 'vuln' ) . '</span>' ?>
-                            <?php endif; ?>
+	                        <?php echo $model->getCount( 'vuln' ) == 0 ? ' <i class="def-icon icon-tick"></i>' : '<span class="def-tag tag-error">' . $model->getCount( 'vuln' ) . '</span>' ?>
                         </span>
                     </div>
                 </li>

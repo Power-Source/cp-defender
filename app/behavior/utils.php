@@ -25,59 +25,6 @@ class Utils extends Behavior {
 	}
 
 	/**
-	 * @param $endPoint
-	 * @param array $bodyArgs
-	 * @param array $requestArgs
-	 * @param bool $returnRaw
-	 *
-	 * @return array|mixed|object|\WP_Error
-	 */
-	public function devCall( $endPoint, $bodyArgs = array(), $requestArgs = array(), $returnRaw = false ) {
-		$api_key = $this->getAPIKey();
-		if ( $api_key !== false ) {
-			$domain                      = network_site_url();
-			$post_vars['body']           = $bodyArgs;
-			$post_vars['body']['domain'] = $domain;
-			$post_vars['timeout']        = 30;
-			$post_vars['httpversion']    = '1.1';
-
-			$headers = isset( $post_vars['headers'] ) ? $post_vars['headers'] : array();
-
-			$post_vars['headers'] = array_merge( $headers, array(
-				'Authorization' => 'Basic ' . $api_key
-			) );
-
-			$post_vars = array_merge( $post_vars, $requestArgs );
-
-			$response = wp_remote_request( $endPoint,
-				apply_filters( 'wd_wpmudev_call_request_args',
-					$post_vars ) );
-			if ( is_wp_error( $response ) ) {
-				return $response;
-			}
-
-			if ( $returnRaw == true ) {
-				return $response;
-			}
-
-			if (
-				'OK' !== wp_remote_retrieve_response_message( $response )
-				OR 200 !== wp_remote_retrieve_response_code( $response )
-			) {
-				return new \WP_Error( wp_remote_retrieve_response_code( $response ), wp_remote_retrieve_response_message( $response ) );
-			} else {
-				$data = wp_remote_retrieve_body( $response );
-
-				return json_decode( $data, true );
-			}
-		} else {
-			// API key not available - feature requires PSOURCE account
-			return new \WP_Error( 'api_key_not_found',
-				esc_html__( "This feature requires an active PSOURCE account.", 'cpsec' ) );
-		}
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getPHPVersion() {
@@ -96,43 +43,6 @@ class Utils extends Behavior {
 		}
 
 		return $wp_version;
-	}
-
-	public function getAPIKey() {
-		if ( ( $version = $this->isDashboardInstalled() ) !== false ) {
-			if ( version_compare( $version, '4.0.0' ) >= 0 ) {
-				//this is version 4+
-				//instanize once
-				\WPMUDEV_Dashboard::instance();
-				$membeshipStatus = \WPMUDEV_Dashboard::$api->get_membership_data();
-
-				if ( $membeshipStatus['membership'] != 'free' ) {
-					return \WPMUDEV_Dashboard::$api->get_key();
-				} else {
-					return false;
-				}
-			} else {
-				global $wpmudev_un;
-				$api_key = $wpmudev_un->get_apikey();
-
-				return $api_key;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Check if WPMUDEV Dashboard installed, return version, else return false
-	 * @return bool|string
-	 */
-	public function isDashboardInstalled() {
-		//check if this is new
-		if ( class_exists( 'WPMUDEV_Dashboard' ) ) {
-			return \WPMUDEV_Dashboard::$version;
-		}
-
-		return false;
 	}
 
 	/**
@@ -860,23 +770,13 @@ class Utils extends Behavior {
 	}
 
 	public function _submitStatsToDev() {
-		// Cloud stats submission disabled - no external analytics
-		// $data      = $this->generateStats();
-		// $end_point = "https://psource.eimen.net/api/defender/v1/scan-results";
-		// $res       = $this->devCall( $end_point, $data, array( 'method' => 'POST' ) );
 	}
 
 	/**
 	 * @return array|void
 	 */
 	public function submitStatsToDev() {
-		if ( ! $this->getAPIKey() ) {
-			return;
-		}
-
-		if ( ! wp_next_scheduled( 'defenderSubmitStats' ) ) {
-			wp_schedule_single_event( time(), 'defenderSubmitStats' );
-		}
+		wp_clear_scheduled_hook( 'defenderSubmitStats' );
 	}
 
 	/**

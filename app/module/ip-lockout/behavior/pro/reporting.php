@@ -13,9 +13,6 @@ class Reporting extends Behavior {
 	 * Sending report email
 	 */
 	public function lockoutReportCron() {
-		if ( cp_defender()->isFree ) {
-			return;
-		}
 		$settings = Settings::instance();
 
 		if ( $settings->report == false ) {

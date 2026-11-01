@@ -167,10 +167,9 @@ class Report extends Behavior {
 	 * @return null|string
 	 */
 	private function getScanToolTip() {
-		$isPre    = \CP_Defender\Behavior\Utils::instance()->getAPIKey();
 		$settings = Settings::instance();
 		$active   = $settings->notification;
-		if ( ! $isPre || ! $active ) {
+		if ( ! $active ) {
 			return null;
 		}
 

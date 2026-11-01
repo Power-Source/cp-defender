@@ -17,7 +17,6 @@ class Audit_API extends Component {
 	const LOCAL_LOG_OPTION = 'wd_audit_local_logs';
 	const LOCAL_LOGS_LIMIT = 2000;
 	const PER_PAGE = 20;
-	public static $end_point = 'audit.wpmudev.org';
 
 	/**
 	 * @param array $filter
@@ -192,22 +191,6 @@ class Audit_API extends Component {
 	}
 
 	/**
-	 * Open a socket to DEV api
-	 */
-	public static function openSocket() {
-		if ( ! isset( cp_defender()->global['sockets'] ) ) {
-			$fp = @stream_socket_client( 'ssl://' . self::$end_point . ':443', $errno, $errstr,
-				3, // timeout should be ignored when ASYNC
-				STREAM_CLIENT_ASYNC_CONNECT );
-
-			if ( is_resource( $fp ) ) {
-				//socket_set_nonblock( $fp );
-				cp_defender()->global['sockets'][] = $fp;
-			}
-		}
-	}
-
-	/**
 	 * @return array
 	 */
 	public static function dictionary() {
@@ -298,72 +281,6 @@ class Audit_API extends Component {
 	}
 
 	/**
-	 * @param $data
-	 */
-	public static function curlToAPI( $data ) {
-		// Cloud sync disabled - logs stored locally only
-		// Utils::instance()->devCall( 'http://' . self::$end_point . '/logs/add_multiple', ... );
-	}
-
-	/**
-	 * @return bool
-	 */
-	public static function isActive() {
-		return Settings::instance()->enabled;
-	}
-
-	/**
-	 * @param $data
-	 *
-	 * @return bool
-	 */
-	public static function socketToAPI( $data ) {
-		//$sockets = WP_Helper::getArrayCache()->get( 'sockets', array() );
-		$sockets = isset( cp_defender()->global['sockets'] ) ? cp_defender()->global['sockets'] : array();
-		//we will need to wait a little bit
-		if ( count( $sockets ) == 0 ) {
-			//fall back
-			return false;
-		}
-		$start_time = microtime( true );
-		$sks        = $sockets;
-		$r          = null;
-		$e          = null;
-		if ( ( $socket_ready = stream_select( $r, $sks, $e, 1 ) ) === false ) {
-			//this case error happen
-
-			return false;
-		}
-
-		$fp = array_shift( $sockets );
-
-		$uri  = '/logs/add_multiple';
-		$vars = http_build_query( $data );
-
-		fwrite( $fp, "POST " . $uri . "  HTTP/1.1\r\n" );
-		fwrite( $fp, "Host: " . self::$end_point . "\r\n" );
-		fwrite( $fp, "Content-Type: application/x-www-form-urlencoded\r\n" );
-		fwrite( $fp, "Content-Length: " . strlen( $vars ) . "\r\n" );
-		fwrite( $fp, "apikey:" . Utils::instance()->getAPIKey() . "\r\n" );
-		fwrite( $fp, "Connection: close\r\n" );
-		fwrite( $fp, "\r\n" );
-		fwrite( $fp, $vars );
-		stream_set_timeout( $fp, 5 );
-		$res = '';
-		while ( ! feof( $fp ) ) {
-			$res      .= fgets( $fp, 1024 );
-			$end_time = microtime( true );
-			if ( $end_time - $start_time > 3 ) {
-				fclose( $fp );
-				break;
-			}
-			//Log_Helper::logger( fgets( $fp, 1024 ) );
-		}
-
-		return true;
-	}
-
-	/**
 	 * @param bool $clearCron
 	 *
 	 * @return false|int
@@ -445,47 +362,9 @@ class Audit_API extends Component {
 	}
 
 	/**
-	 * Store all events to WPMUDEV cloud
+	 * Store audit events locally.
 	 */
 	public static function onCloud( $data ) {
 		self::persist_local_logs( $data );
-
-		if ( count( $data ) ) {
-			self::openSocket();
-			/**
-			 * if data is more than one, means various event happened at once, we will need to group each by type
-			 * and submit at bulk
-			 */
-			if ( count( $data ) > 1 ) {
-				$groups     = array();
-				$socket_log = array();
-				foreach ( $data as $k => $val ) {
-					if ( ! isset( $groups[ $val['event_type'] ] ) ) {
-						$groups[ $val['event_type'] ] = array();
-					}
-					$groups[ $val['event_type'] ][] = $val;
-				}
-				//now regroup, and start to submit
-				$new_data = array();
-				foreach ( $groups as $k => $val ) {
-					$tmp = array();
-					foreach ( $val as $v ) {
-						$tmp[] = $v['msg'];
-					}
-					$first        = array_shift( $val );
-					$first['msg'] = implode( '; ', $tmp );
-					$socket_log[] = $first['msg'];
-					$new_data[]   = $first;
-				}
-
-				$data = $new_data;
-			} elseif ( count( $data ) == 1 ) {
-				$socket_log[] = $data[0]['msg'];
-			}
-
-			if ( self::socketToAPI( $data ) == false ) {
-				self::curlToAPI( $data );
-			}
-		}
 	}
 }

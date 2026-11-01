@@ -214,6 +214,7 @@ class Main extends \CP_Defender\Controller {
 		$data     = array_map( 'sanitize_text_field', $_POST );
 		$settings->import( $data );
 		$settings->save();
+		wp_clear_scheduled_hook( 'auditReportCron' );
 		$cronTime = $this->reportCronTimestamp( $settings->time, 'auditReportCron' );
 		if ( $settings->notification == true ) {
 			wp_schedule_event( $cronTime, 'daily', 'auditReportCron' );
@@ -281,10 +282,6 @@ class Main extends \CP_Defender\Controller {
 	 * Sending report email by cron
 	 */
 	public function auditReportCron() {
-		if ( cp_defender()->isFree ) {
-			return;
-		}
-
 		$settings = Settings::instance();
 
 		if ( $settings->notification == false ) {
@@ -469,9 +466,11 @@ class Main extends \CP_Defender\Controller {
 		), false );
 
 
-		foreach ( Settings::instance()->receipts as $user_id ) {
+		$sent = false;
+		foreach ( $settings->receipts as $user_id ) {
 			$user = get_user_by( 'id', $user_id );
 			if ( ! is_object( $user ) ) {
+				Log_Helper::logger( 'Audit report recipient could not be loaded: user ID ' . (int) $user_id );
 				continue;
 			}
 			//prepare the parameters
@@ -491,11 +490,17 @@ class Main extends \CP_Defender\Controller {
 			foreach ( $params as $key => $val ) {
 				$email_content = str_replace( '{' . $key . '}', $val, $email_content );
 			}
-			wp_mail( $email, sprintf( esc_html__( "Hier ist, was bei %s passiert ist", 'cpsec' ), network_site_url() ), $email_content, $headers );
+			if ( wp_mail( $email, sprintf( esc_html__( "Hier ist, was bei %s passiert ist", 'cpsec' ), network_site_url() ), $email_content, $headers ) ) {
+				$sent = true;
+			} else {
+				Log_Helper::logger( 'Audit report email could not be sent to ' . $email );
+			}
 		}
 
-		$settings->lastReportSent = time();
-		$settings->save();
+		if ( $sent ) {
+			$settings->lastReportSent = time();
+			$settings->save();
+		}
 	}
 
 	/**

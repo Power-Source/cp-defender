@@ -2,10 +2,11 @@
 Contributors: PSource
 Tags: updates, security, multisite, anti-spam, malware-scan
 Requires at least: 5.0
-Tested up to: 7.1
-ClassicPress 2.7.3
+Requires CP: 2.7
+Tested up to: 7.1.4
+ClassicPress 2.7.4
 Requires PHP: 7.4
-Stable tag: 1.0.9
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +79,9 @@ Ja! Unter "Patterns" kannst du beliebig viele eigene Regex-Patterns erstellen un
 
 = 1.1.0 =
 * Fix: PHP-8.4-Deprecated-Warnung bei der Anti-Spam-Pattern-Prüfung durch explizit nullable deklarierten Aktionsfilter behoben.
+* Fix: Die Dateiscan-Baseline wird für Plugins und Themes je installierter Versionsnummer geführt und nach Updates neu aufgebaut, um Fehlalarme durch reguläre Aktualisierungen zu verhindern.
+* Fix: Audit-Zusammenfassungen und Sperrberichte werden nicht mehr durch obsolete Free-/Pro-Sperren blockiert; fehlgeschlagene E-Mail-Zustellungen werden protokolliert und nicht als erfolgreich markiert.
+* Bereinigung: Die nicht mehr verfügbare Dashboard-API-Key- und Cloud-Audit-Integration wurde entfernt; Audit-Ereignisse werden ausschließlich lokal gespeichert.
 
 = 1.0.9 =
 * Fix: Migrationsbereinigung entfernt alle bestätigten Migrationsreste ohne eine fehleranfällige erneute Remote-Prüfung.

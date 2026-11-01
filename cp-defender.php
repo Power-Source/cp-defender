@@ -2,7 +2,7 @@
 /**
  * Plugin Name: PS Security Suite
  * Plugin URI: https://psource.eimen.net/wiki/ps-security-suite-dokumentation/
- * Version:     1.0.9
+ * Version:     1.1.0
  * Description: Erhalte regelmäßige Sicherheitsüberprüfungen, Schwachstellenberichte, Sicherheitsempfehlungen und individuelle Sicherheitsmaßnahmen für Deine Webseite – mit nur wenigen Klicks. PS Security ist Dein Analyst und Sicherheitsexperte, der rund um die Uhr für Dich da ist.
  * Author:      PSOURCE
  * Author URI:  https://psource.eimen.net
@@ -17,7 +17,7 @@ if ( ! defined( 'CP_DEFENDER_FILE' ) ) {
 	define( 'CP_DEFENDER_FILE', __FILE__ );
 }
 if ( ! defined( 'CP_DEFENDER_VERSION' ) ) {
-	define( 'CP_DEFENDER_VERSION', '1.0.9' );
+	define( 'CP_DEFENDER_VERSION', '1.1.0' );
 }
 if ( ! defined( 'CP_DEFENDER_PATH' ) ) {
 	define( 'CP_DEFENDER_PATH', plugin_dir_path( __FILE__ ) );
@@ -62,12 +62,8 @@ class CP_Defender {
 	/**
 	 * @var string
 	 */
-	public $version = "1.0.9";
+	public $version = "1.1.0";
 
-	/**
-	 * @var string
-	 */
-	public $isFree = false;
 	/**
 	 * @var array
 	 */

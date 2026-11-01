@@ -16,7 +16,8 @@ class Content_Scan extends Behavior {
 	const INTEGRITY_BASELINE = 'wdf_scan_integrity_baseline';
 	const INTEGRITY_INITIALIZED = 'wdf_scan_integrity_initialized';
 	const INTEGRITY_BASELINE_VERSION = 'wdf_scan_integrity_baseline_version';
-	const INTEGRITY_SCHEMA_VERSION = 2;
+	const INTEGRITY_COMPONENTS = 'wdf_scan_integrity_components';
+	const INTEGRITY_SCHEMA_VERSION = 3;
 	/**
 	 * @var Scan\Model\Scan
 	 */
@@ -26,6 +27,7 @@ class Content_Scan extends Behavior {
 	protected $tokens = array();
 	protected $patterns = array();
 	protected static $integrityBaseline = null;
+	protected static $integrityComponents = null;
 	protected static $integrityBaselineDirty = false;
 
 	public function processItemInternal( $args, $current ) {
@@ -235,10 +237,18 @@ class Content_Scan extends Behavior {
 	public static function persistIntegrityBaseline( $markInitialized = false ) {
 		if ( self::$integrityBaselineDirty ) {
 			update_site_option( self::INTEGRITY_BASELINE, self::$integrityBaseline );
+			update_site_option( self::INTEGRITY_COMPONENTS, self::$integrityComponents );
 			self::$integrityBaselineDirty = false;
 		}
 		if ( $markInitialized ) {
 			update_site_option( self::INTEGRITY_INITIALIZED, true );
+			if ( is_array( self::$integrityComponents ) ) {
+				foreach ( self::$integrityComponents as &$component ) {
+					$component['initialized'] = true;
+				}
+				unset( $component );
+				update_site_option( self::INTEGRITY_COMPONENTS, self::$integrityComponents );
+			}
 		}
 	}
 
@@ -255,12 +265,15 @@ class Content_Scan extends Behavior {
 			if ( $baselineVersion < self::INTEGRITY_SCHEMA_VERSION ) {
 				// Earlier versions could mark a partial scan as a complete baseline.
 				self::$integrityBaseline = array();
+				self::$integrityComponents = array();
 				update_site_option( self::INTEGRITY_INITIALIZED, false );
 				update_site_option( self::INTEGRITY_BASELINE_VERSION, self::INTEGRITY_SCHEMA_VERSION );
 				self::removeIntegrityFindings( $this->model->id );
 			} else {
 				$baseline = get_site_option( self::INTEGRITY_BASELINE, array() );
 				self::$integrityBaseline = is_array( $baseline ) ? $baseline : array();
+				$components = get_site_option( self::INTEGRITY_COMPONENTS, array() );
+				self::$integrityComponents = is_array( $components ) ? $components : array();
 			}
 		}
 
@@ -270,12 +283,15 @@ class Content_Scan extends Behavior {
 			return;
 		}
 
+		$component = $this->getIntegrityComponent( $path );
+		$this->resetComponentBaselineOnVersionChange( $component );
 		$known = isset( self::$integrityBaseline[ $path ] ) ? self::$integrityBaseline[ $path ] : null;
 		$ready = (bool) get_site_option( self::INTEGRITY_INITIALIZED, false );
+		$componentReady = ! empty( self::$integrityComponents[ $component['id'] ]['initialized'] );
 		$issueType = false;
-		if ( is_array( $known ) && isset( $known['hash'] ) && ! hash_equals( $known['hash'], $hash ) ) {
+		if ( $componentReady && is_array( $known ) && isset( $known['hash'] ) && ! hash_equals( $known['hash'], $hash ) ) {
 			$issueType = 'integrity_modified';
-		} elseif ( $known === null && $ready ) {
+		} elseif ( $componentReady && $known === null && $ready ) {
 			$issueType = 'integrity_new';
 		}
 
@@ -297,8 +313,92 @@ class Content_Scan extends Behavior {
 			'hash'  => $hash,
 			'size'  => filesize( $file ),
 			'mtime' => filemtime( $file ),
+			'component' => $component['id'],
 		);
 		self::$integrityBaselineDirty = true;
+	}
+
+	/**
+	 * Return the installed plugin or theme version that owns a content file.
+	 *
+	 * @param string $path
+	 * @return array
+	 */
+	private function getIntegrityComponent( $path ) {
+		$pluginsPath = trailingslashit( wp_normalize_path( WP_PLUGIN_DIR ) );
+		if ( strpos( $path, $pluginsPath ) === 0 ) {
+			$relative = substr( $path, strlen( $pluginsPath ) );
+			$plugin = strtok( $relative, '/' );
+			$version = '';
+			foreach ( $this->getInstalledPlugins() as $pluginFile => $data ) {
+				if ( strpos( $pluginFile, $plugin . '/' ) === 0 || $pluginFile === $plugin ) {
+					$version = isset( $data['Version'] ) ? (string) $data['Version'] : '';
+					break;
+				}
+			}
+
+			return array(
+				'id'      => 'plugin:' . $plugin,
+				'version' => $version,
+			);
+		}
+
+		$themesPath = trailingslashit( wp_normalize_path( get_theme_root() ) );
+		if ( strpos( $path, $themesPath ) === 0 ) {
+			$relative = substr( $path, strlen( $themesPath ) );
+			$theme = strtok( $relative, '/' );
+
+			return array(
+				'id'      => 'theme:' . $theme,
+				'version' => (string) wp_get_theme( $theme )->get( 'Version' ),
+			);
+		}
+
+		return array(
+			'id'      => 'site',
+			'version' => (string) get_bloginfo( 'version' ),
+		);
+	}
+
+	/**
+	 * Reset a component baseline after its installed version changes.
+	 *
+	 * @param array $component
+	 * @return void
+	 */
+	private function resetComponentBaselineOnVersionChange( $component ) {
+		$stored = isset( self::$integrityComponents[ $component['id'] ] )
+			? self::$integrityComponents[ $component['id'] ]
+			: null;
+
+		if ( is_array( $stored ) && isset( $stored['version'] ) && $stored['version'] === $component['version'] ) {
+			return;
+		}
+
+		foreach ( self::$integrityBaseline as $path => $entry ) {
+			if ( is_array( $entry ) && isset( $entry['component'] ) && $entry['component'] === $component['id'] ) {
+				unset( self::$integrityBaseline[ $path ] );
+			}
+		}
+
+		self::$integrityComponents[ $component['id'] ] = array(
+			'version'     => $component['version'],
+			'initialized' => false,
+		);
+		self::$integrityBaselineDirty = true;
+	}
+
+	/**
+	 * Load plugin headers outside the administration request when necessary.
+	 *
+	 * @return array
+	 */
+	private function getInstalledPlugins() {
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		return get_plugins();
 	}
 
 	/**
