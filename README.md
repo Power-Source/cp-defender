@@ -3,97 +3,103 @@
 **Deutsch** | [English](README.en.md)
 
 [![Version](https://img.shields.io/badge/Version-1.1.1-2271b1?style=flat-square)](readme.txt)
-![PHP](https://img.shields.io/badge/PHP-8.0%2B-777bb4?style=flat-square&logo=php&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.5.12%2B%20empfohlen-777bb4?style=flat-square&logo=php&logoColor=white)
 ![WordPress](https://img.shields.io/badge/WordPress-bis%207.1.4-21759b?style=flat-square&logo=wordpress&logoColor=white)
-![ClassicPress](https://img.shields.io/badge/ClassicPress-2.7.43-03768e?style=flat-square)
+![ClassicPress](https://img.shields.io/badge/ClassicPress-2.7.4-03768e?style=flat-square)
 [![Lizenz](https://img.shields.io/badge/Lizenz-GPL--2.0--or--later-2ea44f?style=flat-square)](https://www.gnu.org/licenses/gpl-2.0.html)
 
+PS Security Suite hilft dir, deine ClassicPress- oder WordPress-Website Schritt für Schritt besser zu schützen. Das Plugin zeigt dir offene Sicherheitsrisiken, erklärt ihre Wirkung verständlich und lässt dich selbst entscheiden, welche Maßnahmen zu deiner Website passen.
 
-PS Security Suite ist ein Sicherheits-Plugin für ClassicPress und kompatible WordPress-Installationen. Es bündelt Dateiintegritätsprüfungen, Härtungsmaßnahmen, IP-Sperren, Audit-Protokollierung, Sicherheitsberichte und einen Multisite-Anti-Spam-Schutz in einer zentralen Administration.
+> **Wichtig:** Sicherheitseinstellungen können Auswirkungen auf Themes, Plugins oder externe Dienste haben. Aktiviere Maßnahmen einzeln, halte ein aktuelles Backup bereit und prüfe danach die wichtigsten Funktionen deiner Website.
 
-> Sicherheit ist ein fortlaufender Prozess. Aktiviere nur Maßnahmen, deren Auswirkungen auf deine Installation du geprüft hast, und halte regelmäßige Backups vor.
+## Das kannst du mit PS Security machen
 
-## Funktionen
+### Anmeldungen besser schützen
 
-- **Dateiscanning**: Erkennt geänderte, zusätzliche und potenziell verdächtige Dateien sowie bekannte Schwachstellen in Plugins und Themes.
-- **Sicherheits-Tweaks**: Führt geführte Härtungsmaßnahmen für typische Angriffsflächen aus.
-- **IP-Sperren**: Schützt Anmeldeformulare und 404-Endpunkte vor wiederholten Zugriffen und Brute-Force-Versuchen.
-- **Audit-Protokollierung**: Hält relevante Änderungen und Sicherheitsereignisse nachvollziehbar fest.
-- **Berichte**: Erstellt regelmäßige Zusammenfassungen zu Sicherheitsstatus und Ereignissen.
-- **Erweiterte Werkzeuge**: Stellt zusätzliche Verwaltungs- und Sicherheitsfunktionen bereit.
-- **Zwei-Faktor-Authentifizierung**: Unterstützt Authenticator-Apps und E-Mail-Codes für Benutzerkonten.
-- **Anti-Spam für Multisite**: Prüft Registrierungen und Kommentare mit Regeln, IP-Reputation, Rate Limits, Wegwerf-E-Mail-Erkennung und menschlicher Verifikation.
+PS Security erkennt wiederholte fehlgeschlagene Anmeldungen und kann auffällige IP-Adressen sperren. Zusätzlich unterstützt das Plugin die Zwei-Faktor-Anmeldung mit einer Authenticator-App oder E-Mail-Code.
 
-## Voraussetzungen
+### Dateien und Änderungen prüfen
 
-Die Release-Metadaten in [readme.txt](readme.txt) nennen:
+Ein Dateiscan hilft dir, unerwartete Änderungen, fehlende Core-Dateien und verdächtige Inhalte zu erkennen. Prüfe einen Fund immer erst, bevor du Dateien löschst oder wiederherstellst.
 
-- WordPress ab 5.0 oder ClassicPress ab 2.7.0
-- PHP ab 8.0
-- Für Anti-Spam: eine Multisite-Installation mit Netzwerkaktivierung
+### Sinnvolle Sicherheits-Tweaks aktivieren
 
-Für Scans, Updates und Härtungsmaßnahmen sollte die PHP-Installation über ausreichende Datei- und Netzwerkberechtigungen verfügen.
+Unter **PS Security → Sicherheits-Tweaks** findest du Maßnahmen für häufige Angriffsflächen. Das Plugin beschreibt zu jeder Regel, was sie schützt und ob sie besondere Aufmerksamkeit benötigt.
+
+Beispiele:
+
+- Schutz vor PHP-Ausführung in Verzeichnissen, in denen WordPress sie normalerweise nicht benötigt
+- optionaler XML-RPC-Schutz gegen automatisierte Angriffe und Pingbacks
+- Schutz wichtiger Einstellungen und Dateien
+
+### Zugriffe und IP-Adressen verwalten
+
+Du siehst, warum eine IP-Adresse gesperrt wurde, und kannst sie gezielt sperren, freigeben oder auf die Whitelist setzen. Das ist hilfreich, wenn du echte Besucher von automatisierten Angriffen unterscheiden musst.
+
+### Nachvollziehen, was passiert ist
+
+Protokolle und Sicherheitsberichte helfen dir, wichtige Ereignisse auf deiner Website im Blick zu behalten, ohne ständig jedes Detail kontrollieren zu müssen.
+
+## In fünf Minuten starten
+
+1. Installiere und aktiviere das Plugin.
+2. Öffne **PS Security → Sicherheits-Tweaks**.
+3. Lies die offenen Hinweise und beginne mit einer Maßnahme, die zu deiner Website passt.
+4. Prüfe nach jeder Änderung Anmeldung, Kontaktformulare, Shop und andere wichtige Funktionen.
+5. Öffne anschließend **Dateiscanning** und starte einen ersten Scan.
+
+So behältst du die Kontrolle und vermeidest, mehrere Änderungen gleichzeitig vornehmen und mögliche Probleme nicht mehr zuordnen zu können.
+
+## Einzelne Website oder Multisite-Netzwerk?
+
+PS Security funktioniert sowohl für einzelne Websites als auch für Multisite-Netzwerke.
+
+In einem Netzwerk können Netzwerkadministratoren zentrale Vorgaben festlegen. Bei passenden Funktionen lässt sich zusätzlich erlauben, dass Administratoren einzelner Websites eigene Einstellungen verwalten.
+
+Das Anti-Spam-Modul ist nur für Multisite-Netzwerke vorgesehen. Es hilft bei der Abwehr unerwünschter Registrierungen und Spam-Websites, zum Beispiel durch Regeln für auffällige Domains, E-Mail-Adressen oder Benutzernamen sowie Begrenzungen für wiederholte Registrierungen.
+
+## Hinweise zu besonderen Funktionen
+
+### XML-RPC
+
+Einige Apps, externe Dienste und ältere Plugins benötigen XML-RPC. Aktiviere deshalb nicht sofort die vollständige Sperre. PS Security bietet abgestufte Optionen: Du kannst nur besonders missbrauchsanfällige Funktionen sperren oder XML-RPC vollständig deaktivieren, wenn deine Website es nicht benötigt.
+
+### NGINX
+
+Bei Apache oder LiteSpeed kann das Plugin bestimmte Schutzregeln selbst verwalten. NGINX-Konfigurationen liegen dagegen außerhalb von WordPress und können nicht automatisch geändert werden.
+
+PS Security zeigt dir die benötigte Konfiguration zum Kopieren an. Bei einem Hosting-Paket leitest du sie an den Support weiter. Bei einem selbstverwalteten Server fügst du sie in den passenden NGINX-`server`-Block ein, prüfst sie mit `sudo nginx -t` und lädst NGINX erst danach neu.
+
+### PHP-Version
+
+Das Plugin läuft ab PHP 8.0. Für einen sicheren Betrieb empfiehlt PS Security PHP **8.5.12 oder neuer**. Ältere PHP-Versionen werden in den Sicherheits-Tweaks als Risiko angezeigt.
 
 ## Installation
 
-1. Kopiere das Verzeichnis `cp-defender` nach `wp-content/plugins/`.
+1. Installiere PS Security über **Plugins → Installieren** oder lade den Ordner `cp-defender` nach `wp-content/plugins/` hoch.
 2. Aktiviere **PS Security Suite** in der Plugin-Verwaltung.
-3. In einer Multisite aktivierst du das Plugin netzwerkweit.
-4. Öffne im Administrationsmenü **PS Security**.
-5. Prüfe die Einstellungen jedes Moduls, bevor du es produktiv einsetzt.
+3. In einem Multisite-Netzwerk aktivierst du das Plugin über die **Netzwerkverwaltung**.
+4. Öffne **PS Security** im Administrationsmenü und beginne mit den Sicherheits-Tweaks.
 
-## Schnellstart
+## Häufige Fragen
 
-1. Öffne **PS Security > Dateiscanning** und führe einen ersten Scan aus.
-2. Bearbeite gefundene Probleme erst nach Prüfung der betroffenen Datei und mit einem aktuellen Backup.
-3. Aktiviere unter **Sicherheits-Tweaks** die für deine Website passenden Härtungsmaßnahmen.
-4. Konfiguriere unter **IP-Sperren** Schwellenwerte und Benachrichtigungen.
-5. Aktiviere auf Multisite-Netzwerken **Anti-Spam** und lege bei Bedarf eigene Regeln fest.
+### Kann ich eine Maßnahme wieder zurücksetzen?
 
-## Anti-Spam im Netzwerk
+Ja. Öffne die betreffende Regel und nutze die Rücksetzfunktion. Die Regel wird danach wieder als offen angezeigt und kann später erneut aktiviert werden.
 
-Das Anti-Spam-Modul ist für Multisite-Netzwerke ausgelegt. Es bietet unter anderem:
+### Kann ich mich selbst aussperren?
 
-- Regeln für Domains, Benutzernamen, E-Mail-Adressen und Websitetitel
-- Live-Tests für Regeln und Auswertungen zu Treffern
-- IP-Reputation und konfigurierbare Rate Limits
-- Prüfung von Wegwerf-E-Mail-Adressen
-- Netzwerkweiten Kommentar-Schutz mit lokalen Ausnahmen für Subsites
-- Cloudflare Turnstile, reCAPTCHA (Legacy) oder Sicherheitsfragen als menschliche Verifikation
-- Moderation und Statistiken für verdächtige Registrierungen
+Das ist bei sehr strengen Login-Regeln möglich. Richte die Zwei-Faktor-Anmeldung deshalb sorgfältig ein und setze eine IP-Adresse nur dann auf die Whitelist, wenn sie dauerhaft und eindeutig dir zugeordnet ist.
 
-Nutze bei regulären Ausdrücken zunächst die Testfunktion. Zu breit formulierte Regeln können legitime Registrierungen blockieren.
+### Was mache ich, wenn nach einer Änderung etwas nicht mehr funktioniert?
 
-## Übersetzungen
+Setze zuerst die zuletzt aktivierte Maßnahme zurück und prüfe die Website erneut. Halte vor größeren Änderungen immer ein Backup bereit. Bei NGINX-Regeln wende dich an deinen Hosting-Support, wenn du keinen eigenen Server verwaltest.
 
-Die Textdomain lautet `cpsec`. Sprachdateien befinden sich im Verzeichnis [languages](languages/):
+### Funktioniert Anti-Spam auf einer einzelnen Website?
 
-- `cpsec.pot` ist die Vorlage für neue Übersetzungen.
-- `cpsec-en_US.po` und `cpsec-en_US.mo` liefern die englische Oberfläche.
-- `cpsec-de_DE.po` und `cpsec-de_DE.mo` enthalten deutsche Übersetzungen für englische Quelltexte.
+Nein. Das Anti-Spam-Modul ist für Multisite-Netzwerke entwickelt und steht auf einzelnen Websites nicht zur Verfügung.
 
-Bearbeite PO-Dateien mit einem Gettext-kompatiblen Werkzeug wie Poedit und kompiliere danach die zugehörige MO-Datei neu. Nach Änderungen an PHP-Strings muss die POT-Datei aktualisiert und mit den vorhandenen PO-Dateien zusammengeführt werden.
-
-## Struktur
-
-```text
-app/           Plugin-Logik, Module, Controller und Ansichten
-assets/        Globale Stylesheets, Skripte und Bilder
-languages/     Gettext-Kataloge
-shared-ui/     Gemeinsame Administrationsoberfläche
-vendor/        Eingebundene Laufzeitbibliotheken
-```
-
-Das Plugin startet in [cp-defender.php](cp-defender.php). Die einzelnen Sicherheitsbereiche liegen unter `app/module/`.
-
-## Entwicklung
-
-- Verwende für sichtbare PHP-Texte stets die Textdomain `cpsec`.
-- Halte Übersetzungsaufrufe statisch, zum Beispiel `__( 'Text', 'cpsec' )`, damit Gettext-Werkzeuge sie extrahieren können.
-- Prüfe geänderte PHP-Dateien mit `php -l <datei>`.
-- Aktualisiere bei Änderungen am Release-Stand sowohl Plugin-Header als auch [readme.txt](readme.txt).
-
-## Support und Lizenz
+## Hilfe und Lizenz
 
 - Dokumentation: <https://psource.eimen.net/wiki/ps-security-suite-dokumentation/>
 - Lizenz: [GPL-2.0-or-later](license.txt)

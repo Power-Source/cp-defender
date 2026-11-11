@@ -1,4 +1,4 @@
-=== PS Security ===
+=== PS Security Suite ===
 Contributors: PSource
 Tags: updates, security, multisite, anti-spam, malware-scan
 Requires at least: 5.0
@@ -10,70 +10,65 @@ Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Erhalte regelmäßige Sicherheitsüberprüfungen, Schwachstellenberichte, Sicherheitsempfehlungen und individuelle Sicherheitsmaßnahmen für Deine Webseite – mit nur wenigen Klicks. PS Security ist Dein Analyst und Sicherheitsexperte, der rund um die Uhr für Dich da ist.
+PS Security hilft dir, deine ClassicPress- oder WordPress-Website Schritt für Schritt besser zu schützen. Du siehst offene Sicherheitsrisiken, entscheidest selbst über die passenden Maßnahmen und behältst Logins, Dateien und verdächtige Zugriffe im Blick.
 
 == Description ==
 
-PS Security ist ein umfassendes ClassicPress/WordPress-Sicherheits-Plugin, das Deine Webseite vor verschiedenen Bedrohungen schützt. Es bietet fortgeschrittene Sicherheitsfunktionen wie:
+Du musst kein Sicherheitsexperte sein, um PS Security zu verwenden. Unter **PS Security → Sicherheits-Tweaks** zeigt das Plugin verständlich, welche Schutzmaßnahmen noch offen sind. Du kannst jede Maßnahme einzeln ansehen, aktivieren oder bei Bedarf wieder zurücksetzen.
 
-- **Malware-Scans** - Regelmäßige Überprüfung auf Malware und verdächtige Dateien
-- **Firewall-Schutz** - Blockierung bösartiger IP-Adressen und Anfragen
-- **Login-Sicherheit** - Schutz vor Brute-Force-Attacken
-- **Datei-Integrität** - Überwachung auf unerwartete Dateiveränderungen
-- **Sicherheits-Berichte** - Detaillierte Logs und Benachrichtigungen
-- **Anti-Spam (NEU!)** - Leistungsstarker Multisite-Schutz vor Spam-Registrierungen
+=== Das schützt PS Security ===
 
-=== Anti-Spam Features (Multisite) ===
+* **Anmeldung und Benutzerkonten:** Erkennt wiederholte fehlgeschlagene Anmeldungen, kann IP-Adressen sperren und unterstützt Zwei-Faktor-Anmeldung.
+* **Dateien und Updates:** Prüft wichtige Website-Dateien auf unerwartete Änderungen, fehlende Core-Dateien und verdächtige Inhalte.
+* **Sicherheits-Tweaks:** Hilft bei sinnvollen Grundeinstellungen, etwa beim Schutz der Dateibearbeitung, XML-RPC oder der PHP-Ausführung in Verzeichnissen, in denen sie nicht benötigt wird.
+* **IP-Schutz:** Zeigt gesperrte Zugriffe an. Du kannst IP-Adressen gezielt sperren, wieder freigeben oder auf eine Whitelist setzen.
+* **Protokolle und Hinweise:** Hält sicherheitsrelevante Ereignisse nachvollziehbar fest, damit du weißt, was auf deiner Website passiert ist.
 
-Das neue Anti-Spam-Modul schützt Multisite-Installationen effektiv vor Spam-Blogs und bösartigen Registrierungen:
+=== Für Netzwerke und mehrere Websites ===
 
-**Pattern Matching:**
-- Flexible Regex-basierte Erkennung von Spam in Domains, Usernames, E-Mails und Site-Titeln
-- Live-Testing von Patterns gegen bestehende Daten
-- Automatische Statistiken zu Pattern-Matches
+PS Security funktioniert sowohl für einzelne Websites als auch für ClassicPress- oder WordPress-Multisite-Netzwerke. Netzwerkadministratoren können zentrale Vorgaben festlegen und bei passenden Funktionen entscheiden, ob Website-Administratoren eigene Einstellungen verwenden dürfen.
 
-**IP-Reputation-System:**
-- Automatisches Tracking verdächtiger IP-Adressen
-- Blockierung nach wiederholten Spam-Versuchen
-- Übersicht der Top-Spammer-IPs
+Das Anti-Spam-Modul ist für Multisite-Netzwerke gedacht. Es hilft, unerwünschte Registrierungen und Spam-Websites zu erkennen und zu begrenzen. Dafür stehen unter anderem Regeln für auffällige Namen, E-Mail-Adressen und Domains, Begrenzungen für wiederholte Registrierungen sowie eine Übersicht verdächtiger Anmeldungen zur Verfügung.
 
-**Rate Limiting:**
-- Begrenzung der Registrierungen pro IP-Adresse
-- Konfigurierbare Zeitfenster
+=== Wichtig vor dem Aktivieren ===
 
-**Human Verification:**
-- reCAPTCHA v2 Integration
-- Eigene Sicherheitsfragen definieren
+Aktiviere Schutzmaßnahmen bewusst und einzeln. Manche Einstellungen können Funktionen von Themes, Plugins oder externen Diensten beeinflussen. Lege vor größeren Änderungen ein Backup an und prüfe die Website danach kurz als Besucher und als Administrator.
 
-**Moderation-Interface:**
-- Übersichtliche Liste verdächtiger und gespammter Blogs
-- Bulk-Aktionen für effizientes Management
-- Detaillierte Spam-Certainty-Bewertungen
-
-**Statistiken & Reports:**
-- Detaillierte Auswertungen zu Spam-Aktivitäten
-- Pattern-Effektivität
-- Zeitliche Trends
-
-Starte noch heute und sichere Deine ClassicPress/WordPress-Installation ab.
+Für den bestmöglichen Schutz sollte deine Website PHP 8.5.12 oder neuer verwenden. PS Security weist auf ältere PHP-Versionen als Sicherheitsrisiko hin.
 
 == Installation ==
 
-1. Lade das Plugin in das `/wp-content/plugins/` Verzeichnis hoch
-2. Aktiviere das Plugin im 'Plugins' Menü
-3. Für Multisite: Netzwerk-Aktivierung erforderlich
-4. Gehe zu 'PS Security' im Admin-Menü
-5. Für Anti-Spam: Konfiguriere die Einstellungen unter "Anti-Spam"
+1. Installiere und aktiviere PS Security wie jedes andere Plugin über **Plugins → Installieren** oder lade den Plugin-Ordner nach `/wp-content/plugins/` hoch.
+2. In einem Multisite-Netzwerk aktivierst du das Plugin über die **Netzwerkverwaltung** für das gesamte Netzwerk.
+3. Öffne anschließend **PS Security → Sicherheits-Tweaks**.
+4. Lies die offenen Hinweise und aktiviere nur die Maßnahmen, die zu deiner Website passen.
+5. Prüfe nach jeder Änderung Anmeldung, Kontaktformulare, Shop oder andere wichtige Funktionen.
 
 == Frequently Asked Questions ==
 
-= Funktioniert Anti-Spam auch auf Single-Site? =
+= Wo beginne ich am besten? =
 
-Nein, das Anti-Spam-Modul ist speziell für Multisite-Installationen entwickelt. Auf Single-Sites wird es automatisch deaktiviert.
+Öffne **PS Security → Sicherheits-Tweaks** und arbeite die offenen Hinweise nacheinander durch. Beginne mit Maßnahmen, die keine bestehenden Funktionen verändern. Bei jeder Regel erklärt PS Security, was sie schützt und welche Auswirkungen möglich sind.
 
-= Kann ich eigene Spam-Patterns hinzufügen? =
+= Kann ich eine Schutzmaßnahme wieder zurücksetzen? =
 
-Ja! Unter "Patterns" kannst du beliebig viele eigene Regex-Patterns erstellen und live testen.
+Ja. Gehe zu der betreffenden Regel und wähle die Rücksetzfunktion. Danach erscheint die Maßnahme wieder als offen, damit du sie bei Bedarf später erneut aktivieren kannst.
+
+= Kann ich mich durch den Login-Schutz selbst aussperren? =
+
+Das ist möglich, wenn du sehr strenge Regeln aktivierst oder keine Wiederherstellungsmöglichkeit hinterlegst. Richte bei der Zwei-Faktor-Anmeldung daher immer eine sichere Wiederherstellung ein und setze deine eigene feste IP-Adresse nur dann auf die Whitelist, wenn sie sich nicht regelmäßig ändert.
+
+= Was muss ich bei NGINX beachten? =
+
+PS Security kann NGINX-Konfigurationen nicht selbst auf dem Server ändern. Die Regel zeigt dir die benötigte Konfiguration zum Kopieren an. Bei Hosting-Paketen gibst du sie an den Support weiter; bei einem selbstverwalteten Server fügst du sie in den passenden NGINX-`server`-Block ein und prüfst die Konfiguration vor dem Neuladen.
+
+= Funktioniert Anti-Spam auch auf einzelnen Websites? =
+
+Nein. Das Anti-Spam-Modul ist speziell für Multisite-Netzwerke entwickelt und auf einzelnen Websites nicht verfügbar.
+
+= Kann ich eigene Anti-Spam-Regeln anlegen? =
+
+Ja. Im Netzwerkbereich kannst du eigene Regeln für auffällige Domains, Benutzernamen, E-Mail-Adressen und Seitentitel anlegen und vor dem Speichern testen.
 
 == Changelog ==
 
