@@ -1,12 +1,12 @@
-=== PS Security Suite ===
+=== PS Security ===
 Contributors: PSource
 Tags: updates, security, multisite, anti-spam, malware-scan
 Requires at least: 5.0
 Requires CP: 2.7
 Tested up to: 7.1.4
 ClassicPress 2.7.4
-Requires PHP: 7.4
-Stable tag: 1.1.0
+Requires PHP: 8.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,6 +76,16 @@ Nein, das Anti-Spam-Modul ist speziell für Multisite-Installationen entwickelt.
 Ja! Unter "Patterns" kannst du beliebig viele eigene Regex-Patterns erstellen und live testen.
 
 == Changelog ==
+
+= 1.1.1 =
+* Fix: Aktionen zum Sperren, Entsperren sowie zur Whitelist-Verwaltung in den IP-Sperrprotokollen werden nach der Ausführung wieder als anklickbare Links angezeigt.
+* Neu: Konfigurierbarer XML-RPC-Schutz mit Brute-Force-, Pingback- und vollständigem Sperrmodus; Netzwerkadministratoren können Subsite-Administratoren eigene Einstellungen unter Werkzeuge erlauben.
+* Fix: PHP-Ausführungs-Härtung zeigt das Eingabefeld für Ausnahme-Dateien wieder an und erkennt Apache, LiteSpeed, NGINX sowie IIS zuverlässiger.
+* Fix: Die Ausnahme-Verwaltung für den PHP-Ausführungsschutz sperrt sich bei nicht beschreibbarer .htaccess-Datei und zeigt die konkrete Berechtigungsursache an.
+* Fix: Der PHP-Ausführungsschutz wird nur nach erfolgreicher Aktivierung durch einen Administrator als behoben markiert; ein Zurücksetzen bleibt dauerhaft als offene Sicherheitslücke sichtbar.
+* Fix: Fehlen die von PS Security verwalteten PHP-Schutzregeln, wird eine zuvor aktivierte Apache- oder LiteSpeed-Härtung automatisch wieder als offen markiert.
+* Verbesserung: NGINX-Härtungen erklären den notwendigen Hosting-Schritt, enthalten eine Anleitung für selbstverwaltete Server und bieten die vollständige Serverkonfiguration zum Kopieren an.
+* Fix: Die PHP-Härtungsregel bewertet nur noch unterstützte PHP-Versionen als aktuell und empfiehlt PHP 8.5.12 statt der veralteten Version 7.1.
 
 = 1.1.0 =
 * Fix: PHP-8.4-Deprecated-Warnung bei der Anti-Spam-Pattern-Prüfung durch explizit nullable deklarierten Aktionsfilter behoben.

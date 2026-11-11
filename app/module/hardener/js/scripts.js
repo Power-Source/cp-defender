@@ -73,10 +73,29 @@ jQuery(function ($) {
      */
     $(document).on('click','button.hardener-php-excuted-execption', function(){
         var $textarea = $('.hardener-instructions textarea.hardener-php-excuted-ignore');
-        if ($textarea.hasClass('ht-collapsed')) {
-            $textarea.removeClass('ht-collapsed');
+        $textarea.toggleClass('wd-hide');
+    });
+
+    $(document).on('click', 'button.hardener-copy-nginx-config', function () {
+        var $button = $(this);
+        var $config = $('#hardener-nginx-config');
+        var config = $config.val();
+        $config.trigger('focus').trigger('select');
+
+        function fallbackCopy() {
+            if (document.execCommand('copy')) {
+                Defender.showNotification('success', $button.data('copied-message'));
+            } else {
+                Defender.showNotification('error', $button.data('copy-failed-message'));
+            }
+        }
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(config).then(function () {
+                Defender.showNotification('success', $button.data('copied-message'));
+            }).catch(fallbackCopy);
         } else {
-            $textarea.addClass('ht-collapsed');
+            fallbackCopy();
         }
     });
 
@@ -96,7 +115,7 @@ jQuery(function ($) {
             });
             $('.hardener-instructions-'+selected).removeClass('wd-hide');
         }
-        if( selected == 'apache' || selected == 'litespeed' || selected == 'nginx'){
+        if( selected == 'apache' || selected == 'litespeed'){
             $('.hardener-instructions-extra-exceptions').removeClass('wd-hide');
         }else{
             $('.hardener-instructions-extra-exceptions').addClass('wd-hide');
@@ -251,7 +270,35 @@ WDHardener.rules = function () {
  */
 WDHardener.slideUp = function(element, callback) {
     var $el = jQuery(element);
+    WDHardener.cancelSlideUp($el);
     $el.addClass('ht-sliding-up');
+    if (callback) {
+        var completed = false;
+        var timeout;
+        var complete = function(event) {
+            if (event && event.target !== $el[0]) {
+                return;
+            }
+            if (completed) {
+                return;
+            }
+            completed = true;
+            clearTimeout(timeout);
+            $el.removeData('hardener-slide-up-timeout');
+            $el.off('transitionend.hardener-slide-up');
+            callback();
+        };
+
+        $el.on('transitionend.hardener-slide-up', complete);
+        timeout = setTimeout(complete, 600);
+        $el.data('hardener-slide-up-timeout', timeout);
+    }
+}
+
+WDHardener.slideDown = function(element, callback) {
+    var $el = jQuery(element);
+    WDHardener.cancelSlideUp($el);
+    $el.removeClass('ht-sliding-up');
     if (callback) {
         $el.one('transitionend', callback);
         // Fallback timeout in case transitionend fires late
@@ -259,12 +306,11 @@ WDHardener.slideUp = function(element, callback) {
     }
 }
 
-WDHardener.slideDown = function(element, callback) {
-    var $el = jQuery(element);
-    $el.removeClass('ht-sliding-up');
-    if (callback) {
-        $el.one('transitionend', callback);
-        // Fallback timeout in case transitionend fires late
-        setTimeout(callback, 600);
+WDHardener.cancelSlideUp = function($el) {
+    var timeout = $el.data('hardener-slide-up-timeout');
+    if (timeout) {
+        clearTimeout(timeout);
     }
+    $el.removeData('hardener-slide-up-timeout');
+    $el.off('transitionend.hardener-slide-up');
 }

@@ -8,6 +8,7 @@ use Hammer\Helper\HTTP_Helper;
 use Hammer\Helper\Log_Helper;
 use CP_Defender\Controller;
 use CP_Defender\Module\Hardener;
+use CP_Defender\Module\Hardener\Component\XML_RPC_Protection_Service;
 
 class Main extends Controller {
 	protected $slug = 'wdf-hardener';
@@ -28,11 +29,13 @@ class Main extends Controller {
 	public function __construct() {
 		if ( $this->is_network_activate( cp_defender()->plugin_slug ) ) {
 			$this->add_action( 'network_admin_menu', 'adminMenu' );
+			$this->add_action( 'admin_menu', 'siteXmlrpcSettingsMenu' );
 		} else {
 			$this->add_action( 'admin_menu', 'adminMenu' );
 		}
+		$this->add_action( 'admin_post_cp_defender_save_xmlrpc_site_settings', 'saveSiteXmlrpcSettings' );
 
-		if ( $this->isInPage() ) {
+		if ( $this->isInPage() || $this->isSiteXmlrpcSettingsPage() ) {
 			$this->add_action( 'defender_enqueue_assets', 'scripts', 11 );
 		}
 
@@ -150,6 +153,47 @@ return;
 			&$this,
 			'actionIndex'
 		) );
+
+	}
+
+	public function siteXmlrpcSettingsMenu() {
+		if ( ! XML_RPC_Protection_Service::isSiteOverrideAllowed() || ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		add_management_page( esc_html__( "XML-RPC-Schutz", 'cpsec' ), esc_html__( "XML-RPC-Schutz", 'cpsec' ), 'manage_options', 'wdf-xmlrpc-protection', array(
+			&$this,
+			'renderSiteXmlrpcSettings'
+		) );
+	}
+
+	public function renderSiteXmlrpcSettings() {
+		if ( ! XML_RPC_Protection_Service::isSiteOverrideAllowed() || ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Du hast keine Berechtigung, diese Einstellungen zu verwalten.', 'cpsec' ) );
+		}
+
+		$this->render( 'xmlrpc-site-settings', array(
+			'mode'         => XML_RPC_Protection_Service::getSiteMode(),
+			'network_mode' => XML_RPC_Protection_Service::getNetworkMode(),
+		) );
+	}
+
+	public function saveSiteXmlrpcSettings() {
+		if ( ! XML_RPC_Protection_Service::isSiteOverrideAllowed() || ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Du hast keine Berechtigung, diese Einstellungen zu verwalten.', 'cpsec' ) );
+		}
+		check_admin_referer( 'cp_defender_save_xmlrpc_site_settings' );
+
+		XML_RPC_Protection_Service::setSiteMode( HTTP_Helper::retrieve_post( 'xmlrpc_protection_mode', XML_RPC_Protection_Service::MODE_INHERIT ) );
+		wp_safe_redirect( admin_url( 'tools.php?page=wdf-xmlrpc-protection&updated=1' ) );
+		exit;
+	}
+
+	private function isSiteXmlrpcSettingsPage() {
+		return XML_RPC_Protection_Service::isSiteOverrideAllowed()
+			&& isset( $GLOBALS['pagenow'] )
+			&& 'tools.php' === $GLOBALS['pagenow']
+			&& 'wdf-xmlrpc-protection' === HTTP_Helper::retrieve_get( 'page' );
 	}
 
 	/**

@@ -4244,8 +4244,8 @@ msgid "Gib die Anzahl der Tage ein"
 msgstr "Enter the number of days"
 
 #: app/module/hardener/view/rules/php-version.php:14
-msgid "PHP-Versionen vor 7.1 werden nicht mehr unterstützt. Aus Sicherheits- und Stabilitätsgründen empfehlen wir dir dringend, deine PHP-Version so bald wie möglich auf Version 7.1 oder höher zu aktualisieren."
-msgstr "PHP versions older than 7.1 are no longer supported. For security and stability, we strongly recommend upgrading to PHP 7.1 or later as soon as possible."
+msgid "Für diese Sicherheitsregel ist PHP 8.5.12 die empfohlene Mindestversion. Aus Sicherheits- und Stabilitätsgründen solltest du eine ältere PHP-Version aktualisieren."
+msgstr "For this security rule, PHP 8.5.12 is the recommended minimum version. For security and stability, you should update an older PHP version."
 
 #: app/module/hardener/view/rules/php-version.php:17
 #, php-format
@@ -4267,8 +4267,76 @@ msgid "Deine PHP-Version kann von deinem Hosting-Anbieter oder Systemadministrat
 msgstr "Your hosting provider or system administrator can update your PHP version. Please contact them for assistance."
 
 #: app/module/hardener/view/rules/php-version.php:38
-msgid "Deine PHP-Version ist in Ordnung."
-msgstr "Your PHP version is up to date."
+msgid "Deine PHP-Version wird derzeit unterstützt."
+msgstr "Your PHP version is currently supported."
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "Die Datei %s ist nicht beschreibbar. Der PHP-Schutz bleibt aktiv, aber Ausnahmen können erst nach Korrektur der Datei- oder Verzeichnisberechtigungen gespeichert werden."
+msgstr "The file %s is not writable. PHP protection remains active, but exceptions can only be saved after correcting the file or directory permissions."
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "Ausnahmen"
+msgstr "Exceptions"
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "Gib pro Zeile einen Dateinamen an, der innerhalb von wp-content weiterhin PHP ausführen darf. Lasse das Feld leer, wenn keine Ausnahme erforderlich ist."
+msgstr "Enter one file name per line that may continue to execute PHP within wp-content. Leave the field empty when no exception is required."
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "NGINX-Konfiguration durch Hosting einrichten"
+msgstr "Set up NGINX configuration through your host"
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "PS Security kann diese Regel nicht automatisch aktivieren, weil NGINX-Konfigurationen nur mit Serverzugriff geändert werden können."
+msgstr "PS Security cannot activate this rule automatically because NGINX configuration can only be changed with server access."
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "Kopiere die Konfiguration mit dem Button unten."
+msgstr "Copy the configuration with the button below."
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "Sende sie an deinen Hosting-Support und bitte darum, sie für diese Website in die NGINX-Konfiguration aufzunehmen."
+msgstr "Send it to your hosting support and ask them to add it to the NGINX configuration for this website."
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "Bitte den Support, NGINX danach neu zu laden."
+msgstr "Ask support to reload NGINX afterwards."
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "NGINX-Konfiguration kopieren"
+msgstr "Copy NGINX configuration"
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "NGINX-Konfiguration wurde in die Zwischenablage kopiert."
+msgstr "NGINX configuration was copied to the clipboard."
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "Die NGINX-Konfiguration konnte nicht in die Zwischenablage kopiert werden. Bitte markiere und kopiere den Text manuell."
+msgstr "The NGINX configuration could not be copied to the clipboard. Please select and copy the text manually."
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "Für selbstverwaltete NGINX-Server"
+msgstr "For self-managed NGINX servers"
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "Öffne die Server-Konfiguration dieser Website. Unter Debian und Ubuntu liegt sie häufig in /etc/nginx/sites-available/."
+msgstr "Open this website's server configuration. On Debian and Ubuntu, it is often located in /etc/nginx/sites-available/."
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "Füge die unten stehende Konfiguration innerhalb des passenden server-Blocks ein."
+msgstr "Add the configuration below within the appropriate server block."
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "Prüfe die Konfiguration, bevor du sie aktivierst:"
+msgstr "Test the configuration before activating it:"
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "Lade NGINX nach erfolgreicher Prüfung neu:"
+msgstr "Reload NGINX after a successful test:"
+
+#: app/module/hardener/view/rules/prevent-php-executed.php
+msgid "Verwende bei einer abweichenden Linux-Distribution oder einem anderen Verwaltungswerkzeug die entsprechenden Befehle deines Systems."
+msgstr "For a different Linux distribution or management tool, use the commands appropriate to your system."
 
 #: app/module/hardener/view/rules/prevent-php-executed.php:13
 msgid "Standardmäßig könnte eine Schwachstelle in einem Plugin/Theme dazu führen, dass eine PHP-Datei in die Verzeichnisse deiner Website hochgeladen wird und schädliche Skripte ausgeführt werden, die deiner Website erheblichen Schaden zufügen können. Verhindere dies vollständig, indem du die direkte PHP-Ausführung in Verzeichnissen deaktivierst, die sie nicht benötigen."

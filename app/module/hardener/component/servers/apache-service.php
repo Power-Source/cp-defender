@@ -214,6 +214,9 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 
 	public function unProtectContentDir() {
 		$htPath = WP_CONTENT_DIR . '/' . '.htaccess';
+		if ( ! file_exists( $htPath ) ) {
+			return true;
+		}
 		if ( ! is_writeable( $htPath ) ) {
 			return new \WP_Error( Error_Code::NOT_WRITEABLE,
 				sprintf( __( "Die Datei %s ist nicht beschreibbar", 'cpsec' ), $htPath ) );
@@ -245,6 +248,9 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 
 	public function unProtectIncludeDir() {
 		$htPath = ABSPATH . WPINC . '/' . '.htaccess';
+		if ( ! file_exists( $htPath ) ) {
+			return true;
+		}
 		if ( ! is_writeable( $htPath ) ) {
 			return new \WP_Error( Error_Code::NOT_WRITEABLE,
 				sprintf( __( "Die Datei %s ist nicht beschreibbar", 'cpsec' ), $htPath ) );
@@ -279,6 +285,9 @@ class Apache_Service extends Rule_Service implements IRule_Service {
 	public function unProtectUploadDir() {
 		if ( defined( 'UPLOADS' ) ) {
 			$htPath = ABSPATH . UPLOADS . '/' . '.htaccess';
+			if ( ! file_exists( $htPath ) ) {
+				return true;
+			}
 			if ( ! is_writeable( $htPath ) ) {
 				return new \WP_Error( Error_Code::NOT_WRITEABLE,
 					sprintf( __( "Die Datei %s ist nicht beschreibbar", 'cpsec' ), $htPath ) );

@@ -24,17 +24,32 @@
                 <?php
                 if ( in_array( $setting->active_server, array( 'apache', 'litespeed' ) ) ) {
                     $file_paths = $setting->getExcludedFilePaths();
-                    if ( !empty( $file_paths ) && is_array( $file_paths ) && count( $file_paths ) > 0 ) {
+                    $htaccess_path = WP_CONTENT_DIR . DIRECTORY_SEPARATOR . '.htaccess';
+                    $can_update_exceptions = file_exists( $htaccess_path )
+                        ? is_writable( $htaccess_path )
+                        : is_writable( dirname( $htaccess_path ) );
+                    $exception_write_error = $setting->getDValues( \CP_Defender\Module\Hardener\Component\Prevent_Php::EXCEPTION_WRITE_ERROR_KEY );
+                    if ( ! empty( $file_paths ) && is_array( $file_paths ) && count( $file_paths ) > 0 ) {
                         _e(" Die folgenden Dateipfade wurden im Verzeichnis /wp-content zugelassen :", 'cpsec' );
+                    }
+                    if ( ! $can_update_exceptions || ! empty( $exception_write_error ) ) {
+						?>
+                        <div class="well well-red">
+                            <p><?php echo esc_html( $exception_write_error ? $exception_write_error : sprintf( __( 'Die Datei %s ist nicht beschreibbar. Der PHP-Schutz bleibt aktiv, aber Ausnahmen können erst nach Korrektur der Datei- oder Verzeichnisberechtigungen gespeichert werden.', 'cpsec' ), $htaccess_path ) ); ?></p>
+                        </div>
+						<?php
+                    } else {
 						?>
                         <div class="hardener-instructions hardener-instructions-apache-litespeed">
-                            <textarea class="hardener-php-excuted-ignore"><?php echo implode( "\n", $file_paths ); ?></textarea>
+                            <label for="php-execution-exceptions"><?php esc_html_e( 'Ausnahmen', 'cpsec' ); ?></label>
+                            <p class="description"><?php esc_html_e( 'Gib pro Zeile einen Dateinamen an, der innerhalb von wp-content weiterhin PHP ausführen darf. Lasse das Feld leer, wenn keine Ausnahme erforderlich ist.', 'cpsec' ); ?></p>
+                            <textarea id="php-execution-exceptions" class="hardener-php-excuted-ignore"><?php echo esc_textarea( implode( "\n", (array) $file_paths ) ); ?></textarea>
                             <form method="post" class="hardener-frm hardener-update-frm rule-process">
                                 <?php $controller->createNonceField(); ?>
                                 <input type="hidden" name="action" value="updateHardener"/>
-                                <input type="hidden" name="file_paths" value="<?php echo implode( "\n", $file_paths ); ?>"/>
-                                <input type="hidden" name="current_server" value="<?php echo $setting->active_server; ?>"/>
-                                <input type="hidden" name="slug" value="<?php echo $controller::$slug ?>"/>
+                                <input type="hidden" name="file_paths" value="<?php echo esc_attr( implode( "\n", (array) $file_paths ) ); ?>"/>
+                                <input type="hidden" name="current_server" value="<?php echo esc_attr( $setting->active_server ); ?>"/>
+                                <input type="hidden" name="slug" value="<?php echo esc_attr( $controller::$slug ); ?>"/>
                                 <button class="button button-small float-r"
                                         type="submit"><?php _e( "Aktualisiere .htaccess-Datei", 'cpsec' ) ?></button>
                             </form>
@@ -62,13 +77,9 @@
                     $wp_includes    = str_replace( $_SERVER['DOCUMENT_ROOT'], '', ABSPATH . WPINC );
 				    $wp_content     = str_replace( $_SERVER['DOCUMENT_ROOT'], '', WP_CONTENT_DIR );
                 }
-                global $is_nginx, $is_IIS, $is_iis7;
-                if ( $is_nginx ) {
-                    $setting->active_server = 'nginx';
-                } else if ( $is_IIS ) {
-                    $setting->active_server = 'iis';
-                } else if ( $is_iis7 ) {
-                    $setting->active_server = 'iis-7';
+                $detected_server = \CP_Defender\Behavior\Utils::instance()->determineServer( true );
+                if ( array_key_exists( $detected_server, $servers ) ) {
+                    $setting->active_server = $detected_server;
                 }
 
             ?>
@@ -135,26 +146,28 @@ location ~* ^$wp_content/.*\.php$ {
 ";
                     ?>
 
-                    <p><?php esc_html_e( "Für NGINX-Server:", 'cpsec' ) ?></p>
-                    <ol>
-                        <li>
-                            <?php esc_html_e( "Kopiere den generierten Code in deine sitespezifische .conf-Datei, die sich normalerweise in einem Unterverzeichnis unter /etc/nginx/... oder /usr/local/nginx/conf/... befindet.", 'cpsec' ) ?>
-                        </li>
-                        <li>
-                            <?php _e( "Füge den obigen Code innerhalb des <strong>server</strong>-Abschnitts in der Datei ein, direkt vor dem PHP-Standortblock. Sieht ungefähr so aus:", 'cpsec' ) ?>
-                            <pre>location ~ \.php$ {</pre>
-                        </li>
-                        <li>
-                            <?php esc_html_e( "Lade NGINX neu.", 'cpsec' ) ?>
-                        </li>
-                    </ol>
-                    <p><?php echo sprintf( __( "Hast du immer noch Probleme? <a target='_blank' href=\"%s\">Eröffne ein Support-Ticket</a>.", 'cpsec' ), 'https://psource.eimen.net/forums/forum/support#question' ) ?></p>
-                    <pre>
-## PS Security - Prevent PHP Execution ##
-                        <?php echo esc_html( $rules ); ?>
-                        <span class="hardener-nginx-extra-instructions"></span>
-                        ## PS Security - End ##
-                    </pre>
+                    <div class="well well-yellow">
+                        <h3><?php esc_html_e( 'NGINX-Konfiguration durch Hosting einrichten', 'cpsec' ); ?></h3>
+                        <p><?php esc_html_e( 'PS Security kann diese Regel nicht automatisch aktivieren, weil NGINX-Konfigurationen nur mit Serverzugriff geändert werden können.', 'cpsec' ); ?></p>
+                        <ol>
+                            <li><?php esc_html_e( 'Kopiere die Konfiguration mit dem Button unten.', 'cpsec' ); ?></li>
+                            <li><?php esc_html_e( 'Sende sie an deinen Hosting-Support und bitte darum, sie für diese Website in die NGINX-Konfiguration aufzunehmen.', 'cpsec' ); ?></li>
+                            <li><?php esc_html_e( 'Bitte den Support, NGINX danach neu zu laden.', 'cpsec' ); ?></li>
+                        </ol>
+                    </div>
+                    <div class="well well-grey">
+                        <h3><?php esc_html_e( 'Für selbstverwaltete NGINX-Server', 'cpsec' ); ?></h3>
+                        <ol>
+                            <li><?php esc_html_e( 'Öffne die Server-Konfiguration dieser Website. Unter Debian und Ubuntu liegt sie häufig in /etc/nginx/sites-available/.', 'cpsec' ); ?></li>
+                            <li><?php esc_html_e( 'Füge die unten stehende Konfiguration innerhalb des passenden server-Blocks ein.', 'cpsec' ); ?></li>
+                            <li><?php esc_html_e( 'Prüfe die Konfiguration, bevor du sie aktivierst:', 'cpsec' ); ?> <code>sudo nginx -t</code></li>
+                            <li><?php esc_html_e( 'Lade NGINX nach erfolgreicher Prüfung neu:', 'cpsec' ); ?> <code>sudo systemctl reload nginx</code></li>
+                        </ol>
+                        <p><?php esc_html_e( 'Verwende bei einer abweichenden Linux-Distribution oder einem anderen Verwaltungswerkzeug die entsprechenden Befehle deines Systems.', 'cpsec' ); ?></p>
+                    </div>
+                    <textarea id="hardener-nginx-config" class="large-text code" rows="16" readonly>## PS Security - Prevent PHP Execution ##
+<?php echo esc_textarea( $rules ); ?>## PS Security - End ##</textarea>
+                    <button class="button button-secondary hardener-copy-nginx-config" type="button" data-copied-message="<?php esc_attr_e( 'NGINX-Konfiguration wurde in die Zwischenablage kopiert.', 'cpsec' ); ?>" data-copy-failed-message="<?php esc_attr_e( 'Die NGINX-Konfiguration konnte nicht in die Zwischenablage kopiert werden. Bitte markiere und kopiere den Text manuell.', 'cpsec' ); ?>"><?php esc_html_e( 'NGINX-Konfiguration kopieren', 'cpsec' ); ?></button>
                 </div>
                 <div class="<?php echo ( $setting->active_server != 'iis' ) ? 'wd-hide' : ''; ?> hardener-instructions hardener-instructions-iis">
                     <div class="line">
@@ -180,7 +193,7 @@ location ~* ^$wp_content/.*\.php$ {
                 </div>
                 <?php $controller->showIgnoreForm();
                 $prevent_php_style = "style='display:none'";
-                if ( in_array( $setting->active_server, array( 'apache', 'litespeed', 'nginx' ) ) ) {
+                if ( in_array( $setting->active_server, array( 'apache', 'litespeed' ) ) ) {
                     $prevent_php_style = "style='display:block'";
                 }
                 ?>
@@ -193,7 +206,7 @@ location ~* ^$wp_content/.*\.php$ {
                         <button class="button button-grey hardener-php-excuted-execption" type="button"><?php _e( "Add Exception", 'cpsec' ) ?></button>
                     </div>
                     <div class="line">
-                        <textarea class="hardener-php-excuted-ignore" style='display:none'></textarea>
+                        <textarea class="hardener-php-excuted-ignore wd-hide"></textarea>
                     </div>
                 </div>
                 <?php endif; ?>

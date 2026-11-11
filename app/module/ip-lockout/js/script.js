@@ -105,7 +105,9 @@ jQuery(function ($) {
             },
             success: function (data) {
                 if (data.success == 1) {
-                    that.closest('td').text(data.data.message);
+                    that.closest('td').html(data.data.message);
+                } else if (data.data && data.data.message) {
+                    Defender.showNotification('error', data.data.message);
                 }
             }
         })

@@ -475,7 +475,11 @@ class Utils extends Behavior {
 		$server     = null;
 		$ssl_verify = apply_filters( 'defender_ssl_verify', true ); //most hosts dont really have valid ssl or ssl still pending
 
-		if ( $is_nginx ) {
+		$server_software = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : '';
+		$server          = $this->normalizeServerType( $server_software );
+		if ( $server ) {
+			// SERVER_SOFTWARE identifies LiteSpeed even when the WordPress Apache flag is set.
+		} elseif ( $is_nginx ) {
 			$server = 'nginx';
 		} elseif ( $is_apache ) {
 			//case the url is detecting php file
@@ -487,12 +491,8 @@ class Utils extends Behavior {
 					'user-agent' => $_SERVER['HTTP_USER_AGENT'],
 					'sslverify'  => $ssl_verify
 				) );
-				$server  = wp_remote_retrieve_header( $request, 'server' );
-				$server  = explode( '/', $server );
-				if ( strtolower( $server[0] ) == 'nginx' ) {
-					//proxy case
-					$server = 'nginx';
-				} else {
+				$server = $this->normalizeServerType( wp_remote_retrieve_header( $request, 'server' ) );
+				if ( ! $server ) {
 					$server = 'apache';
 				}
 			}
@@ -506,9 +506,10 @@ class Utils extends Behavior {
 				'user-agent' => $_SERVER['HTTP_USER_AGENT'],
 				'sslverify'  => $ssl_verify
 			) );
-			$server  = wp_remote_retrieve_header( $request, 'server' );
-			$server  = explode( '/', $server );
-			$server  = $server[0];
+			$server = $this->normalizeServerType( wp_remote_retrieve_header( $request, 'server' ) );
+			if ( ! $server ) {
+				$server = 'apache';
+			}
 		}
 
 		$server_type[ $url ] = $server;
@@ -516,6 +517,31 @@ class Utils extends Behavior {
 		set_site_transient( 'wd_util_server', $server_type, 3600 );
 
 		return $server;
+	}
+
+	/**
+	 * Map server software identifiers to the types supported by the hardener.
+	 *
+	 * @param string $server
+	 *
+	 * @return string|null
+	 */
+	private function normalizeServerType( $server ) {
+		$server = strtolower( (string) $server );
+		if ( strpos( $server, 'litespeed' ) !== false ) {
+			return 'litespeed';
+		}
+		if ( strpos( $server, 'nginx' ) !== false ) {
+			return 'nginx';
+		}
+		if ( strpos( $server, 'apache' ) !== false ) {
+			return 'apache';
+		}
+		if ( strpos( $server, 'iis' ) !== false ) {
+			return 'iis';
+		}
+
+		return null;
 	}
 
 	/**

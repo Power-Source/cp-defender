@@ -16,6 +16,7 @@ use CP_Defender\Module\Hardener\Component\Prevent_Php;
 use CP_Defender\Module\Hardener\Component\Protect_Information;
 use CP_Defender\Module\Hardener\Component\Security_Key;
 use CP_Defender\Module\Hardener\Component\WP_Version;
+use CP_Defender\Module\Hardener\Component\XML_RPC_Protection;
 use CP_Defender\Module\Hardener\Rule;
 use CP_Defender\Module\Hardener\Rule_Service;
 
@@ -262,7 +263,8 @@ class Settings extends \Hammer\WP\Settings {
 			Security_Key::$slug        => $init == true ? new Security_Key() : Security_Key::getClassName(),
 			Protect_Information::$slug => $init == true ? new Protect_Information() : Protect_Information::getClassName(),
 			Prevent_Php::$slug         => $init == true ? new Prevent_Php() : Prevent_Php::getClassName(),
-			Login_Duration::$slug      => $init == true ? new Login_Duration() : Login_Duration::getClassName()
+			Login_Duration::$slug      => $init == true ? new Login_Duration() : Login_Duration::getClassName(),
+			XML_RPC_Protection::$slug  => $init == true ? new XML_RPC_Protection() : XML_RPC_Protection::getClassName()
 		);
 	}
 

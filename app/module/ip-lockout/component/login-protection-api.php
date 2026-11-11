@@ -248,19 +248,20 @@ class Login_Protection_Api extends Component {
 		$whitelist = $settings->getIpWhitelist();
 
 		$ip    = \CP_Defender\Behavior\Utils::instance()->getUserIp();
-		$nonce = wp_create_nonce( 'lockoutIPAction' );
+		$nonce = esc_attr( wp_create_nonce( 'lockoutIPAction' ) );
+		$log_id = absint( $log->id );
 		if ( $ip != $log->ip ) {
 			if ( ! in_array( $log->ip, $blacklist ) ) {
-				$links[] = '<a data-nonce="' . $nonce . '" class="ip-action" data-type="blacklist" data-id="' . $log->id . '" href="#">' . __( "Sperren", 'cpsec' ) . '</a>';
+				$links[] = '<a data-nonce="' . $nonce . '" class="ip-action" data-type="blacklist" data-id="' . $log_id . '" href="#">' . esc_html__( "Sperren", 'cpsec' ) . '</a>';
 			} else {
-				$links[] = '<a data-nonce="' . $nonce . '" class="ip-action" data-type="unblacklist" data-id="' . $log->id . '" href="#">' . __( "Entsperren", 'cpsec' ) . '</a>';
+				$links[] = '<a data-nonce="' . $nonce . '" class="ip-action" data-type="unblacklist" data-id="' . $log_id . '" href="#">' . esc_html__( "Entsperren", 'cpsec' ) . '</a>';
 			}
 		}
 
 		if ( ! in_array( $log->ip, $whitelist ) ) {
-			$links[] = '<a data-nonce="' . $nonce . '" class="ip-action" data-type="whitelist" data-id="' . $log->id . '" href="#">' . __( "Whitelist", 'cpsec' ) . '</a>';
+			$links[] = '<a data-nonce="' . $nonce . '" class="ip-action" data-type="whitelist" data-id="' . $log_id . '" href="#">' . esc_html__( "Whitelist", 'cpsec' ) . '</a>';
 		} else {
-			$links[] = '<a data-nonce="' . $nonce . '" class="ip-action" data-type="unwhitelist" data-id="' . $log->id . '" href="#">' . __( "Unwhitelist", 'cpsec' ) . '</a>';
+			$links[] = '<a data-nonce="' . $nonce . '" class="ip-action" data-type="unwhitelist" data-id="' . $log_id . '" href="#">' . esc_html__( "Unwhitelist", 'cpsec' ) . '</a>';
 		}
 
 		return implode( ' | ', $links );

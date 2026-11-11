@@ -15,6 +15,7 @@ class Prevent_Php extends Rule {
 	static $service;
 	static $apache_service;
 	static $iis_service;
+	const EXCEPTION_WRITE_ERROR_KEY = 'prevent_php_exception_write_error';
 
 	function getDescription() {
 		$this->renderPartial( 'rules/prevent-php-executed' );
@@ -43,7 +44,7 @@ class Prevent_Php extends Rule {
 		if ( in_array( $settings->active_server, array( 'apache', 'litespeed' ) ) ) {
 			$service = $this->getApacheService();
 			$service->setHtConfig( $settings->getNewHtConfig() );
-		} else if ( $server == 'iis-7' ) {
+		} else if ( $settings->active_server == 'iis-7' ) {
 			$service = $this->getIisService();
 		} else {
 			$service = $this->getService();
@@ -54,6 +55,7 @@ class Prevent_Php extends Rule {
 				$settings->saveExcludedFilePaths( array() );
 				$settings->saveNewHtConfig( array() );
 			}
+			$settings->setDValues( Prevent_PHP_Service::PROTECTION_ENABLED_KEY, null );
 			$settings->addToIssues( self::$slug );
 		} else {
 			wp_send_json_error( array(
@@ -96,6 +98,7 @@ class Prevent_Php extends Rule {
 				$settings->saveNewHtConfig( $service->getNewHtConfig() );
 			}
 			$settings->setActiveServer( $server );
+			$settings->setDValues( Prevent_PHP_Service::PROTECTION_ENABLED_KEY, true );
 			$settings->addToResolved( self::$slug );
 		} else {
 			wp_send_json_error( array(
@@ -122,7 +125,14 @@ class Prevent_Php extends Rule {
 		if ( in_array( $server, array( 'apache', 'litespeed' ) ) ) {
 			$service = $this->getApacheService();
 			$service->setHtConfig( $settings->getNewHtConfig() ); //Set the previous template
-			$service->unProtectContentDir(); //revert first
+			$ret = $service->unProtectContentDir(); //revert first
+			if ( is_wp_error( $ret ) ) {
+				$settings->setDValues( self::EXCEPTION_WRITE_ERROR_KEY, $ret->get_error_message() );
+				wp_send_json_error( array(
+					'message' => $ret->get_error_message()
+				) );
+				return;
+			}
 			$service->setExcludeFilePaths( $file_paths ); //Set the paths
 		} else {
 			$service = $this->getService();
@@ -134,8 +144,11 @@ class Prevent_Php extends Rule {
 				$settings->saveNewHtConfig( $service->getNewHtConfig() );
 			}
 			$settings->setActiveServer( $server );
+			$settings->setDValues( Prevent_PHP_Service::PROTECTION_ENABLED_KEY, true );
+			$settings->setDValues( self::EXCEPTION_WRITE_ERROR_KEY, null );
 			$settings->save();
 		} else {
+			$settings->setDValues( self::EXCEPTION_WRITE_ERROR_KEY, $ret->get_error_message() );
 			wp_send_json_error( array(
 				'message' => $ret->get_error_message()
 			) );

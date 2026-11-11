@@ -3,43 +3,61 @@
 
 namespace CP_Defender\Module\Hardener\Component;
 
-use Hammer\Helper\WP_Helper;
-use Hammer\Helper\Log_Helper;
-use CP_Defender\Behavior\Utils;
 use CP_Defender\Component\Error_Code;
+use CP_Defender\Module\Hardener\Model\Settings;
 use CP_Defender\Module\Hardener\IRule_Service;
 use CP_Defender\Module\Hardener\Rule_Service;
 
 class Prevent_PHP_Service extends Rule_Service implements IRule_Service {
+	const PROTECTION_ENABLED_KEY = 'prevent_php_protection_enabled';
 
 	/**
 	 * @return bool
 	 */
 	public function check() {
-		$cache = WP_Helper::getArrayCache()->get( 'Prevent_PHP_Service', null );
-		if ( $cache === null ) {
-			//init upload dir and a php file
-			\CP_Defender\Behavior\Utils::instance()->getDefUploadDir();
-			$url    	= WP_Helper::getUploadUrl();
-			$url    	= $url . '/cp-defender/index.php';
-			$ssl_verify = apply_filters( 'defender_ssl_verify', true ); //most hosts dont really have valid ssl or ssl still pending
-			$status 	= wp_remote_head( $url, array( 'user-agent' => $_SERVER['HTTP_USER_AGENT'], 'timeout' => 10, 'sslverify' => $ssl_verify ) );
-			if ( is_wp_error( $status ) ) {
-				//General error
-				return false;
-			} else {
-				if ( 200 == wp_remote_retrieve_response_code( $status ) ) {
-					WP_Helper::getArrayCache()->set( 'Prevent_PHP_Service', false );
-
-					return false;
-				}
-				WP_Helper::getArrayCache()->set( 'Prevent_PHP_Service', true );
-
-				return true;
-			}
-		} else {
-			return $cache;
+		$settings = Settings::instance();
+		if ( ! $settings->getDValues( self::PROTECTION_ENABLED_KEY ) ) {
+			return false;
 		}
+
+		if ( ! $this->hasExpectedProtectionFiles( $settings->active_server ) ) {
+			$settings->setDValues( self::PROTECTION_ENABLED_KEY, null );
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Apache and LiteSpeed protections are only active while their managed
+	 * .htaccess blocks remain present. NGINX and IIS rules are configured
+	 * outside the PHP process and cannot be verified from here.
+	 *
+	 * @param string $server
+	 *
+	 * @return bool
+	 */
+	private function hasExpectedProtectionFiles( $server ) {
+		if ( ! in_array( $server, array( 'apache', 'litespeed' ), true ) ) {
+			return true;
+		}
+
+		$paths = array(
+			WP_CONTENT_DIR . DIRECTORY_SEPARATOR . '.htaccess',
+			ABSPATH . WPINC . DIRECTORY_SEPARATOR . '.htaccess',
+		);
+		if ( defined( 'UPLOADS' ) ) {
+			$paths[] = ABSPATH . UPLOADS . DIRECTORY_SEPARATOR . '.htaccess';
+		}
+
+		foreach ( $paths as $path ) {
+			if ( ! is_file( $path ) || false === strpos( (string) file_get_contents( $path ), '## PS Security - Protect PHP Executed ##' ) ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
