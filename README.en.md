@@ -28,7 +28,7 @@ PS Security Suite is a security plugin for ClassicPress and compatible WordPress
 The release metadata in [readme.txt](readme.txt) specifies:
 
 - WordPress 5.0 or later, or ClassicPress 2.7.0 or later
-- PHP 7.4 or later
+- PHP 8.0 or later
 - For Anti-Spam: a Multisite installation with network activation
 
 The PHP environment should have sufficient file and network permissions for scans, updates, and hardening actions.
