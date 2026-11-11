@@ -102,6 +102,7 @@ No. The Anti-Spam module is designed for Multisite networks and is not available
 ## Help and license
 
 - Documentation: <https://psource.eimen.net/wiki/ps-security-suite-dokumentation/>
+- Optional donation: <https://psource.eimen.net/spendenaktionen/psource-unterstuetzen/>
 - License: [GPL-2.0-or-later](license.txt)
 
 PS Security Suite is provided by [PSOURCE](https://psource.eimen.net).

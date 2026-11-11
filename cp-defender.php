@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: PS Security Suite
- * Plugin URI: https://psource.eimen.net/wiki/ps-security-suite-dokumentation/
+ * Plugin URI: https://psource.eimen.net/psource/ps-security-suite/
  * Version:     1.1.1
  * Description: Erhalte regelmäßige Sicherheitsüberprüfungen, Schwachstellenberichte, Sicherheitsempfehlungen und individuelle Sicherheitsmaßnahmen für Deine Webseite – mit nur wenigen Klicks. PS Security ist Dein Analyst und Sicherheitsexperte, der rund um die Uhr für Dich da ist.
  * Author:      PSOURCE

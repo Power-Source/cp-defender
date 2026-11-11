@@ -70,6 +70,12 @@ Nein. Das Anti-Spam-Modul ist speziell für Multisite-Netzwerke entwickelt und a
 
 Ja. Im Netzwerkbereich kannst du eigene Regeln für auffällige Domains, Benutzernamen, E-Mail-Adressen und Seitentitel anlegen und vor dem Speichern testen.
 
+== PSOURCE unterstützen ==
+
+PS Security wird von PSOURCE bereitgestellt und weiterentwickelt. Wenn dir das Plugin hilft, kannst du die Arbeit mit einer freiwilligen Spende unterstützen:
+
+https://psource.eimen.net/spendenaktionen/psource-unterstuetzen/
+
 == Changelog ==
 
 = 1.1.1 =
