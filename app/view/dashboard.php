@@ -1,5 +1,5 @@
 <div class="wrap">
-    <div id="cp-defender" class="cp-defender">
+    <div id="cp-defender" class="wpmud cp-defender">
         <div class="def-dashboard">
             <h2 class="title"><?php _e( "Dashboard", 'cpsec' ) ?></h2>
             <div class="dev-box summary-box">

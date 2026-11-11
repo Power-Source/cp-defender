@@ -96,27 +96,27 @@ msgstr "monthly"
 
 #: app/behavior/utils.php:76
 msgid "This feature requires an active PSOURCE account."
-msgstr ""
+msgstr "This feature requires an active PSOURCE account."
 
 #: app/behavior/utils.php:181
 #: app/behavior/utils.php:190
 #: app/module/audit/view/table.php:86
 #: app/module/audit/view/table.php:144
 msgid "Guest"
-msgstr ""
+msgstr "Guest"
 
 #: app/behavior/utils.php:740
 msgid "WordPress Core Integrity"
-msgstr ""
+msgstr "WordPress Core Integrity"
 
 #: app/behavior/utils.php:741
 msgid "Plugins & Themes vulnerability"
-msgstr ""
+msgstr "Plugins & Themes vulnerability"
 
 #: app/behavior/utils.php:742
 #: app/module/scan/view/setting.php:48
 msgid "Suspicious Code"
-msgstr ""
+msgstr "Suspicious Code"
 
 #: app/behavior/utils.php:771
 #: app/module/anti-spam/view/settings.php:205
@@ -127,24 +127,24 @@ msgstr "None"
 
 #: app/behavior/utils.php:894
 msgid "Please upgrade to 5.3 or later"
-msgstr ""
+msgstr "Please upgrade to 5.3 or later"
 
 #: app/behavior/utils.php:911
 msgid "daily"
-msgstr ""
+msgstr "daily"
 
 #: app/behavior/utils.php:914
 msgid "weekly"
-msgstr ""
+msgstr "weekly"
 
 #: app/behavior/utils.php:917
 msgid "monthly"
-msgstr ""
+msgstr "monthly"
 
 #: app/controller/dashboard.php:54
 #: app/view/dashboard.php:4
 msgid "Dashboard"
-msgstr ""
+msgstr "Dashboard"
 
 #: app/controller/dashboard.php:297
 #: app/controller/dashboard.php:299
@@ -155,65 +155,65 @@ msgstr ""
 #: app/module/ip-lockout/view/locked.php:7
 #: app/module/ip-lockout/view/locked.php:72
 msgid "PS Security"
-msgstr ""
+msgstr "PS Security"
 
 #: app/controller/dashboard.php:331
 msgid "QUICK SETUP"
-msgstr ""
+msgstr "QUICK SETUP"
 
 #: app/controller/dashboard.php:331
 msgid "Skip"
-msgstr ""
+msgstr "Skip"
 
 #: app/controller/dashboard.php:332
 msgid "Activating File Scanning..."
-msgstr ""
+msgstr "Activating File Scanning..."
 
 #: app/controller/dashboard.php:333
 msgid "Activating Audit Module..."
-msgstr ""
+msgstr "Activating Audit Module..."
 
 #: app/controller/dashboard.php:334
 msgid "Activating IP Lockouts Module..."
-msgstr ""
+msgstr "Activating IP Lockouts Module..."
 
 #: app/controller/debug.php:29
 msgid "Debug"
-msgstr ""
+msgstr "Debug"
 
 #: app/controller/requirement.php:35
 msgid "Required Modules"
-msgstr ""
+msgstr "Required Modules"
 
 #: app/controller/requirement.php:37
 msgid "It looks like some required PHP modules are missing or outdated. We recommend you get in touch with your web hosting service to update the modules listed below."
-msgstr ""
+msgstr "It looks like some required PHP modules are missing or outdated. We recommend you get in touch with your web hosting service to update the modules listed below."
 
 #: app/controller/requirement.php:42
 msgid "Module"
-msgstr ""
+msgstr "Module"
 
 #: app/controller/requirement.php:43
 #: app/module/scan/behavior/pro/vuln-result.php:130
 msgid "Version"
-msgstr ""
+msgstr "Version"
 
 #: app/controller/requirement.php:48
 msgid "PHP version"
-msgstr ""
+msgstr "PHP version"
 
 #: app/controller/requirement.php:50
 msgid "Please upgrade to 5.3 or later."
-msgstr ""
+msgstr "Please upgrade to 5.3 or later."
 
 #: app/controller/requirement.php:65
 #, php-format
 msgid "Defender%s"
-msgstr ""
+msgstr "Defender%s"
 
 #: app/controller/requirement.php:67
 msgid "Defender"
-msgstr ""
+msgstr "Defender"
 
 #: app/module/anti-spam.php:40
 msgid "Anti-Spam Protokolle"
@@ -241,19 +241,19 @@ msgstr "IP Lockout"
 
 #: app/module/scan.php:18
 msgid "Scans"
-msgstr ""
+msgstr "Scans"
 
 #: app/module/scan.php:19
 msgid "Scan"
-msgstr ""
+msgstr "Scan"
 
 #: app/module/scan.php:37
 msgid "Scan Items"
-msgstr ""
+msgstr "Scan Items"
 
 #: app/module/scan.php:38
 msgid "Scan Item"
-msgstr ""
+msgstr "Scan Item"
 
 #: app/view/activator.php:4
 msgid "Willkommen bei PS Security! Wir richten schnell die wichtigsten Sicherheitsfunktionen ein, die Du später individuell anpassen kannst. Unsere Empfehlungen sind standardmäßig aktiviert."
@@ -574,7 +574,7 @@ msgstr "You have enabled the Theme My Login plugin. Defender has therefore disab
 
 #: app/module/advanced-tools/controller/main.php:135
 msgid "Two Factor"
-msgstr ""
+msgstr "Two Factor"
 
 #: app/module/advanced-tools/controller/main.php:158
 #: app/module/advanced-tools/controller/main.php:505
@@ -632,7 +632,7 @@ msgstr "A new code has been sent to your email."
 
 #: app/module/advanced-tools/controller/main.php:554
 msgid "Advanced Tools"
-msgstr ""
+msgstr "Advanced Tools"
 
 #: app/module/advanced-tools/controller/main.php:620
 msgid "Mindestens eine Zwei-Faktor-Methode muss erlaubt sein (App oder E-Mail)."
@@ -773,7 +773,7 @@ msgstr "Warning: Overly permissive exceptions can increase spam comments and bot
 
 #: app/module/anti-spam/behavior/migration.php:216
 msgid "PS Security Anti-Spam:"
-msgstr ""
+msgstr "PS Security Anti-Spam:"
 
 #: app/module/anti-spam/behavior/migration.php:217
 msgid "Wir haben erkannt, dass du vorher Anti-Splog verwendet hast. Möchtest du die Daten migrieren?"
@@ -1069,7 +1069,7 @@ msgstr "Suspicious"
 #: app/module/anti-spam/view/patterns.php:117
 #: app/module/audit/component/comment-audit.php:94
 msgid "Spam"
-msgstr ""
+msgstr "Spam"
 
 #: app/module/anti-spam/view/moderation.php:149
 #: app/module/anti-spam/view/moderation.php:237
@@ -1113,16 +1113,16 @@ msgstr "%s entries"
 
 #: app/module/anti-spam/view/moderation.php:186
 msgid "Blog"
-msgstr ""
+msgstr "Blog"
 
 #: app/module/anti-spam/view/moderation.php:187
 msgid "Certainty"
-msgstr ""
+msgstr "Certainty"
 
 #: app/module/anti-spam/view/moderation.php:188
 #: app/module/ip-lockout/component/logs-table.php:39
 msgid "IP"
-msgstr ""
+msgstr "IP"
 
 #: app/module/anti-spam/view/moderation.php:189
 msgid "Registriert"
@@ -1131,7 +1131,7 @@ msgstr "Registered"
 #: app/module/anti-spam/view/moderation.php:190
 #: app/module/anti-spam/view/stats.php:141
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: app/module/anti-spam/view/moderation.php:191
 #: app/module/anti-spam/view/patterns.php:86
@@ -1144,11 +1144,11 @@ msgstr "Unknown"
 
 #: app/module/anti-spam/view/moderation.php:241
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: app/module/anti-spam/view/moderation.php:255
 msgid "Details"
-msgstr ""
+msgstr "Details"
 
 #: app/module/anti-spam/view/moderation.php:196
 msgid "Keine Blogs gefunden."
@@ -1186,7 +1186,7 @@ msgstr "Delete selected"
 #: app/module/anti-spam/view/patterns.php:82
 #: app/module/anti-spam/view/stats.php:110
 msgid "Pattern"
-msgstr ""
+msgstr "Pattern"
 
 #: app/module/anti-spam/view/patterns.php:83
 #: app/module/anti-spam/view/stats.php:111
@@ -1204,22 +1204,22 @@ msgstr "Action"
 #: app/module/anti-spam/view/patterns.php:85
 #: app/module/anti-spam/view/stats.php:112
 msgid "Matches"
-msgstr ""
+msgstr "Matches"
 
 #: app/module/anti-spam/view/patterns.php:107
 #: app/module/anti-spam/view/patterns.php:159
 msgid "Domain"
-msgstr ""
+msgstr "Domain"
 
 #: app/module/anti-spam/view/patterns.php:108
 #: app/module/anti-spam/view/patterns.php:160
 msgid "Username"
-msgstr ""
+msgstr "Username"
 
 #: app/module/anti-spam/view/patterns.php:109
 #: app/module/anti-spam/view/patterns.php:161
 msgid "E-Mail"
-msgstr ""
+msgstr "E-Mail"
 
 #: app/module/anti-spam/view/patterns.php:110
 msgid "Titel"
@@ -1336,7 +1336,7 @@ msgstr "Settings saved!"
 
 #: app/module/anti-spam/view/settings.php:119
 msgid "IP-Blocking"
-msgstr ""
+msgstr "IP-Blocking"
 
 #: app/module/anti-spam/view/settings.php:122
 msgid "IP-Blocking aktivieren"
@@ -1356,7 +1356,7 @@ msgstr "Block an IP after X spam blogs"
 
 #: app/module/anti-spam/view/settings.php:139
 msgid "Rate Limiting"
-msgstr ""
+msgstr "Rate Limiting"
 
 #: app/module/anti-spam/view/settings.php:142
 msgid "Rate Limiting aktivieren"
@@ -1380,7 +1380,7 @@ msgstr "Hours"
 
 #: app/module/anti-spam/view/settings.php:161
 msgid "Auto-Spam"
-msgstr ""
+msgstr "Auto-Spam"
 
 #: app/module/anti-spam/view/settings.php:164
 msgid "Auto-Spam aktivieren"
@@ -1400,7 +1400,7 @@ msgstr "Blogs with this certainty score or higher are automatically marked as sp
 
 #: app/module/anti-spam/view/settings.php:181
 msgid "Pattern Matching"
-msgstr ""
+msgstr "Pattern Matching"
 
 #: app/module/anti-spam/view/settings.php:184
 msgid "Pattern Matching aktivieren"
@@ -1416,7 +1416,7 @@ msgstr "Manage patterns →"
 
 #: app/module/anti-spam/view/settings.php:199
 msgid "Human Verification"
-msgstr ""
+msgstr "Human Verification"
 
 #: app/module/anti-spam/view/settings.php:202
 msgid "Verifizierungstyp"
@@ -1460,7 +1460,7 @@ msgstr "A hidden field in the signup form. If it is filled in, the registration 
 
 #: app/module/anti-spam/view/settings.php:269
 msgid "Disposable Email Protection"
-msgstr ""
+msgstr "Disposable Email Protection"
 
 #: app/module/anti-spam/view/settings.php:272
 msgid "Wegwerf-E-Mails blockieren"
@@ -1718,7 +1718,7 @@ msgstr "No data available."
 
 #: app/module/audit/behavior/audit.php:20
 msgid "AUDIT-LOGGING"
-msgstr ""
+msgstr "AUDIT-LOGGING"
 
 #: app/module/audit/behavior/audit.php:36
 msgid "Verfolge und protokolliere Ereignisse, wenn Änderungen an deiner Webseite vorgenommen werden, und erhalte so volle Transparenz darüber, was hinter den Kulissen passiert."
@@ -1910,7 +1910,7 @@ msgstr "%s updated the theme: %s, version %s"
 #: app/module/audit/component/core-audit.php:227
 #: app/module/audit/component/core-audit.php:230
 msgid "unknown"
-msgstr ""
+msgstr "unknown"
 
 #: app/module/audit/component/core-audit.php:246
 #, php-format
@@ -1936,16 +1936,16 @@ msgstr "installed"
 
 #: app/module/audit/component/core-audit.php:280
 msgid "Theme"
-msgstr ""
+msgstr "Theme"
 
 #: app/module/audit/component/core-audit.php:281
 msgid "Plugin"
-msgstr ""
+msgstr "Plugin"
 
 #: app/module/audit/component/core-audit.php:282
 #: app/module/scan/behavior/pro/vuln-result.php:122
 msgid "WordPress"
-msgstr ""
+msgstr "WordPress"
 
 #: app/module/audit/component/core-audit.php:283
 msgid "Datei hinzugefügt"
@@ -2006,7 +2006,7 @@ msgstr "Site title"
 
 #: app/module/audit/component/options-audit.php:111
 msgid "Tagline"
-msgstr ""
+msgstr "Tagline"
 
 #: app/module/audit/component/options-audit.php:112
 #: app/module/audit/component/options-audit.php:116
@@ -2167,11 +2167,11 @@ msgstr "Mail server"
 
 #: app/module/audit/component/options-audit.php:171
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: app/module/audit/component/options-audit.php:172
 msgid "Login Name"
-msgstr ""
+msgstr "Login Name"
 
 #: app/module/audit/component/options-audit.php:173
 msgid "Passwort"
@@ -2433,7 +2433,7 @@ msgstr "No events have been logged for %s"
 
 #: app/module/audit/controller/main.php:371
 msgid "Hi {USER_NAME},"
-msgstr ""
+msgstr "Hi {USER_NAME},"
 
 #: app/module/audit/controller/main.php:373
 #, php-format
@@ -2442,7 +2442,7 @@ msgstr "Here's a brief report from PS Security on recent activity at <a href=\"%
 
 #: app/module/audit/controller/main.php:385
 msgid "Event Type"
-msgstr ""
+msgstr "Event Type"
 
 #: app/module/audit/controller/main.php:389
 msgid "Handlungszusammenfassungen"
@@ -2450,7 +2450,7 @@ msgstr "Action summaries"
 
 #: app/module/audit/controller/main.php:430
 msgid "You can view the full audit report for your site here."
-msgstr ""
+msgstr "You can view the full audit report for your site here."
 
 #: app/module/audit/controller/main.php:468
 #: app/module/audit/controller/main.php:494
@@ -2468,14 +2468,14 @@ msgstr "We couldn't find a user with that name..."
 
 #: app/module/audit/view/email_template.php:416
 msgid "Audit Update From"
-msgstr ""
+msgstr "Audit Update From"
 
 #: app/module/audit/view/email_template.php:419
 #: app/module/ip-lockout/view/emails/404-lockout.php:420
 #: app/module/ip-lockout/view/emails/login-lockout.php:420
 #: app/module/ip-lockout/view/emails/login-username-ban.php:420
 msgid "PS Security!"
-msgstr ""
+msgstr "PS Security!"
 
 #: app/module/audit/view/email_template.php:454
 #: app/module/ip-lockout/view/emails/404-lockout.php:511
@@ -2495,7 +2495,7 @@ msgstr "Optimize your site with"
 #: app/module/ip-lockout/view/emails/login-lockout.php:536
 #: app/module/ip-lockout/view/emails/login-username-ban.php:535
 msgid "PSOURCE Toolkit"
-msgstr ""
+msgstr "PSOURCE Toolkit"
 
 #: app/module/audit/view/email_template.php:494
 msgid "Back-Up deine harte Arbeit mit"
@@ -2503,7 +2503,7 @@ msgstr "Back up your hard work with"
 
 #: app/module/audit/view/email_template.php:496
 msgid "PS Snapshot"
-msgstr ""
+msgstr "PS Snapshot"
 
 #: app/module/audit/view/email_template.php:530
 #: app/module/ip-lockout/view/emails/404-lockout.php:587
@@ -2518,7 +2518,7 @@ msgstr "EVENT LOGS"
 
 #: app/module/audit/view/main.php:4
 msgid "Export CSV"
-msgstr ""
+msgstr "Export CSV"
 
 #: app/module/audit/view/main.php:7
 msgid "Hier findest du deine neuesten Ereignisprotokolle, die zeigen, was im Hintergrund passiert ist."
@@ -2528,7 +2528,7 @@ msgstr "Here are your latest event logs, showing what's been happening behind th
 #: app/module/ip-lockout/component/logs-table.php:146
 #: app/module/ip-lockout/view/logging/enabled.php:5
 msgid "Filter"
-msgstr ""
+msgstr "Filter"
 
 #: app/module/audit/view/main.php:38
 msgid "Lade Ereignisse..."
@@ -2536,14 +2536,14 @@ msgstr "Loading events..."
 
 #: app/module/audit/view/new.php:3
 msgid "EVENT LOGS"
-msgstr ""
+msgstr "EVENT LOGS"
 
 #: app/module/audit/view/new.php:7
 msgid ""
 "Verfolge und protokolliere jedes einzelne Ereignis, wenn Änderungen an deiner Webseite vorgenommen werden, und erhalte\n"
 "detaillierte Berichte über die Vorgänge im Hintergrund, einschließlich etwaiger Hacking-Versuche auf\n"
 "deine Webseite."
-msgstr ""
+msgstr "Verfolge und protokolliere jedes einzelne Ereignis, wenn Änderungen an deiner Webseite vorgenommen werden, und erhalte\ndetaillierte Berichte über die Vorgänge im Hintergrund, einschließlich etwaiger Hacking-Versuche auf\ndeine Webseite."
 
 #: app/module/audit/view/report.php:3
 #: app/module/ip-lockout/view/notification/enabled.php:3
@@ -2614,7 +2614,7 @@ msgstr "%d results"
 
 #: app/module/audit/view/table.php:208
 msgid "There have been no events logged in the selected time period."
-msgstr ""
+msgstr "There have been no events logged in the selected time period."
 
 #: app/module/audit/view/table.php:21
 msgid "Zeit"
@@ -2622,7 +2622,7 @@ msgstr "Time"
 
 #: app/module/audit/view/table.php:34
 msgid " ago"
-msgstr ""
+msgstr " ago"
 
 #: app/module/audit/view/table.php:168
 msgid "Du kannst diese IP-Adresse sperren, damit sie nicht mehr auf deine Seite zugreifen kann. Stelle nur sicher, dass es sich nicht um eine legitime Operation eines Plugins oder Dienstes handelt, der Zugriff benötigt."
@@ -2635,11 +2635,11 @@ msgstr "Block IP"
 #: app/module/audit/view/table.php:198
 #, php-format
 msgid "%d Results"
-msgstr ""
+msgstr "%d Results"
 
 #: app/module/audit/view/widget.php:4
 msgid "AUDIT LOGGING"
-msgstr ""
+msgstr "AUDIT LOGGING"
 
 #: app/module/audit/view/widget.php:9
 #, php-format
@@ -2648,7 +2648,7 @@ msgstr "Events logged in the last 24 hours: <strong>%d</strong>."
 
 #: app/module/audit/view/widget.php:14
 msgid "Lockouts (24h)"
-msgstr ""
+msgstr "Lockouts (24h)"
 
 #: app/module/audit/view/widget.php:18
 msgid "Honeypot blockiert"
@@ -2668,7 +2668,7 @@ msgstr "Events logged this month"
 
 #: app/module/audit/view/widget.php:42
 msgid "VIEW LOGS"
-msgstr ""
+msgstr "VIEW LOGS"
 
 #: app/module/audit/view/widget.php:49
 msgid "Audit-Protokollberichte sind deaktiviert"
@@ -2849,7 +2849,7 @@ msgstr "All key salts have been regenerated. You must <a href=\"%s\"><strong>log
 
 #: app/module/hardener/component/wp-version.php:28
 msgid "Update WordPress to latest version"
-msgstr ""
+msgstr "Update WordPress to latest version"
 
 #: app/module/hardener/controller/main.php:56
 msgid "Sicherheitsoptimierung erfolgreich wiederhergestellt."
@@ -2967,17 +2967,17 @@ msgstr "Lock out"
 
 #: app/module/ip-lockout/component/login-protection-api.php:263
 msgid "Unwhitelist"
-msgstr ""
+msgstr "Unwhitelist"
 
 #: app/module/ip-lockout/component/login-protection-api.php:261
 #: app/module/ip-lockout/view/blacklist/enabled.php:53
 #: app/module/ip-lockout/view/detect-404/enabled.php:93
 msgid "Whitelist"
-msgstr ""
+msgstr "Whitelist"
 
 #: app/module/ip-lockout/component/logs-table.php:37
 msgid "DETAILS"
-msgstr ""
+msgstr "DETAILS"
 
 #: app/module/ip-lockout/component/logs-table.php:38
 msgid "DATUM"
@@ -3007,15 +3007,15 @@ msgstr "Failed login attempts"
 
 #: app/module/ip-lockout/component/logs-table.php:164
 msgid "Login lockout"
-msgstr ""
+msgstr "Login lockout"
 
 #: app/module/ip-lockout/component/logs-table.php:166
 msgid "404 error"
-msgstr ""
+msgstr "404 error"
 
 #: app/module/ip-lockout/component/logs-table.php:168
 msgid "404 lockout"
-msgstr ""
+msgstr "404 lockout"
 
 #: app/module/ip-lockout/component/logs-table.php:198
 msgid "Innerhalb des ausgewählten Zeitraums wurden keine Sperrereignisse protokolliert."
@@ -3063,7 +3063,7 @@ msgstr "IP %s has been added to your blocklist. You can manage your blocklist un
 
 #: app/module/ip-lockout/controller/main.php:261
 msgid "Demo"
-msgstr ""
+msgstr "Demo"
 
 #: app/module/ip-lockout/controller/main.php:442
 #, php-format
@@ -3160,7 +3160,7 @@ msgstr "Protected by"
 
 #: app/module/ip-lockout/view/migration.php:6
 msgid "Migration"
-msgstr ""
+msgstr "Migration"
 
 #: app/module/ip-lockout/view/migration.php:15
 msgid "Einen Moment bitte, wir aktualisieren Deine Daten. Bitte schließe diesen Tab nicht..."
@@ -3254,75 +3254,75 @@ msgstr "PS Security does not have sufficient permissions to remove this file."
 
 #: app/module/scan/behavior/core-result.php:121
 msgid "This file is not resolvable"
-msgstr ""
+msgstr "This file is not resolvable"
 
 #: app/module/scan/behavior/core-result.php:126
 #, php-format
 msgid "It seems the %s file is currently using by another process or isn't writeable."
-msgstr ""
+msgstr "It seems the %s file is currently using by another process or isn't writeable."
 
 #: app/module/scan/behavior/core-result.php:143
 msgid "Issue Details"
-msgstr ""
+msgstr "Issue Details"
 
 #: app/module/scan/behavior/core-result.php:153
 msgid "Location"
-msgstr ""
+msgstr "Location"
 
 #: app/module/scan/behavior/core-result.php:163
 msgid "Size"
-msgstr ""
+msgstr "Size"
 
 #: app/module/scan/behavior/core-result.php:180
 msgid "Date Added"
-msgstr ""
+msgstr "Date Added"
 
 #: app/module/scan/behavior/core-result.php:212
 msgid "Ignore"
-msgstr ""
+msgstr "Ignore"
 
 #: app/module/scan/behavior/core-result.php:246
 msgid "Restore to Original"
-msgstr ""
+msgstr "Restore to Original"
 
 #: app/module/scan/behavior/core-result.php:220
 msgid "Delete"
-msgstr ""
+msgstr "Delete"
 
 #: app/module/scan/behavior/core-result.php:222
 msgid "This will permanently remove the selected file/folder. Are you sure you want to continue?"
-msgstr ""
+msgstr "This will permanently remove the selected file/folder. Are you sure you want to continue?"
 
 #: app/module/scan/behavior/core-result.php:225
 msgid "Yes"
-msgstr ""
+msgstr "Yes"
 
 #: app/module/scan/behavior/core-result.php:228
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: app/module/scan/behavior/core-result.php:316
 msgid "A stray file has been found in your site directory, which your version of WordPress doesn't need. As far as we can tell, the file is harmless (and maybe even from an older WordPress install) so it's safe to ignore it. If you choose to delete the file, we recommend backing up your website beforehand"
-msgstr ""
+msgstr "A stray file has been found in your site directory, which your version of WordPress doesn't need. As far as we can tell, the file is harmless (and maybe even from an older WordPress install) so it's safe to ignore it. If you choose to delete the file, we recommend backing up your website beforehand"
 
 #: app/module/scan/behavior/core-result.php:332
 #: app/module/scan/behavior/core-result.php:354
 #: app/module/scan/behavior/core-result.php:387
 msgid "Pulling source file..."
-msgstr ""
+msgstr "Pulling source file..."
 
 #: app/module/scan/behavior/core-result.php:349
 msgid "Compare your file with the original file in the WordPress repository. Pieces highlighted in red will be removed when you patch the file, and pieces highlighted in green will be added."
-msgstr ""
+msgstr "Compare your file with the original file in the WordPress repository. Pieces highlighted in red will be removed when you patch the file, and pieces highlighted in green will be added."
 
 #: app/module/scan/behavior/core-result.php:382
 msgid "We found this folder in your WordPress file list. Your current version of WordPress doesn’t use this folder so it might belong to another application. If you don’t recognize it, you can delete this folder (don’t forget to back up your website first!) or get in touch with the PSOURCE support team for more information."
-msgstr ""
+msgstr "We found this folder in your WordPress file list. Your current version of WordPress doesn’t use this folder so it might belong to another application. If you don’t recognize it, you can delete this folder (don’t forget to back up your website first!) or get in touch with the PSOURCE support team for more information."
 
 #: app/module/scan/behavior/core-result.php:468
 #: app/module/scan/behavior/core-result.php:473
 msgid "Defender doesn't have enough permission to remove this file"
-msgstr ""
+msgstr "Defender doesn't have enough permission to remove this file"
 
 #: app/module/scan/behavior/scan.php:32
 msgid "DATEI-ÜBERPRÜFUNG"
@@ -3335,7 +3335,7 @@ msgstr "You have %s suspicious files that require your attention."
 
 #: app/module/scan/behavior/scan.php:78
 msgid "Scanning…"
-msgstr ""
+msgstr "Scanning…"
 
 #: app/module/scan/behavior/scan.php:72
 #: app/module/scan/behavior/scan.php:187
@@ -3352,13 +3352,13 @@ msgstr "Scan your website for file changes, vulnerabilities, and injected code, 
 #: app/module/scan/view/layouts/layout.php:46
 #: app/module/scan/view/setting.php:21
 msgid "WordPress Core"
-msgstr ""
+msgstr "WordPress Core"
 
 #: app/module/scan/behavior/scan.php:126
 #: app/module/scan/view/layouts/layout.php:54
 #: app/module/scan/view/setting.php:32
 msgid "Plugins & Themes"
-msgstr ""
+msgstr "Plugins & Themes"
 
 #: app/module/scan/behavior/scan.php:109
 msgid "Dein Code ist sauber. Alles in Ordnung."
@@ -3413,7 +3413,7 @@ msgstr[1] "%d migration remnants were removed."
 
 #: app/module/scan/component/result-table.php:33
 msgid "Problem"
-msgstr ""
+msgstr "Problem"
 
 #: app/module/scan/component/result-table.php:40
 #: app/module/scan/component/result-table.php:47
@@ -3439,7 +3439,7 @@ msgstr "Review issue"
 #: app/module/scan/component/result-table.php:212
 #, php-format
 msgid "%s Results"
-msgstr ""
+msgstr "%s Results"
 
 #: app/module/scan/component/scan-api.php:46
 msgid "Ein Scan läuft bereits"
@@ -3472,76 +3472,76 @@ msgstr "Checking published vulnerabilities in your plugins and themes..."
 
 #: app/module/scan/controller/main.php:131
 msgid "No permission to clear scan cache."
-msgstr ""
+msgstr "No permission to clear scan cache."
 
 #: app/module/scan/controller/main.php:137
 msgid "Security verification failed"
-msgstr ""
+msgstr "Security verification failed"
 
 #: app/module/scan/controller/main.php:161
 msgid "Scan cache cleared successfully. The next scan will start fresh without cached checksums."
-msgstr ""
+msgstr "Scan cache cleared successfully. The next scan will start fresh without cached checksums."
 
 #: app/module/scan/controller/main.php:165
 msgid "Error clearing cache: "
-msgstr ""
+msgstr "Error clearing cache: "
 
 #: app/module/scan/controller/main.php:214
 #: app/module/scan/controller/main.php:540
 msgid "The suspicious file has been successfully ignored."
 msgid_plural "The suspicious files have been successfully ignored."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "The suspicious file has been successfully ignored."
+msgstr[1] "The suspicious files have been successfully ignored."
 
 #: app/module/scan/controller/main.php:229
 #: app/module/scan/controller/main.php:511
 msgid "The suspicious file has been successfully restored."
 msgid_plural "The suspicious files have been successfully restored."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "The suspicious file has been successfully restored."
+msgstr[1] "The suspicious files have been successfully restored."
 
 #: app/module/scan/controller/main.php:254
 msgid "No item has been deleted"
-msgstr ""
+msgstr "No item has been deleted"
 
 #: app/module/scan/controller/main.php:248
 msgid "The suspicious files has been successfully deleted."
 msgid_plural "The suspicious files have been successfully deleted."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "The suspicious files has been successfully deleted."
+msgstr[1] "The suspicious files have been successfully deleted."
 
 #: app/module/scan/controller/main.php:335
 msgid "No item has been resolved"
-msgstr ""
+msgstr "No item has been resolved"
 
 #: app/module/scan/controller/main.php:329
 msgid "The suspicious files has been successfully resolved."
 msgid_plural "The suspicious files have been successfully resolved."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "The suspicious files has been successfully resolved."
+msgstr[1] "The suspicious files have been successfully resolved."
 
 #: app/module/scan/controller/main.php:406
 msgid "Your settings have been updated."
-msgstr ""
+msgstr "Your settings have been updated."
 
 #: app/module/scan/controller/main.php:451
 #: app/module/scan/controller/main.php:487
 #: app/module/scan/controller/main.php:516
 #: app/module/scan/controller/main.php:545
 msgid "The item doesn't exist!"
-msgstr ""
+msgstr "The item doesn't exist!"
 
 #: app/module/scan/controller/main.php:440
 msgid "Please try again!"
-msgstr ""
+msgstr "Please try again!"
 
 #: app/module/scan/controller/main.php:436
 msgid "This item has been resolved."
-msgstr ""
+msgstr "This item has been resolved."
 
 #: app/module/scan/controller/main.php:481
 msgid "This item has been permanently removed"
-msgstr ""
+msgstr "This item has been permanently removed"
 
 #: app/module/scan/controller/main.php:628
 msgid "Dateien Scannen"
@@ -3562,19 +3562,19 @@ msgstr "Your code is currently clean! The last scan found no issues, but you can
 
 #: app/module/scan/controller/main.php:918
 msgid "File"
-msgstr ""
+msgstr "File"
 
 #: app/module/scan/controller/main.php:920
 msgid "Issue"
-msgstr ""
+msgstr "Issue"
 
 #: app/module/scan/controller/main.php:954
 msgid "Let’s get your site patched up."
-msgstr ""
+msgstr "Let’s get your site patched up."
 
 #: app/module/scan/model/settings.php:105
 msgid "Scan of {SITE_URL} complete. {ISSUES_COUNT} issues found."
-msgstr ""
+msgstr "Scan of {SITE_URL} complete. {ISSUES_COUNT} issues found."
 
 #: app/module/scan/model/settings.php:106
 msgid ""
@@ -3588,7 +3588,7 @@ msgid ""
 "Stay Safe,\n"
 "PS Security\n"
 "Official PSOURCE Superhero"
-msgstr ""
+msgstr "Hi {USER_NAME},\n\nPS Security here, reporting back from the front.\n\nI've finished scanning {SITE_URL} for vulnerabilities and I found {ISSUES_COUNT} issues that you should take a closer look at!\n{ISSUES_LIST}\n\nStay Safe,\nPS Security\nOfficial PSOURCE Superhero"
 
 #: app/module/scan/model/settings.php:116
 msgid ""
@@ -3603,102 +3603,102 @@ msgid ""
 "Stay safe,\n"
 "PS Security\n"
 "Official PSOURCE Superhero"
-msgstr ""
+msgstr "Hi {USER_NAME},\n\nPS Security here, reporting back from the front.\n\nI've finished scanning {SITE_URL} for vulnerabilities and I found nothing. Well done for running such a tight ship!\n\nKeep up the good work! With regular security scans and a well-hardened installation you'll be just fine.\n\nStay safe,\nPS Security\nOfficial PSOURCE Superhero"
 
 #: app/module/ip-lockout/view/layouts/layout.php:78
 #: app/module/ip-lockout/view/layouts/layout.php:96
 #: app/module/scan/view/automation.php:3
 #: app/module/scan/view/layouts/layout.php:132
 msgid "Reporting"
-msgstr ""
+msgstr "Reporting"
 
 #: app/module/scan/view/automation.php:9
 msgid "Schedule scans"
-msgstr ""
+msgstr "Schedule scans"
 
 #: app/module/scan/view/automation.php:11
 msgid "Configure Defender to automatically and regularly scan your website and email you reports."
-msgstr ""
+msgstr "Configure Defender to automatically and regularly scan your website and email you reports."
 
 #: app/module/scan/view/automation.php:21
 msgid "Run regular scans & reports"
-msgstr ""
+msgstr "Run regular scans & reports"
 
 #: app/module/scan/view/automation.php:24
 msgid "Schedule"
-msgstr ""
+msgstr "Schedule"
 
 #: app/module/scan/view/automation.php:25
 msgid "Frequency"
-msgstr ""
+msgstr "Frequency"
 
 #: app/module/scan/view/automation.php:28
 msgid "Daily"
-msgstr ""
+msgstr "Daily"
 
 #: app/module/scan/view/automation.php:30
 msgid "Weekly"
-msgstr ""
+msgstr "Weekly"
 
 #: app/module/scan/view/automation.php:32
 msgid "Monthly"
-msgstr ""
+msgstr "Monthly"
 
 #: app/module/scan/view/automation.php:35
 msgid "Day of the week"
-msgstr ""
+msgstr "Day of the week"
 
 #: app/module/scan/view/automation.php:43
 msgid "Time of day"
-msgstr ""
+msgstr "Time of day"
 
 #: app/module/scan/view/automation.php:55
 msgid "Email recipients"
-msgstr ""
+msgstr "Email recipients"
 
 #: app/module/scan/view/automation.php:57
 msgid "Choose which of your website’s users will receive scan report results to their email inboxes."
-msgstr ""
+msgstr "Choose which of your website’s users will receive scan report results to their email inboxes."
 
 #: app/module/scan/view/automation.php:67
 #: app/module/scan/view/setting.php:138
 msgid "Update Settings"
-msgstr ""
+msgstr "Update Settings"
 
 #: app/module/scan/view/cleaned.php:3
 #: app/module/scan/view/layouts/layout.php:116
 msgid "Ignored"
-msgstr ""
+msgstr "Ignored"
 
 #: app/module/scan/view/cleaned.php:15
 msgid "You haven't cleaned any suspicious files yet. When this action is available, any cleaned files will appear here."
-msgstr ""
+msgstr "You haven't cleaned any suspicious files yet. When this action is available, any cleaned files will appear here."
 
 #: app/module/ip-lockout/view/emails/report.php:417
 #: app/module/scan/view/email-template.php:417
 msgid "Protected By"
-msgstr ""
+msgstr "Protected By"
 
 #: app/module/ip-lockout/view/emails/report.php:420
 #: app/module/scan/view/email-template.php:420
 msgid "Defender!"
-msgstr ""
+msgstr "Defender!"
 
 #: app/module/ip-lockout/view/emails/login-username-ban.php:512
 #: app/module/ip-lockout/view/emails/report.php:545
 #: app/module/scan/view/email-template.php:477
 msgid "Related plugins worth giving a try"
-msgstr ""
+msgstr "Related plugins worth giving a try"
 
 #: app/module/ip-lockout/view/emails/report.php:566
 #: app/module/scan/view/email-template.php:498
 msgid "Optimize your site with"
-msgstr ""
+msgstr "Optimize your site with"
 
 #: app/module/ip-lockout/view/emails/report.php:568
 #: app/module/scan/view/email-template.php:500
 msgid "Hummingbird"
-msgstr ""
+msgstr "Hummingbird"
 
 #: app/module/ip-lockout/view/emails/404-lockout.php:551
 #: app/module/ip-lockout/view/emails/login-lockout.php:553
@@ -3706,7 +3706,7 @@ msgstr ""
 #: app/module/ip-lockout/view/emails/report.php:585
 #: app/module/scan/view/email-template.php:517
 msgid "Back up your hard work with"
-msgstr ""
+msgstr "Back up your hard work with"
 
 #: app/module/ip-lockout/view/emails/404-lockout.php:553
 #: app/module/ip-lockout/view/emails/login-lockout.php:555
@@ -3714,14 +3714,14 @@ msgstr ""
 #: app/module/ip-lockout/view/emails/report.php:587
 #: app/module/scan/view/email-template.php:519
 msgid "Snapshot"
-msgstr ""
+msgstr "Snapshot"
 
 #: app/module/ip-lockout/view/emails/login-username-ban.php:592
 #: app/module/ip-lockout/view/emails/report.php:621
 #: app/module/scan/view/email-template.php:553
 #, php-format
 msgid "<a href=\"%s\">Configure reporting preferences</a>"
-msgstr ""
+msgstr "<a href=\"%s\">Configure reporting preferences</a>"
 
 #: app/module/scan/view/ignored.php:18
 msgid "Du hast noch keine verdächtigen Dateien zum Ignorieren ausgewählt. Ignorierte Dateien erscheinen hier und können jederzeit wiederhergestellt werden."
@@ -3735,7 +3735,7 @@ msgstr "Here is a list of suspicious files that you have chosen to ignore."
 #: app/module/scan/view/layouts/layout.php:91
 #: app/module/scan/view/layouts/layout.php:140
 msgid "Issues"
-msgstr ""
+msgstr "Issues"
 
 #: app/module/scan/view/issues.php:37
 msgid "Dein Code ist derzeit sauber! Während des letzten Scans wurden keine Probleme gefunden, aber Du kannst jederzeit einen neuen Scan durchführen."
@@ -3755,7 +3755,7 @@ msgstr "Scan your website for file changes, vulnerabilities, and injected code, 
 
 #: app/module/scan/view/scanning.php:6
 msgid "File Scanning"
-msgstr ""
+msgstr "File Scanning"
 
 #: app/module/scan/view/scanning.php:7
 #, php-format
@@ -3788,148 +3788,148 @@ msgstr "Skipped:"
 #: app/module/scan/view/layouts/layout.php:127
 #: app/module/scan/view/setting.php:3
 msgid "Settings"
-msgstr ""
+msgstr "Settings"
 
 #: app/module/scan/view/setting.php:9
 msgid "Scan Types"
-msgstr ""
+msgstr "Scan Types"
 
 #: app/module/scan/view/setting.php:11
 msgid "Choose the scan types you would like to include in your default scan. It's recommended you enable all types."
-msgstr ""
+msgstr "Choose the scan types you would like to include in your default scan. It's recommended you enable all types."
 
 #: app/module/scan/view/setting.php:23
 msgid "Defender checks for any modifications or additions to WordPress core files."
-msgstr ""
+msgstr "Defender checks for any modifications or additions to WordPress core files."
 
 #: app/module/scan/view/setting.php:34
 msgid "Defender looks for publicly reported vulnerabilities in your installed plugins and themes."
-msgstr ""
+msgstr "Defender looks for publicly reported vulnerabilities in your installed plugins and themes."
 
 #: app/module/scan/view/setting.php:38
 msgid "Full Mode: WPScan API token configured for comprehensive vulnerability checks."
-msgstr ""
+msgstr "Full Mode: WPScan API token configured for comprehensive vulnerability checks."
 
 #: app/module/scan/view/setting.php:36
 msgid "Limited Mode: Basic checks active. Optional WPScan API token for expanded vulnerability database."
-msgstr ""
+msgstr "Limited Mode: Basic checks active. Optional WPScan API token for expanded vulnerability database."
 
 #: app/module/scan/view/setting.php:50
 msgid "Defender looks inside all of your files for suspicious and potentially harmful code."
-msgstr ""
+msgstr "Defender looks inside all of your files for suspicious and potentially harmful code."
 
 #: app/module/scan/view/setting.php:56
 msgid "WPScan API Token"
-msgstr ""
+msgstr "WPScan API Token"
 
 #: app/module/scan/view/setting.php:58
 msgid "Enter your WPScan API token to enable vulnerability scanning for plugins and themes. Get a free token (25 requests/day) at"
-msgstr ""
+msgstr "Enter your WPScan API token to enable vulnerability scanning for plugins and themes. Get a free token (25 requests/day) at"
 
 #: app/module/scan/view/setting.php:63
 msgid "Enter API token"
-msgstr ""
+msgstr "Enter API token"
 
 #: app/module/scan/view/setting.php:67
 msgid "Optional: Add WPScan API token for comprehensive vulnerability checks. Scanning works in Limited Mode without it."
-msgstr ""
+msgstr "Optional: Add WPScan API token for comprehensive vulnerability checks. Scanning works in Limited Mode without it."
 
 #: app/module/scan/view/setting.php:65
 msgid "API token configured - Full vulnerability database active"
-msgstr ""
+msgstr "API token configured - Full vulnerability database active"
 
 #: app/module/scan/view/setting.php:73
 msgid "Maximum included file size"
-msgstr ""
+msgstr "Maximum included file size"
 
 #: app/module/scan/view/setting.php:75
 msgid "Defender will skip any files larger than this size. The smaller the number, the faster Defender will scan your website."
-msgstr ""
+msgstr "Defender will skip any files larger than this size. The smaller the number, the faster Defender will scan your website."
 
 #: app/module/scan/view/setting.php:80
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 #: app/module/scan/view/setting.php:85
 msgid "Optional emails"
-msgstr ""
+msgstr "Optional emails"
 
 #: app/module/scan/view/setting.php:87
 msgid "By default, you'll only get email reports when your site runs into trouble. Turn this option on to get reports even when your site is running smoothly."
-msgstr ""
+msgstr "By default, you'll only get email reports when your site runs into trouble. Turn this option on to get reports even when your site is running smoothly."
 
 #: app/module/scan/view/setting.php:97
 msgid "Send all scan report emails"
-msgstr ""
+msgstr "Send all scan report emails"
 
 #: app/module/scan/view/setting.php:102
 msgid "Email subject"
-msgstr ""
+msgstr "Email subject"
 
 #: app/module/scan/view/setting.php:110
 msgid "Email templates"
-msgstr ""
+msgstr "Email templates"
 
 #: app/module/scan/view/setting.php:112
 msgid "When Defender scans your website, a report will be generated with any issues that have been found. You can choose to have reports emailed to you."
-msgstr ""
+msgstr "When Defender scans your website, a report will be generated with any issues that have been found. You can choose to have reports emailed to you."
 
 #: app/module/scan/view/setting.php:119
 msgid "When an issue is found"
-msgstr ""
+msgstr "When an issue is found"
 
 #: app/module/scan/view/setting.php:121
 #: app/module/scan/view/setting.php:129
 msgid "Edit"
-msgstr ""
+msgstr "Edit"
 
 #: app/module/scan/view/setting.php:126
 msgid "When no issues are found"
-msgstr ""
+msgstr "When no issues are found"
 
 #: app/module/scan/view/setting.php:146
 msgid "Cache Management"
-msgstr ""
+msgstr "Cache Management"
 
 #: app/module/scan/view/setting.php:148
 msgid "Clear the scan cache to reset all checksums and force a fresh analysis. This is useful after updating files or when you want to re-scan without using cached data."
-msgstr ""
+msgstr "Clear the scan cache to reset all checksums and force a fresh analysis. This is useful after updating files or when you want to re-scan without using cached data."
 
 #: app/module/scan/view/setting.php:155
 msgid "Clear Scan Cache"
-msgstr ""
+msgstr "Clear Scan Cache"
 
 #: app/module/scan/view/setting.php:175
 msgid "Scan cache cleared successfully."
-msgstr ""
+msgstr "Scan cache cleared successfully."
 
 #: app/module/scan/view/setting.php:177
 #: app/module/scan/view/setting.php:181
 msgid "Error clearing cache"
-msgstr ""
+msgstr "Error clearing cache"
 
 #: app/module/scan/view/setting.php:190
 msgid "Issues found"
-msgstr ""
+msgstr "Issues found"
 
 #: app/module/scan/view/setting.php:195
 #: app/module/scan/view/setting.php:219
 msgid "Available variables"
-msgstr ""
+msgstr "Available variables"
 
 #: app/module/scan/view/setting.php:207
 #: app/module/scan/view/setting.php:227
 msgid "Cancel"
-msgstr ""
+msgstr "Cancel"
 
 #: app/module/scan/view/setting.php:208
 #: app/module/scan/view/setting.php:228
 msgid "Save Template"
-msgstr ""
+msgstr "Save Template"
 
 #: app/module/scan/view/setting.php:212
 msgid "All OK"
-msgstr ""
+msgstr "All OK"
 
 #: app/module/advanced-tools/view/login/disabled.php:2
 #: app/module/advanced-tools/view/login/enabled.php:2
@@ -4075,7 +4075,7 @@ msgstr "Event logs"
 #: app/module/hardener/component/servers/iis-service.php:43
 #, php-format
 msgid "The file %s could not be loaded"
-msgstr ""
+msgstr "The file %s could not be loaded"
 
 #: app/module/hardener/view/layouts/layout.php:28
 msgid "Sicherheitsanpassungen vorgenommen"
@@ -4083,15 +4083,15 @@ msgstr "Security tweaks applied"
 
 #: app/module/hardener/view/layouts/layout.php:35
 msgid "PHP Version"
-msgstr ""
+msgstr "PHP Version"
 
 #: app/module/hardener/view/layouts/layout.php:41
 msgid "ClassicPress Version"
-msgstr ""
+msgstr "ClassicPress Version"
 
 #: app/module/hardener/view/layouts/layout.php:41
 msgid "WordPress Version"
-msgstr ""
+msgstr "WordPress Version"
 
 #: app/module/hardener/view/layouts/layout.php:61
 #: app/module/hardener/view/layouts/layout.php:98
@@ -4406,7 +4406,7 @@ msgstr "Add web.config file"
 
 #: app/module/hardener/view/rules/prevent-php-executed.php:189
 msgid "Exceptions"
-msgstr ""
+msgstr "Exceptions"
 
 #: app/module/hardener/view/rules/prevent-php-executed.php:192
 msgid "Standardmäßig sperrt PS Security Verzeichnisse, für die WordPress keine PHP-Ausführung benötigt. Wenn du jedoch bestimmte Dateien hast, für die du die PHP-Ausführung zulassen musst, kannst du Ausnahmen hinzufügen. Füge einen Dateinamen pro Zeile hinzu"
@@ -4414,7 +4414,7 @@ msgstr "By default, PS Security blocks PHP execution in directories where WordPr
 
 #: app/module/hardener/view/rules/prevent-php-executed.php:193
 msgid "Add Exception"
-msgstr ""
+msgstr "Add Exception"
 
 #: app/module/hardener/view/rules/prevent-php-executed.php:23
 msgid "Die PHP-Ausführung ist gesperrt."
@@ -4544,7 +4544,7 @@ msgstr "Choose the IP addresses you want to permanently block from accessing you
 
 #: app/module/ip-lockout/view/blacklist/enabled.php:14
 msgid "Blacklist"
-msgstr ""
+msgstr "Blacklist"
 
 #: app/module/ip-lockout/view/blacklist/enabled.php:17
 msgid "Alle IP-Adressen, die du hier auflistest, werden vollständig vom Zugriff auf unsere Website ausgeschlossen, einschließlich Administratoren."
@@ -4576,7 +4576,7 @@ msgstr "All IP addresses listed here are exempt from the login protection and 40
 
 #: app/module/ip-lockout/view/blacklist/enabled.php:71
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 #: app/module/ip-lockout/view/blacklist/enabled.php:74
 msgid "Importiere deine Blacklist und Whitelist von einer anderen Website (CSV-Datei)."
@@ -4700,7 +4700,7 @@ msgstr "New 404 lockout"
 #: app/module/ip-lockout/view/emails/404-lockout.php:455
 #, php-format
 msgid "Hi %s"
-msgstr ""
+msgstr "Hi %s"
 
 #: app/module/ip-lockout/view/emails/404-lockout.php:460
 #, php-format
@@ -4722,7 +4722,7 @@ msgstr "Stay vigilant."
 #: app/module/ip-lockout/view/emails/login-username-ban.php:484
 #: app/module/ip-lockout/view/emails/report.php:517
 msgid "Security Hero"
-msgstr ""
+msgstr "Security Hero"
 
 #. Author of the plugin
 #: cp-defender.php
@@ -4731,7 +4731,7 @@ msgstr ""
 #: app/module/ip-lockout/view/emails/login-username-ban.php:486
 #: app/module/ip-lockout/view/emails/report.php:519
 msgid "PSOURCE"
-msgstr ""
+msgstr "PSOURCE"
 
 #: app/module/ip-lockout/view/emails/login-lockout.php:7
 msgid "Neue Anmeldesperre"
@@ -4742,16 +4742,16 @@ msgstr "New login lockout"
 #: app/module/ip-lockout/view/emails/report.php:455
 #, php-format
 msgid "Hi %s,"
-msgstr ""
+msgstr "Hi %s,"
 
 #: app/module/ip-lockout/view/emails/login-lockout.php:460
 msgid "They have been banned permanently."
-msgstr ""
+msgstr "They have been banned permanently."
 
 #: app/module/ip-lockout/view/emails/login-lockout.php:460
 #, php-format
 msgid "They have been locked out for <strong>%s seconds.</strong>"
-msgstr ""
+msgstr "They have been locked out for <strong>%s seconds.</strong>"
 
 #: app/module/ip-lockout/view/emails/login-lockout.php:461
 #, php-format
@@ -4769,7 +4769,7 @@ msgstr "Stay vigilant."
 
 #: app/module/ip-lockout/view/emails/login-username-ban.php:7
 msgid "New Login Lockout"
-msgstr ""
+msgstr "New Login Lockout"
 
 #: app/module/ip-lockout/view/emails/login-username-ban.php:460
 msgid "Du wurdest dauerhaft gesperrt."
@@ -4788,46 +4788,46 @@ msgstr "We have just locked out host <strong>%s</strong> from %s because someone
 #: app/module/ip-lockout/view/emails/login-username-ban.php:479
 #: app/module/ip-lockout/view/emails/report.php:512
 msgid "Stay vigilant."
-msgstr ""
+msgstr "Stay vigilant."
 
 #: app/module/ip-lockout/view/emails/report.php:7
 msgid "Lockout Report"
-msgstr ""
+msgstr "Lockout Report"
 
 #: app/module/ip-lockout/view/emails/report.php:463
 msgid "It's Defender here, reporting from the frontline."
-msgstr ""
+msgstr "It's Defender here, reporting from the frontline."
 
 #: app/module/ip-lockout/view/emails/report.php:467
 #, php-format
 msgid "%s I've put the smack down on <strong>%d</strong> hosts for bad behaviour. Here's a quick summary of the action:"
-msgstr ""
+msgstr "%s I've put the smack down on <strong>%d</strong> hosts for bad behaviour. Here's a quick summary of the action:"
 
 #: app/module/ip-lockout/view/emails/report.php:471
 msgid "Total Lockouts: "
-msgstr ""
+msgstr "Total Lockouts: "
 
 #: app/module/ip-lockout/view/emails/report.php:476
 msgid "Last Lockout: "
-msgstr ""
+msgstr "Last Lockout: "
 
 #: app/module/ip-lockout/view/emails/report.php:487
 msgid "404 Lockouts: "
-msgstr ""
+msgstr "404 Lockouts: "
 
 #: app/module/ip-lockout/view/emails/report.php:491
 msgid "Login Lockouts: "
-msgstr ""
+msgstr "Login Lockouts: "
 
 #: app/module/ip-lockout/view/emails/report.php:459
 #, php-format
 msgid "It's Defender here, just letting you know there haven't been any lockouts %s and the skies are clear."
-msgstr ""
+msgstr "It's Defender here, just letting you know there haven't been any lockouts %s and the skies are clear."
 
 #: app/module/ip-lockout/view/emails/report.php:497
 #, php-format
 msgid "You can view the full lockout logs <a href=\"%s\">here</a>"
-msgstr ""
+msgstr "You can view the full lockout logs <a href=\"%s\">here</a>"
 
 #: app/module/ip-lockout/view/layouts/layout.php:6
 msgid "IP-SPERRUNGEN"
@@ -4856,30 +4856,30 @@ msgstr "404 lockouts in the last 7 days"
 #: app/module/ip-lockout/view/layouts/layout.php:54
 #: app/module/ip-lockout/view/layouts/layout.php:84
 msgid "Login Protection"
-msgstr ""
+msgstr "Login Protection"
 
 #: app/module/ip-lockout/view/layouts/layout.php:58
 #: app/module/ip-lockout/view/layouts/layout.php:86
 msgid "404 Detection"
-msgstr ""
+msgstr "404 Detection"
 
 #: app/module/ip-lockout/view/layouts/layout.php:62
 msgid "IP Banning"
-msgstr ""
+msgstr "IP Banning"
 
 #: app/module/ip-lockout/view/layouts/layout.php:66
 #: app/module/ip-lockout/view/layouts/layout.php:90
 msgid "Logs"
-msgstr ""
+msgstr "Logs"
 
 #: app/module/ip-lockout/view/layouts/layout.php:70
 #: app/module/ip-lockout/view/layouts/layout.php:92
 msgid "Notifications"
-msgstr ""
+msgstr "Notifications"
 
 #: app/module/ip-lockout/view/layouts/layout.php:88
 msgid "IP Blacklist"
-msgstr ""
+msgstr "IP Blacklist"
 
 #: app/module/ip-lockout/view/logging/enabled.php:3
 msgid "IP-SPERRUNGEN PROTOKOLLE"
@@ -5080,7 +5080,7 @@ msgstr "Send regular email report"
 
 #: app/module/ip-lockout/view/notification/report.php:28
 msgid "Send regular email report"
-msgstr ""
+msgstr "Send regular email report"
 
 #: app/module/ip-lockout/view/notification/report.php:32
 msgid "ZEITPLAN"
@@ -5097,7 +5097,7 @@ msgstr "Suspicious function found"
 #: app/module/scan/behavior/pro/content-result.php:63
 #: app/module/scan/behavior/pro/vuln-result.php:107
 msgid "Problem Details"
-msgstr ""
+msgstr "Problem Details"
 
 #: app/module/scan/behavior/pro/content-result.php:72
 msgid "Pfad"
@@ -5152,7 +5152,7 @@ msgstr "WordPress vulnerability"
 
 #: app/module/scan/behavior/pro/vuln-result.php:53
 msgid "Version:"
-msgstr ""
+msgstr "Version:"
 
 #: app/module/scan/behavior/pro/vuln-result.php:89
 msgid "Vulnerabilitätstyp:"
@@ -5164,11 +5164,11 @@ msgstr "This issue was fixed in version:"
 
 #: app/module/scan/behavior/pro/vuln-result.php:120
 msgid "Theme Name"
-msgstr ""
+msgstr "Theme Name"
 
 #: app/module/scan/behavior/pro/vuln-result.php:118
 msgid "Plugin Name"
-msgstr ""
+msgstr "Plugin Name"
 
 #: app/module/scan/behavior/pro/vuln-result.php:139
 msgid "In dieser Version wurde eine Sicherheitslücke gefunden:"
@@ -5227,12 +5227,12 @@ msgstr "You have %d suspicious files that require your attention."
 #. Plugin Name of the plugin
 #: cp-defender.php
 msgid "PS Security Suite"
-msgstr ""
+msgstr "PS Security Suite"
 
 #. Plugin URI of the plugin
 #: cp-defender.php
 msgid "https://psource.eimen.net/wiki/ps-security-suite-dokumentation/"
-msgstr ""
+msgstr "https://psource.eimen.net/wiki/ps-security-suite-dokumentation/"
 
 #. Description of the plugin
 #: cp-defender.php
@@ -5242,7 +5242,7 @@ msgstr "Get regular security scans, vulnerability reports, security recommendati
 #. Author URI of the plugin
 #: cp-defender.php
 msgid "https://psource.eimen.net"
-msgstr ""
+msgstr "https://psource.eimen.net"
 
 #: app/module/anti-spam/behavior/widget.php:34
 #, php-format

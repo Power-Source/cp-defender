@@ -80,6 +80,7 @@ https://psource.eimen.net/spendenaktionen/psource-unterstuetzen/
 
 = 1.1.1 =
 * Fix: Aktionen zum Sperren, Entsperren sowie zur Whitelist-Verwaltung in den IP-Sperrprotokollen werden nach der Ausführung wieder als anklickbare Links angezeigt.
+* Fix: Das Sperren einer IP-Adresse im Audit-Protokoll bestätigt die Aktion sichtbar, wechselt zu „Entsperren“ und verhindert die Sperre der eigenen IP-Adresse.
 * Neu: Konfigurierbarer XML-RPC-Schutz mit Brute-Force-, Pingback- und vollständigem Sperrmodus; Netzwerkadministratoren können Subsite-Administratoren eigene Einstellungen unter Werkzeuge erlauben.
 * Fix: PHP-Ausführungs-Härtung zeigt das Eingabefeld für Ausnahme-Dateien wieder an und erkennt Apache, LiteSpeed, NGINX sowie IIS zuverlässiger.
 * Fix: Die Ausnahme-Verwaltung für den PHP-Ausführungsschutz sperrt sich bei nicht beschreibbarer .htaccess-Datei und zeigt die konkrete Berechtigungsursache an.

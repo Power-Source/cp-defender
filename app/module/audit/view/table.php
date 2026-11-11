@@ -160,7 +160,12 @@
                                             </div>
                                         </li>
                                     </ul>
-									<?php if ( ! \CP_Defender\Module\IP_Lockout\Model\Settings::instance()->isBlacklist( $row['ip'] ) ): ?>
+									<?php if ( $row['ip'] === \CP_Defender\Behavior\Utils::instance()->getUserIp() ): ?>
+                                        <div class="clear mline"></div>
+                                        <div class="well well-blue">
+                                            <p><?php _e( 'Dies ist Deine aktuelle IP-Adresse und kann nicht über das Audit-Protokoll gesperrt werden.', 'cpsec' ) ?></p>
+                                        </div>
+									<?php elseif ( ! \CP_Defender\Module\IP_Lockout\Model\Settings::instance()->isBlacklist( $row['ip'] ) ): ?>
                                         <div class="clear mline"></div>
                                         <div class="well">
                                             <div class="columns">

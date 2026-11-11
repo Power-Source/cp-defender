@@ -210,11 +210,19 @@ class Main extends Controller {
 		$id   = HTTP_Helper::retrieve_post( 'id' );
 		$ip   = HTTP_Helper::retrieve_post( 'ip' );
 		$type = HTTP_Helper::retrieve_post( 'type' );
+		$action = $type;
 		if ( $id ) {
 			$log = Log_Model::findByID( $id );
 			$ip  = $log->ip;
 		}
 		if ( $ip && filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+			$is_blacklisting = $action === 'blacklist';
+			if ( $is_blacklisting && $ip === $this->getUserIp() ) {
+				wp_send_json_error( array(
+					'message' => __( 'Du kannst Deine eigene IP-Adresse nicht sperren.', 'cpsec' ),
+				) );
+			}
+
 			if ( $type == 'unwhitelist' || $type == 'unblacklist' ) {
 				$type = substr( $type, 2 );
 				Settings::instance()->removeIpFromList( $ip, $type );
@@ -227,8 +235,13 @@ class Main extends Controller {
 					'message' => Login_Protection_Api::getLogsActionsText( $log )
 				) );
 			} else {
+				$message = $action === 'blacklist'
+					? sprintf( __( "IP %s wurde zu Deiner Sperrliste hinzugefügt. Du kannst Deine Sperrliste unter <a href=\"%s\">IP-Sperren</a> verwalten.", 'cpsec' ), $ip, \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-ip-lockout', array( 'view' => 'blacklist' ) ) )
+					: sprintf( __( 'IP %s wurde aus Deiner Sperrliste entfernt.', 'cpsec' ), $ip );
+
 				wp_send_json_success( array(
-					'message' => sprintf( __( "IP %s wurde zu Deiner Sperrliste hinzugefügt. Du kannst Deine Sperrliste unter <a href=\"%s\">IP-Sperren</a> verwalten.", 'cpsec' ), $ip, \CP_Defender\Behavior\Utils::instance()->getAdminPageUrl( 'wdf-ip-lockout', array( 'view' => 'blacklist' ) ) )
+					'message' => $message,
+					'action'  => $action === 'blacklist' ? 'blacklisted' : 'unblacklisted',
 				) );
 			}
 		} else {

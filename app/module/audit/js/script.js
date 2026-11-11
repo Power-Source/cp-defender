@@ -200,6 +200,18 @@ WDAudit.formHandler = function () {
                 that.find('.button').attr('disabled', 'disabled');
             },
             success: function (data) {
+                if (that.hasClass('banIP')) {
+                    that.find('.button').removeAttr('disabled');
+                    if (data.success === true) {
+                        Defender.showNotification('success', data.data.message);
+                        that.find('input[name="type"]').val(data.data.action === 'blacklisted' ? 'unblacklist' : 'blacklist');
+                        that.find('.button').text(data.data.action === 'blacklisted' ? 'Entsperren' : 'IP sperren');
+                    } else if (data.data && data.data.message) {
+                        Defender.showNotification('error', data.data.message);
+                    }
+                    return;
+                }
+
 				if (data.data != undefined && data.data.notification != undefined){
 					if(data.data.notification == 0){
                             jq('.defender-audit-frequency').text(data.data.text);
